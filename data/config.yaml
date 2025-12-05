@@ -11,12 +11,13 @@ info:
 
 bio:
   zh: |
-    我是国防科技大学的博士研究生。我的研究兴趣主要集中在大语言模型、智能体博弈、多模态医学生物特征识别。
-    目前，我专注于SFT、Reward Models、MultiTurn-RL、EQ-Mind、Reasoning Agent、Memory Agent的应用与研究。
+    我是国防科技大学的博士研究生。<br>
+    我的研究兴趣主要集中在大语言模型、智能体博弈、多模态医学生物特征识别。<br>
+    目前，我专注于SFT、Reward Models、MultiTurn-RL、EQ-Mind、Reasoning Agent、Memory Agent的应用与研究。<br>
   en: |
-    I am a Ph.D. student at the National University of Defense Technology (NUDT). 
-    My research interests primarily focus on Large Language Models (LLMs), Agent Games, and Multimodal Medical Biometrics.
-    Currently, I am dedicated to the research and application of SFT, Reward Models, MultiTurn-RL, EQ-Mind, Reasoning Agents, and Memory Agents.
+    I am a Ph.D. student at the National University of Defense Technology (NUDT). <br>
+    My research interests primarily focus on Large Language Models (LLMs), Agent Games, and Multimodal Medical Biometrics.<br>
+    Currently, I am dedicated to the research and application of SFT, Reward Models, MultiTurn-RL, EQ-Mind, Reasoning Agents, and Memory Agents.<br>
 
 education:
   - school:

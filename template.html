@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ info.name.zh }} | {{ info.name.en }}</title>
+    <!-- 使用 Tailwind CSS (CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Noto+Sans+SC:wght@300;400;700&display=swap');
+        body { font-family: 'Inter', 'Noto Sans SC', sans-serif; }
+        .lang-en { display: none; }
+        body.en-mode .lang-zh { display: none; }
+        body.en-mode .lang-en { display: block; }
+    </style>
+    <script>
+        function toggleLang() {
+            document.body.classList.toggle('en-mode');
+            const btn = document.getElementById('lang-btn');
+            btn.innerText = document.body.classList.contains('en-mode') ? '中文' : 'English';
+        }
+    </script>
+</head>
+<body class="bg-gray-50 text-gray-800 transition-colors duration-300">
+
+    <div class="max-w-4xl mx-auto px-6 py-12">
+        
+        <!-- Header / Navigation -->
+        <div class="flex justify-between items-center mb-12">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900">
+                    <span class="lang-zh">{{ info.name.zh }}</span>
+                    <span class="lang-en">{{ info.name.en }}</span>
+                </h1>
+                <p class="text-gray-500 mt-1">
+                    <span class="lang-zh">{{ info.location.zh }}</span>
+                    <span class="lang-en">{{ info.location.en }}</span>
+                </p>
+            </div>
+            <button id="lang-btn" onclick="toggleLang()" class="px-4 py-2 border border-gray-300 rounded hover:bg-white transition text-sm">
+                English
+            </button>
+        </div>
+
+        <!-- Bio & Stats -->
+        <div class="grid md:grid-cols-3 gap-8 mb-16">
+            <div class="md:col-span-2">
+                <h2 class="text-xl font-bold mb-4 border-b pb-2">
+                    <span class="lang-zh">个人简介</span>
+                    <span class="lang-en">Biography</span>
+                </h2>
+                <div class="prose text-gray-600 leading-relaxed mb-4">
+                    <div class="lang-zh">{{ bio.zh }}</div>
+                    <div class="lang-en">{{ bio.en }}</div>
+                </div>
+                
+                <!-- 自动化成果汇总 (Highlight) -->
+                <div class="bg-blue-50 border-l-4 border-blue-500 p-4 text-sm text-blue-900 rounded-r">
+                    <span class="lang-zh font-semibold">
+                        🏆 学术成果：截至目前，已发表论文 {{ stats.total }} 篇。
+                        其中包含 CCF 推荐会议/期刊 {{ stats.ccf_total }} 篇，JCR Q1/Q2 分区论文 {{ stats.jcr_q1 + stats.jcr_q2 }} 篇。
+                    </span>
+                    <span class="lang-en font-semibold">
+                        🏆 Highlights: Published {{ stats.total }} papers to date, 
+                        including {{ stats.ccf_total }} CCF-recommended papers and {{ stats.jcr_q1 + stats.jcr_q2 }} JCR Q1/Q2 papers.
+                    </span>
+                </div>
+            </div>
+
+            <!-- Education Sidebar -->
+            <div class="bg-white p-6 rounded-lg shadow-sm h-fit">
+                <h3 class="font-bold text-gray-900 mb-4">
+                    <span class="lang-zh">教育经历</span>
+                    <span class="lang-en">Education</span>
+                </h3>
+                <ul class="space-y-4">
+                    {% for edu in edu %}
+                    <li class="border-l-2 border-gray-200 pl-3">
+                        <div class="font-semibold text-sm">
+                            <span class="lang-zh">{{ edu.school.zh }}</span>
+                            <span class="lang-en">{{ edu.school.en }}</span>
+                        </div>
+                        <div class="text-xs text-gray-500">
+                            <span class="lang-zh">{{ edu.degree.zh }}</span>
+                            <span class="lang-en">{{ edu.degree.en }}</span>
+                             · {{ edu.time }}
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+                <div class="mt-6 pt-4 border-t flex flex-col gap-2">
+                    <a href="{{ info.scholar }}" target="_blank" class="flex items-center text-sm text-blue-600 hover:underline">
+                        Google Scholar
+                    </a>
+                    <a href="mailto:{{ info.email }}" class="flex items-center text-sm text-gray-600 hover:underline">
+                        {{ info.email }}
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Publications -->
+        <section>
+            <h2 class="text-xl font-bold mb-6 border-b pb-2 flex items-center justify-between">
+                <span>
+                    <span class="lang-zh">发表论文</span>
+                    <span class="lang-en">Publications</span>
+                </span>
+                <span class="text-xs font-normal text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                    Total: {{ stats.total }}
+                </span>
+            </h2>
+
+            <div class="space-y-6">
+                {% for p in papers %}
+                <div class="group bg-white p-5 rounded-lg border border-transparent hover:border-gray-200 hover:shadow-md transition">
+                    <div class="flex flex-col-reverse md:flex-row md:justify-between md:items-start gap-2">
+                        <h3 class="font-semibold text-lg text-gray-800 leading-snug">
+                            {{ p.title }}
+                        </h3>
+                        <!-- Tags -->
+                        <div class="flex gap-1 shrink-0">
+                            {% for tag in p.tags %}
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider
+                                {% if 'A' in tag or 'Q1' in tag %} bg-red-100 text-red-700
+                                {% elif 'B' in tag %} bg-blue-100 text-blue-700
+                                {% else %} bg-green-100 text-green-700 {% endif %}">
+                                {{ tag }}
+                            </span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    
+                    <div class="text-sm text-gray-600 mt-2">
+                        {{ p.author }}
+                    </div>
+                    
+                    <div class="text-xs text-gray-500 mt-2 italic flex gap-2 items-center">
+                        <span>{{ p.venue }} ({{ p.year }})</span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <footer class="mt-20 pt-6 border-t text-center text-gray-400 text-sm">
+            <p>&copy; 2025 {{ info.name.en }}. Built with SOTA-Generator.</p>
+        </footer>
+
+    </div>
+</body>
+</html>

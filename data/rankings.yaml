@@ -1,0 +1,24 @@
+# 模糊匹配规则：如果Key包含在论文的Journal字段中，则应用这些Tags
+"Neurocomputing":
+  tags: ["JCR Q2", "CCF C"]
+  color: "blue" # blue, green, red, yellow, gray
+
+"Biomedical Signal Processing and Control":
+  tags: ["JCR Q2"]
+  color: "green"
+
+"The Visual Computer":
+  tags: ["CCF C", "JCR Q2"]
+  color: "blue"
+
+"ICASSP":
+  tags: ["CCF B"]
+  color: "red"
+
+"IEEE Sensors Letters":
+  tags: ["JCR Q2"]
+  color: "green"
+
+"Cognitive Neurodynamics":
+  tags: ["JCR Q2"]
+  color: "blue"

@@ -1,15 +1,19 @@
 # 模糊匹配规则：如果Key包含在论文的Journal字段中，则应用这些Tags
+"Proceedings of the AAAI Conference on Artificial Intelligence":
+  tags: ["CCF A"]
+  color: "red" # blue, green, red, yellow, gray
+  
 "Neurocomputing":
-  tags: ["JCR Q2", "CCF C"]
-  color: "blue" # blue, green, red, yellow, gray
+  tags: ["JCR Q1", "CCF C"]
+  color: "red" # blue, green, red, yellow, gray
 
 "Biomedical Signal Processing and Control":
-  tags: ["JCR Q2"]
-  color: "green"
+  tags: ["JCR Q1"]
+  color: "red"
 
 "The Visual Computer":
-  tags: ["CCF C", "JCR Q2"]
-  color: "blue"
+  tags: ["JCR Q2", "CCF C"]
+  color: "green"
 
 "ICASSP":
   tags: ["CCF B"]
@@ -21,4 +25,8 @@
 
 "Cognitive Neurodynamics":
   tags: ["JCR Q2"]
-  color: "blue"
+  color: "green"
+
+"17th Chinese Conference on Biometric Recognition":
+  tags: ["Best Paper Runner-up Award"]
+  color: "yellow"

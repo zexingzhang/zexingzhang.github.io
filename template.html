@@ -57,12 +57,12 @@
                 <!-- 自动化成果汇总 (Highlight) -->
                 <div class="bg-blue-50 border-l-4 border-blue-500 p-4 text-sm text-blue-900 rounded-r">
                     <span class="lang-zh font-semibold">
-                        🏆 学术成果：截至目前，已发表论文 {{ stats.total }} 篇。
-                        其中包含 CCF 推荐会议/期刊 {{ stats.ccf_total }} 篇，JCR Q1/Q2 分区论文 {{ stats.jcr_q1 + stats.jcr_q2 }} 篇。
+                        🏆 自动总结：截至目前，已发表论文 {{ stats.total }} 篇。<br>
+                        其中包含 Q1/Q2 分区 SCI 检索论文 {{ stats.jcr_q1 + stats.jcr_q2 }} 篇，以及CCF A类推荐会议。
                     </span>
                     <span class="lang-en font-semibold">
-                        🏆 Highlights: Published {{ stats.total }} papers to date, 
-                        including {{ stats.ccf_total }} CCF-recommended papers and {{ stats.jcr_q1 + stats.jcr_q2 }} JCR Q1/Q2 papers.
+                        🏆 Auto-summary: {{ stats.total }} papers published to date. <br>
+                        This includes {{ stats.jcr_q1 + stats.jcr_q2 }} SCI-indexed papers (Q1/Q2) and CCF-A recommended conference papers.
                     </span>
                 </div>
             </div>
@@ -134,7 +134,7 @@
                     <div class="text-sm text-gray-600 mt-2">
                         {{ p.author }}
                     </div>
-                    
+                      
                     <div class="text-xs text-gray-500 mt-2 italic flex gap-2 items-center">
                         <span>{{ p.venue }} ({{ p.year }})</span>
                     </div>

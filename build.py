@@ -20,8 +20,8 @@ def load_data():
     return config, rankings, bib_db.entries
 
 def process_papers(papers, rankings):
-    # 按年份倒序
-    papers.sort(key=lambda x: x.get('year', '0000'), reverse=True)
+    # # 按年份倒序
+    # papers.sort(key=lambda x: x.get('year', '0000'), reverse=True)
     
     stats = defaultdict(int)
     stats['total'] = len(papers)

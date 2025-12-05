@@ -2,7 +2,7 @@ info:
   name:
     zh: 张泽兴
     en: Zexing Zhang
-  email: zhangzexing@163.com
+  email: zhangzexing1999@163.com
   github: zhangzexing
   scholar: https://scholar.google.com/citations?user=u5F7xvYAAAAJ&hl=zh-CN
   location:
@@ -11,12 +11,12 @@ info:
 
 bio:
   zh: |
-    我是国防科技大学的博士研究生。我的研究兴趣主要集中在**计算机视觉**、**生物特征识别**（PPG、rPPG）以及**多模态学习**。
-    目前，我专注于时空表征解耦（Spatio-Temporal Disentanglement）及其在非接触式生理信号测量中的应用。
+    我是国防科技大学的博士研究生。我的研究兴趣主要集中在大语言模型、智能体博弈、多模态医学生物特征识别。
+    目前，我专注于SFT、Reward Models、MultiTurn-RL、EQ-Mind、Reasoning Agent、Memory Agent的应用与研究。
   en: |
-    I am a Ph.D. student at National University of Defense Technology (NUDT). 
-    My research interests include **Computer Vision**, **Biometrics** (PPG, rPPG), and **Multimodal Learning**.
-    Currently, I focus on Spatio-Temporal Disentanglement and its applications in remote physiological measurement.
+    I am a Ph.D. student at the National University of Defense Technology (NUDT). 
+    My research interests primarily focus on Large Language Models (LLMs), Agent Games, and Multimodal Medical Biometrics.
+    Currently, I am dedicated to the research and application of SFT, Reward Models, MultiTurn-RL, EQ-Mind, Reasoning Agents, and Memory Agents.
 
 education:
   - school:
@@ -25,14 +25,14 @@ education:
     degree:
       zh: 博士研究生
       en: Ph.D. Student
-    time: 2025 - Present
+    time: 2026 - Present
   - school:
       zh: 长春工业大学
       en: Changchun University of Technology
     degree:
       zh: 工学硕士
       en: M.E.
-    time: 2022 - 2025
+    time: 2023 - 2026
   - school:
       zh: 内蒙古师范大学
       en: Inner Mongolia Normal University

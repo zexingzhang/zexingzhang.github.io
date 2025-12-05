@@ -10,8 +10,8 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Noto+Sans+SC:wght@300;400;700&display=swap');
         body { font-family: 'Inter', 'Noto Sans SC', sans-serif; }
         .lang-zh { display: none; }
-        body.en-mode .lang-en { display: none; }
-        body.en-mode .lang-zh { display: block; }
+        body.en-mode .lang-zh { display: none; }
+        body.en-mode .lang-en { display: block; }
     </style>
     <script>
         function toggleLang() {
@@ -123,7 +123,7 @@
                             {% for tag in p.tags %}
                             <span class="text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider
                                 {% if 'A' in tag or 'Q1' in tag %} bg-red-100 text-red-700
-                                {% elif 'B' in tag %} bg-blue-100 text-blue-700
+                                {% elif 'B' in tag or 'Q2' in tag %} bg-blue-100 text-blue-700
                                 {% else %} bg-green-100 text-green-700 {% endif %}">
                                 {{ tag }}
                             </span>

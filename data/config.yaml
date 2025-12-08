@@ -11,14 +11,17 @@ info:
 
 bio:
   zh: |
-    我是国防科技大学的博士研究生。<br>
+    Hi，我是国防科技大学的博士研究生。<br>
     我的研究兴趣主要集中在大语言模型、智能体博弈、多模态医学生物特征识别。<br>
     目前，我专注于SFT、Reward Models、MultiTurn-RL、EQ-Mind、Reasoning Agent、Memory Agent的应用与研究。<br>
-    此外，我也是AAAI、ESWA、EAAI、JBHI、BSPC等期刊/会议的审稿人。
+    此外，我也是AAAI、ESWA、EAAI、JBHI、NEUCOM等顶级期刊/会议的审稿人。<br>
+    欢迎交流！<br>
   en: |
-    I am a Ph.D. student at the National University of Defense Technology (NUDT). <br>
+    I am a Ph.D. student at the National University of Defense Technology (NUDT).<br>
     My research interests primarily focus on Large Language Models (LLMs), Agent Games, and Multimodal Medical Biometrics.<br>
     Currently, I am dedicated to the research and application of SFT, Reward Models, MultiTurn-RL, EQ-Mind, Reasoning Agents, and Memory Agents.<br>
+    Additionally, I serve as a reviewer for several top-tier journals and conferences, including AAAI, ESWA, EAAI, JBHI, and NEUCOM.<br>
+    I am always open to academic discussions and collaborations.<br>
 
 education:
   - school:

@@ -45,3 +45,33 @@ education:
       zh: 工学学士
       en: B.E.
     time: 2018 - 2022
+    
+activities:
+  - date: "2026.01，新加坡"
+    title:
+      zh: "即将前往AAAI人工智能会议汇报交流，欢迎Mark工作。"
+      en: "Heading to the AAAI artificial intelligence conference for reporting and exchange, welcome to Mark's work."
+    role:
+      zh: "主讲人"
+      en: "Speaker"
+  - date: "2024.12，中国，长春"
+    title:
+      zh: "CCF吉林省高校计算机类研究生学术交流研讨会，主题汇报《以光电容积描记为中心的人体多生理参数无创通用检测方法》，获评为优秀论文奖。"
+      en: "CCF Jilin Province Universities Computer Science Graduate Academic Exchange Symposium, the theme report "Photoplethysmography-centered Non-invasive Universal Detection Method for Multiple Human Physiological Parameters" was awarded the Outstanding Paper Award."
+    role:
+      zh: "主讲人"
+      en: "Speaker"
+  - date: "2024.10，中国，横店"
+    title:
+      zh: "参加中国计算机大会。"
+      en: "Attended the China Computer Conference."
+    role:
+      zh: "CCF 学生会员"
+      en: "CCF Member"
+  - date: "2023.12，中国，徐州"
+    title:
+      zh: "中国生物特征识别大会汇报交流，获评最佳论文提名奖。"
+      en: "Reviewer for NeurIPS 2023"
+    role:
+      zh: "主讲人"
+      en: "Speaker"

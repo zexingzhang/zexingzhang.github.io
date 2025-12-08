@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ info.name.zh }} | {{ info.name.en }}</title>
-    <!-- 使用 Tailwind CSS (CDN) -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Noto+Sans+SC:wght@300;400;700&display=swap');
@@ -25,7 +24,7 @@
 
     <div class="max-w-4xl mx-auto px-6 py-12">
         
-        <!-- Header / Navigation -->
+        <!-- Header -->
         <div class="flex justify-between items-center mb-12">
             <div>
                 <h1 class="text-3xl font-bold text-gray-900">
@@ -42,8 +41,9 @@
             </button>
         </div>
 
-        <!-- Bio & Stats -->
+        <!-- Bio & Sidebar -->
         <div class="grid md:grid-cols-3 gap-8 mb-16">
+            <!-- Left: Bio -->
             <div class="md:col-span-2">
                 <h2 class="text-xl font-bold mb-4 border-b pb-2">
                     <span class="lang-zh">个人简介</span>
@@ -54,7 +54,6 @@
                     <div class="lang-en">{{ bio.en }}</div>
                 </div>
                 
-                <!-- 自动化成果汇总 (Highlight) -->
                 <div class="bg-blue-50 border-l-4 border-blue-500 p-4 text-sm text-blue-900 rounded-r">
                     <span class="lang-zh font-semibold">
                         🏆 自动总结：截至目前，已发表论文 {{ stats.total }} 篇。<br>
@@ -67,37 +66,98 @@
                 </div>
             </div>
 
-            <!-- Education Sidebar -->
-            <div class="bg-white p-6 rounded-lg shadow-sm h-fit">
-                <h3 class="font-bold text-gray-900 mb-4">
-                    <span class="lang-zh">教育经历</span>
-                    <span class="lang-en">Education</span>
-                </h3>
-                <ul class="space-y-4">
-                    {% for edu in edu %}
-                    <li class="border-l-2 border-gray-200 pl-3">
-                        <div class="font-semibold text-sm">
-                            <span class="lang-zh">{{ edu.school.zh }}</span>
-                            <span class="lang-en">{{ edu.school.en }}</span>
-                        </div>
-                        <div class="text-xs text-gray-500">
-                            <span class="lang-zh">{{ edu.degree.zh }}</span>
-                            <span class="lang-en">{{ edu.degree.en }}</span>
-                             · {{ edu.time }}
-                        </div>
-                    </li>
-                    {% endfor %}
-                </ul>
-                <div class="mt-6 pt-4 border-t flex flex-col gap-2">
-                    <!-- <a href="{{ info.scholar }}" target="_blank" class="flex items-center text-sm text-blue-600 hover:underline">
-                        Google Scholar
-                    </a> -->
-                    <a href="mailto:{{ info.email }}" class="flex items-center text-sm text-gray-600 hover:underline">
-                        {{ info.email }}
-                    </a>
+            <!-- Right: Education & Activities -->
+            <div class="space-y-8">
+                <!-- Education -->
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <h3 class="font-bold text-gray-900 mb-4">
+                        <span class="lang-zh">教育经历</span>
+                        <span class="lang-en">Education</span>
+                    </h3>
+                    <ul class="space-y-4">
+                        {% for edu in edu %}
+                        <li class="border-l-2 border-gray-200 pl-3">
+                            <div class="font-semibold text-sm">
+                                <span class="lang-zh">{{ edu.school.zh }}</span>
+                                <span class="lang-en">{{ edu.school.en }}</span>
+                            </div>
+                            <div class="text-xs text-gray-500">
+                                <span class="lang-zh">{{ edu.degree.zh }}</span>
+                                <span class="lang-en">{{ edu.degree.en }}</span>
+                                 · {{ edu.time }}
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    <div class="mt-6 pt-4 border-t flex flex-col gap-2">
+                        <a href="mailto:{{ info.email }}" class="flex items-center text-sm text-gray-600 hover:underline">
+                            {{ info.email }}
+                        </a>
+                    </div>
                 </div>
+
+                <!-- NEW: Academic Activities -->
+                {% if activities %}
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <h3 class="font-bold text-gray-900 mb-4">
+                        <span class="lang-zh">学术活动</span>
+                        <span class="lang-en">Activities</span>
+                    </h3>
+                    <ul class="space-y-4">
+                        {% for act in activities %}
+                        <li class="flex gap-2">
+                            <span class="text-xs font-mono text-gray-400 shrink-0 pt-0.5">{{ act.date }}</span>
+                            <div>
+                                <div class="text-sm font-medium text-gray-800 leading-tight">
+                                    <span class="lang-zh">{{ act.title.zh }}</span>
+                                    <span class="lang-en">{{ act.title.en }}</span>
+                                </div>
+                                <div class="text-xs text-gray-500">
+                                    <span class="lang-zh">{{ act.role.zh }}</span>
+                                    <span class="lang-en">{{ act.role.en }}</span>
+                                </div>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
             </div>
         </div>
+
+        <!-- NEW: Preprints -->
+        {% if preprints %}
+        <section class="mb-12">
+            <h2 class="text-xl font-bold mb-6 border-b pb-2 flex items-center justify-between text-gray-700">
+                <span>
+                    <span class="lang-zh">待发表 / 预印本</span>
+                    <span class="lang-en">Preprints / Working Papers</span>
+                </span>
+            </h2>
+            <div class="space-y-4">
+                {% for p in preprints %}
+                <div class="group bg-gray-50 p-4 rounded-lg border border-dashed border-gray-300 hover:border-gray-400 transition">
+                    <div class="flex flex-col-reverse md:flex-row md:justify-between md:items-start gap-2">
+                        <h3 class="font-semibold text-md text-gray-700 leading-snug">
+                            {{ p.title }}
+                        </h3>
+                        <div class="flex gap-1 shrink-0">
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider bg-gray-200 text-gray-600">
+                                PREPRINT
+                            </span>
+                        </div>
+                    </div>
+                    <div class="text-sm text-gray-600 mt-1">
+                        {{ p.author }}
+                    </div>
+                    <div class="text-xs text-gray-500 mt-1 italic">
+                        {{ p.venue }}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
 
         <!-- Publications -->
         <section>

@@ -4,7 +4,7 @@
   color: "red" # blue, green, red, yellow, gray
   
 "Neurocomputing":
-  tags: ["JCR Q1", "CCF C"]
+  tags: ["JCR Q1"]
   color: "red" # blue, green, red, yellow, gray
 
 "Biomedical Signal Processing and Control":
@@ -12,7 +12,7 @@
   color: "red"
 
 "The Visual Computer":
-  tags: ["JCR Q2", "CCF C"]
+  tags: ["JCR Q2"]
   color: "green"
 
 "ICASSP":

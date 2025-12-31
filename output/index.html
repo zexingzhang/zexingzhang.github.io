@@ -7,11 +7,199 @@
     <!-- 使用 Tailwind CSS (CDN) -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Noto+Sans+SC:wght@300;400;700&display=swap');
-        body { font-family: 'Inter', 'Noto Sans SC', sans-serif; }
-        .lang-en { display: none; }
+        @import url('https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&family=Noto+Serif+SC:wght@400;600;700&family=ZCOOL+XiaoWei&display=swap');
+        :root {
+            --bg: #fff3ea;
+            --bg-strong: #ffe5d5;
+            --paper: rgba(255, 250, 245, 0.9);
+            --paper-solid: #fff8f2;
+            --ink: #2d1c12;
+            --muted: #6f564a;
+            --accent: #d94841;
+            --accent-deep: #b7352d;
+            --gold: #f2c14e;
+            --gold-deep: #cfa03c;
+            --line: #efd8c7;
+            --shadow: 0 18px 40px rgba(91, 39, 14, 0.12);
+        }
+        body {
+            font-family: 'Noto Serif SC', 'Fraunces', serif;
+            color: var(--ink);
+            background: radial-gradient(circle at top left, #fff8f2 0%, #fff1e6 35%, #ffe1cf 60%, #ffede1 100%);
+            position: relative;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        body.newyear::before {
+            content: "";
+            position: fixed;
+            inset: -20% -10% auto -10%;
+            height: 380px;
+            background: radial-gradient(circle at 20% 40%, rgba(242, 193, 78, 0.25), transparent 55%),
+                radial-gradient(circle at 75% 20%, rgba(217, 72, 65, 0.22), transparent 60%);
+            z-index: -1;
+        }
+        body.newyear::after {
+            content: "";
+            position: fixed;
+            inset: auto -10% -20% -10%;
+            height: 300px;
+            background: radial-gradient(circle at 15% 50%, rgba(217, 72, 65, 0.18), transparent 60%),
+                radial-gradient(circle at 80% 60%, rgba(242, 193, 78, 0.2), transparent 55%);
+            z-index: -1;
+        }
+        .lang-en { display: none; font-family: 'Fraunces', 'Noto Serif SC', serif; }
         body.en-mode .lang-zh { display: none; }
         body.en-mode .lang-en { display: block; }
+        h1, h2, h3 { font-family: 'ZCOOL XiaoWei', 'Noto Serif SC', serif; letter-spacing: 0.04em; }
+        .hero {
+            background: linear-gradient(140deg, rgba(255, 255, 255, 0.92), rgba(255, 248, 242, 0.88));
+            border: 1px solid var(--line);
+            border-radius: 28px;
+            padding: 28px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(circle at 15% 20%, rgba(242, 193, 78, 0.15) 0 40px, transparent 40px),
+                radial-gradient(circle at 85% 35%, rgba(217, 72, 65, 0.12) 0 34px, transparent 34px),
+                radial-gradient(circle at 30% 80%, rgba(217, 72, 65, 0.08) 0 30px, transparent 30px);
+            opacity: 0.6;
+            pointer-events: none;
+        }
+        .hero-content { position: relative; z-index: 1; }
+        .section-title {
+            border-bottom: 2px solid rgba(217, 72, 65, 0.25);
+            color: var(--accent-deep);
+            padding-bottom: 0.5rem;
+        }
+        .newyear-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            border-radius: 999px;
+            background: linear-gradient(120deg, rgba(217, 72, 65, 0.12), rgba(242, 193, 78, 0.18));
+            border: 1px dashed rgba(217, 72, 65, 0.4);
+            color: var(--accent-deep);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+        }
+        .photo-frame {
+            position: relative;
+            width: 190px;
+            height: 230px;
+            border-radius: 20px;
+            background: linear-gradient(160deg, rgba(242, 193, 78, 0.4), rgba(217, 72, 65, 0.25));
+            padding: 10px;
+            box-shadow: 0 16px 40px rgba(91, 39, 14, 0.2);
+        }
+        .photo-image {
+            width: 100%;
+            height: 100%;
+            border-radius: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.9);
+            background-image: var(--photo-url), radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.7), rgba(255, 216, 180, 0.8));
+            background-size: cover, cover;
+            background-position: center, center;
+            background-repeat: no-repeat;
+        }
+        .photo-caption {
+            position: absolute;
+            bottom: -14px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--accent);
+            color: #fff;
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 11px;
+            letter-spacing: 0.08em;
+        }
+        .lantern {
+            position: absolute;
+            top: -18px;
+            width: 72px;
+            height: 90px;
+            border-radius: 20px 20px 28px 28px;
+            background: linear-gradient(180deg, #e5524b 0%, #c93a33 100%);
+            box-shadow: 0 12px 24px rgba(150, 40, 28, 0.35);
+            animation: float 6s ease-in-out infinite;
+            z-index: 0;
+        }
+        .lantern::before {
+            content: "";
+            position: absolute;
+            top: -18px;
+            left: 50%;
+            width: 2px;
+            height: 18px;
+            background: var(--gold);
+            transform: translateX(-50%);
+        }
+        .lantern::after {
+            content: "";
+            position: absolute;
+            bottom: -12px;
+            left: 50%;
+            width: 14px;
+            height: 16px;
+            background: var(--gold);
+            border-radius: 4px;
+            transform: translateX(-50%);
+        }
+        .lantern-left { left: 16px; animation-delay: -1.5s; }
+        .lantern-right { right: 24px; animation-delay: -3s; }
+        .paper-card {
+            background: var(--paper);
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            box-shadow: 0 12px 26px rgba(96, 40, 18, 0.08);
+        }
+        .paper-card:hover {
+            border-color: rgba(217, 72, 65, 0.4);
+            box-shadow: 0 16px 32px rgba(96, 40, 18, 0.12);
+        }
+        .timeline-item { border-left: 2px solid var(--line); }
+        .highlight-banner {
+            background: linear-gradient(130deg, rgba(217, 72, 65, 0.12), rgba(242, 193, 78, 0.2));
+            border-left: 4px solid var(--accent);
+            color: #7a2c22;
+        }
+        .tag {
+            background: rgba(242, 193, 78, 0.2);
+            color: #8a5b15;
+            border: 1px solid rgba(217, 72, 65, 0.25);
+        }
+        .lang-switch {
+            border: 1px solid rgba(217, 72, 65, 0.3);
+            color: var(--accent-deep);
+            background: rgba(255, 255, 255, 0.8);
+        }
+        .lang-switch:hover {
+            background: rgba(255, 255, 255, 1);
+            box-shadow: 0 8px 18px rgba(217, 72, 65, 0.15);
+        }
+        .accent-link { color: var(--accent-deep); }
+        .accent-link:hover { color: var(--accent); }
+        .subtle-text { color: var(--muted); }
+        .animate-rise { animation: rise 0.9s ease both; }
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        @keyframes rise {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(8px); }
+        }
     </style>
     <script>
         function toggleLang() {
@@ -21,35 +209,62 @@
         }
     </script>
 </head>
-<body class="bg-gray-50 text-gray-800 transition-colors duration-300">
+<body class="newyear transition-colors duration-300">
 
-    <div class="max-w-4xl mx-auto px-6 py-12">
+    <div class="max-w-5xl mx-auto px-6 py-12">
         
         <!-- Header / Navigation -->
-        <div class="flex justify-between items-center mb-12">
-            <div>
-                <h1 class="text-3xl font-bold text-gray-900">
-                    <span class="lang-zh">张泽兴</span>
-                    <span class="lang-en">Zexing Zhang</span>
-                </h1>
-                <p class="text-gray-500 mt-1">
-                    <span class="lang-zh">中国·长沙</span>
-                    <span class="lang-en">Changsha, China</span>
-                </p>
+        <div class="hero mb-12 animate-rise">
+            <div class="lantern lantern-left"></div>
+            <div class="lantern lantern-right"></div>
+            <div class="hero-content grid md:grid-cols-5 gap-6 items-center">
+                <div class="md:col-span-3">
+                    <div class="flex flex-wrap items-start justify-between gap-4">
+                        <div>
+                            <h1 class="text-3xl md:text-4xl font-bold">
+                                <span class="lang-zh">张泽兴</span>
+                                <span class="lang-en">Zexing Zhang</span>
+                            </h1>
+                            <p class="subtle-text mt-2">
+                                <span class="lang-zh">中国·长沙</span>
+                                <span class="lang-en">Changsha, China</span>
+                            </p>
+                        </div>
+                        <button id="lang-btn" onclick="toggleLang()" class="lang-switch px-4 py-2 rounded-full transition text-sm">
+                            English
+                        </button>
+                    </div>
+                    <div class="mt-4 flex flex-wrap items-center gap-3">
+                        <div class="newyear-badge">
+                            <span class="lang-zh">2025 新年快乐</span>
+                            <span class="lang-en">Happy New Year 2025</span>
+                        </div>
+                        <span class="text-xs uppercase tracking-[0.2em] subtle-text">
+                            <span class="lang-zh">学术主页</span>
+                            <span class="lang-en">Academic Portfolio</span>
+                        </span>
+                    </div>
+                </div>
+                <div class="md:col-span-2 flex md:justify-end">
+                    <div class="photo-frame animate-rise delay-2" style="--photo-url: url('assets/profile.jpg');">
+                        <div class="photo-image" role="img" aria-label="Zexing Zhang portrait"></div>
+                        <div class="photo-caption">
+                            <span class="lang-zh">个人照片</span>
+                            <span class="lang-en">Portrait</span>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <button id="lang-btn" onclick="toggleLang()" class="px-4 py-2 border border-gray-300 rounded hover:bg-white transition text-sm">
-                English
-            </button>
         </div>
 
         <!-- Bio & Stats -->
-        <div class="grid md:grid-cols-3 gap-8 mb-16">
+        <div class="grid md:grid-cols-3 gap-8 mb-16 animate-rise delay-1">
             <div class="md:col-span-2">
-                <h2 class="text-xl font-bold mb-4 border-b pb-2">
+                <h2 class="text-xl font-bold mb-4 section-title">
                     <span class="lang-zh">个人简介</span>
                     <span class="lang-en">Biography</span>
                 </h2>
-                <div class="prose text-gray-600 leading-relaxed mb-4">
+                <div class="prose subtle-text leading-relaxed mb-4">
                     <div class="lang-zh">我是国防科技大学的博士研究生。我的研究兴趣主要集中在**计算机视觉**、**生物特征识别**（PPG、rPPG）以及**多模态学习**。
 目前，我专注于时空表征解耦（Spatio-Temporal Disentanglement）及其在非接触式生理信号测量中的应用。
 </div>
@@ -60,7 +275,7 @@ Currently, I focus on Spatio-Temporal Disentanglement and its applications in re
                 </div>
                 
                 <!-- 自动化成果汇总 (Highlight) -->
-                <div class="bg-blue-50 border-l-4 border-blue-500 p-4 text-sm text-blue-900 rounded-r">
+                <div class="highlight-banner p-4 text-sm rounded-r">
                     <span class="lang-zh font-semibold">
                         🏆 学术成果：截至目前，已发表论文 5 篇。
                         其中包含 CCF 推荐会议/期刊 3 篇，JCR Q1/Q2 分区论文 4 篇。
@@ -73,43 +288,43 @@ Currently, I focus on Spatio-Temporal Disentanglement and its applications in re
             </div>
 
             <!-- Education Sidebar -->
-            <div class="bg-white p-6 rounded-lg shadow-sm h-fit">
-                <h3 class="font-bold text-gray-900 mb-4">
+            <div class="paper-card p-6 h-fit animate-rise delay-2">
+                <h3 class="font-bold mb-4 section-title text-base">
                     <span class="lang-zh">教育经历</span>
                     <span class="lang-en">Education</span>
                 </h3>
                 <ul class="space-y-4">
                     
-                    <li class="border-l-2 border-gray-200 pl-3">
+                    <li class="timeline-item pl-3">
                         <div class="font-semibold text-sm">
                             <span class="lang-zh">国防科技大学</span>
                             <span class="lang-en">National University of Defense Technology</span>
                         </div>
-                        <div class="text-xs text-gray-500">
+                        <div class="text-xs subtle-text">
                             <span class="lang-zh">博士研究生</span>
                             <span class="lang-en">Ph.D. Student</span>
                              · 2025 - Present
                         </div>
                     </li>
                     
-                    <li class="border-l-2 border-gray-200 pl-3">
+                    <li class="timeline-item pl-3">
                         <div class="font-semibold text-sm">
                             <span class="lang-zh">长春工业大学</span>
                             <span class="lang-en">Changchun University of Technology</span>
                         </div>
-                        <div class="text-xs text-gray-500">
+                        <div class="text-xs subtle-text">
                             <span class="lang-zh">工学硕士</span>
                             <span class="lang-en">M.E.</span>
                              · 2022 - 2025
                         </div>
                     </li>
                     
-                    <li class="border-l-2 border-gray-200 pl-3">
+                    <li class="timeline-item pl-3">
                         <div class="font-semibold text-sm">
                             <span class="lang-zh">内蒙古师范大学</span>
                             <span class="lang-en">Inner Mongolia Normal University</span>
                         </div>
-                        <div class="text-xs text-gray-500">
+                        <div class="text-xs subtle-text">
                             <span class="lang-zh">工学学士</span>
                             <span class="lang-en">B.E.</span>
                              · 2018 - 2022
@@ -118,10 +333,10 @@ Currently, I focus on Spatio-Temporal Disentanglement and its applications in re
                     
                 </ul>
                 <div class="mt-6 pt-4 border-t flex flex-col gap-2">
-                    <a href="https://scholar.google.com/citations?user=u5F7xvYAAAAJ&hl=zh-CN" target="_blank" class="flex items-center text-sm text-blue-600 hover:underline">
+                    <a href="https://scholar.google.com/citations?user=u5F7xvYAAAAJ&hl=zh-CN" target="_blank" class="flex items-center text-sm accent-link hover:underline">
                         Google Scholar
                     </a>
-                    <a href="mailto:zhangzexing@example.com" class="flex items-center text-sm text-gray-600 hover:underline">
+                    <a href="mailto:zhangzexing@example.com" class="flex items-center text-sm subtle-text hover:underline">
                         zhangzexing@example.com
                     </a>
                 </div>
@@ -129,151 +344,143 @@ Currently, I focus on Spatio-Temporal Disentanglement and its applications in re
         </div>
 
         <!-- Publications -->
-        <section>
-            <h2 class="text-xl font-bold mb-6 border-b pb-2 flex items-center justify-between">
+        <section class="animate-rise delay-2">
+            <h2 class="text-xl font-bold mb-6 section-title flex items-center justify-between">
                 <span>
                     <span class="lang-zh">发表论文</span>
                     <span class="lang-en">Publications</span>
                 </span>
-                <span class="text-xs font-normal text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                <span class="text-xs font-normal subtle-text bg-white/70 px-2 py-1 rounded-full border border-rose-200">
                     Total: 5
                 </span>
             </h2>
 
             <div class="space-y-6">
                 
-                <div class="group bg-white p-5 rounded-lg border border-transparent hover:border-gray-200 hover:shadow-md transition">
+                <div class="group paper-card p-5 transition">
                     <div class="flex flex-col-reverse md:flex-row md:justify-between md:items-start gap-2">
-                        <h3 class="font-semibold text-lg text-gray-800 leading-snug">
+                        <h3 class="font-semibold text-lg leading-snug">
                             Spore: Spatio-Temporal Collaborative Perception and representation space disentanglement for remote heart rate measurement
                         </h3>
                         <!-- Tags -->
                         <div class="flex gap-1 shrink-0">
                             
-                            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider
-                                 bg-green-100 text-green-700 ">
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider tag">
                                 JCR Q2
                             </span>
                             
-                            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider
-                                 bg-green-100 text-green-700 ">
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider tag">
                                 CCF C
                             </span>
                             
                         </div>
                     </div>
                     
-                    <div class="text-sm text-gray-600 mt-2">
+                    <div class="text-sm subtle-text mt-2">
                         Zhang, Zexing , Lu, Hengliang , He, Zhijie , others
                     </div>
                     
-                    <div class="text-xs text-gray-500 mt-2 italic flex gap-2 items-center">
+                    <div class="text-xs subtle-text mt-2 italic flex gap-2 items-center">
                         <span>Neurocomputing (2025)</span>
                     </div>
                 </div>
                 
-                <div class="group bg-white p-5 rounded-lg border border-transparent hover:border-gray-200 hover:shadow-md transition">
+                <div class="group paper-card p-5 transition">
                     <div class="flex flex-col-reverse md:flex-row md:justify-between md:items-start gap-2">
-                        <h3 class="font-semibold text-lg text-gray-800 leading-snug">
+                        <h3 class="font-semibold text-lg leading-snug">
                             DeBeauty: A Joint Framework for Facial Beautification Removal Based on Spatial Collaborative Adaptation and Hyperplane Relocation
                         </h3>
                         <!-- Tags -->
                         <div class="flex gap-1 shrink-0">
                             
-                            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider
-                                 bg-blue-100 text-blue-700
-                                ">
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider tag">
                                 CCF B
                             </span>
                             
                         </div>
                     </div>
                     
-                    <div class="text-sm text-gray-600 mt-2">
+                    <div class="text-sm subtle-text mt-2">
                         Wang, Jinwei , Li, Y , Zhang, Zexing , others
                     </div>
                     
-                    <div class="text-xs text-gray-500 mt-2 italic flex gap-2 items-center">
+                    <div class="text-xs subtle-text mt-2 italic flex gap-2 items-center">
                         <span>ICASSP 2025-2025 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP) (2025)</span>
                     </div>
                 </div>
                 
-                <div class="group bg-white p-5 rounded-lg border border-transparent hover:border-gray-200 hover:shadow-md transition">
+                <div class="group paper-card p-5 transition">
                     <div class="flex flex-col-reverse md:flex-row md:justify-between md:items-start gap-2">
-                        <h3 class="font-semibold text-lg text-gray-800 leading-snug">
+                        <h3 class="font-semibold text-lg leading-snug">
                             A survey on deep learning-based object detection for crop monitoring: pest, yield, weed, and growth applications
                         </h3>
                         <!-- Tags -->
                         <div class="flex gap-1 shrink-0">
                             
-                            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider
-                                 bg-green-100 text-green-700 ">
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider tag">
                                 CCF C
                             </span>
                             
-                            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider
-                                 bg-green-100 text-green-700 ">
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider tag">
                                 JCR Q2
                             </span>
                             
                         </div>
                     </div>
                     
-                    <div class="text-sm text-gray-600 mt-2">
+                    <div class="text-sm subtle-text mt-2">
                         Lu, Hengliang , Dong, B , Zhu, B , Ma, S , Zhang, Zexing
                     </div>
                     
-                    <div class="text-xs text-gray-500 mt-2 italic flex gap-2 items-center">
+                    <div class="text-xs subtle-text mt-2 italic flex gap-2 items-center">
                         <span>The Visual Computer (2025)</span>
                     </div>
                 </div>
                 
-                <div class="group bg-white p-5 rounded-lg border border-transparent hover:border-gray-200 hover:shadow-md transition">
+                <div class="group paper-card p-5 transition">
                     <div class="flex flex-col-reverse md:flex-row md:justify-between md:items-start gap-2">
-                        <h3 class="font-semibold text-lg text-gray-800 leading-snug">
+                        <h3 class="font-semibold text-lg leading-snug">
                             PPG Sensor-Based Biometric Identification and Physiological Analysis via Temporal-Frequency Disentanglement with Liquid Neural Networks
                         </h3>
                         <!-- Tags -->
                         <div class="flex gap-1 shrink-0">
                             
-                            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider
-                                 bg-green-100 text-green-700 ">
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider tag">
                                 JCR Q2
                             </span>
                             
                         </div>
                     </div>
                     
-                    <div class="text-sm text-gray-600 mt-2">
+                    <div class="text-sm subtle-text mt-2">
                         Zhang, Zexing , Lu, Hengliang , Zhao, Q , others
                     </div>
                     
-                    <div class="text-xs text-gray-500 mt-2 italic flex gap-2 items-center">
+                    <div class="text-xs subtle-text mt-2 italic flex gap-2 items-center">
                         <span>IEEE Sensors Letters (2025)</span>
                     </div>
                 </div>
                 
-                <div class="group bg-white p-5 rounded-lg border border-transparent hover:border-gray-200 hover:shadow-md transition">
+                <div class="group paper-card p-5 transition">
                     <div class="flex flex-col-reverse md:flex-row md:justify-between md:items-start gap-2">
-                        <h3 class="font-semibold text-lg text-gray-800 leading-snug">
+                        <h3 class="font-semibold text-lg leading-snug">
                             A general framework for generative self-supervised learning in non-invasive estimation of physiological parameters using photoplethysmography
                         </h3>
                         <!-- Tags -->
                         <div class="flex gap-1 shrink-0">
                             
-                            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider
-                                 bg-green-100 text-green-700 ">
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider tag">
                                 JCR Q2
                             </span>
                             
                         </div>
                     </div>
                     
-                    <div class="text-sm text-gray-600 mt-2">
+                    <div class="text-sm subtle-text mt-2">
                         Zhang, Zexing , Lu, Hengliang , Ma, Siqi , others
                     </div>
                     
-                    <div class="text-xs text-gray-500 mt-2 italic flex gap-2 items-center">
+                    <div class="text-xs subtle-text mt-2 italic flex gap-2 items-center">
                         <span>Biomedical Signal Processing and Control (2024)</span>
                     </div>
                 </div>
@@ -281,7 +488,7 @@ Currently, I focus on Spatio-Temporal Disentanglement and its applications in re
             </div>
         </section>
 
-        <footer class="mt-20 pt-6 border-t text-center text-gray-400 text-sm">
+        <footer class="mt-20 pt-6 border-t text-center subtle-text text-sm">
             <p>&copy; 2025 Zexing Zhang. Built with SOTA-Generator.</p>
         </footer>
 

@@ -4,7 +4,7 @@ info:
     en: Zexing Zhang
   title:
     zh: 国防科技大学博士研究生
-    en: Ph.D. Candidate, National University of Defense Technology
+    en: Ph.D. Student, National University of Defense Technology
   email: zhangzexing1999@163.com
   github: zhangzexing
   scholar: https://scholar.google.com/citations?user=u5F7xvYAAAAJ&hl=zh-CN
@@ -16,20 +16,20 @@ bio:
     目前在国防科技大学攻读博士学位，研究聚焦基础模型驱动的智能感知与自主决策。
     围绕大语言模型、推理智能体和多模态生理信号，关注可验证评估、跨模态表示学习与真实场景泛化。
   en: |-
-    I am currently pursuing a Ph.D. at the National University of Defense Technology, with research focused on foundation-model-driven intelligent perception and autonomous decision-making.
-    My work centers on large language models, reasoning agents, and multimodal physiological signals, with interests in verifiable evaluation, cross-modal representation learning, and generalization in real-world scenarios.
+    Currently pursuing a Ph.D. at the National University of Defense Technology, with research focused on foundation-model-driven intelligent perception and autonomous decision-making.
+    My work spans large language models, reasoning agents, and multimodal physiological signals, with an emphasis on verifiable evaluation, cross-modal representation learning, and generalization in real-world scenarios.
 research_profile:
   zh: 研究基础模型驱动的智能感知与自主决策。
-  en: I study foundation-model-driven intelligent perception and autonomous decision-making.
+  en: Foundation-model-driven intelligent perception and autonomous decision-making.
 research_directions:
 - zh: 大语言模型评估
   en: Large Language Model Evaluation
 - zh: 推理智能体博弈
-  en: Reasoning Agent Games
-- zh: 多模态生理计算
-  en: Multimodal Physiological Computing
-- zh: 可穿戴智能感知
-  en: Wearable Intelligent Sensing
+  en: Reasoning-Agent Games
+- zh: 生理信号基础模型
+  en: Physiological-Signal Foundation Models
+- zh: 多模态医学感知
+  en: Multimodal Medical Perception
 - zh: 生物特征识别
   en: Biometric Recognition
 interests:
@@ -49,7 +49,7 @@ education:
     en: National University of Defense Technology
   degree:
     zh: 博士研究生
-    en: Ph.D. Candidate
+    en: Ph.D. Student
   time: 2026 - Present
 - school:
     zh: 长春工业大学
@@ -84,14 +84,14 @@ activities:
 - date: '2024.10'
   title:
     zh: 参加中国计算机大会。
-    en: Attended the China National Computer Congress.
+    en: Attended the China Computer Congress.
   role:
     zh: 中国 · 杭州
     en: Hangzhou, China
 - date: '2023.12'
   title:
     zh: 在中国生物特征识别大会进行汇报交流，获最佳论文提名奖。
-    en: Presented research at the Chinese Conference on Biometric Recognition and
+    en: Presented and exchanged research at the Chinese Conference on Biometric Recognition;
       received a Best Paper Nomination.
   role:
     zh: 中国 · 徐州
@@ -119,7 +119,7 @@ decorations:
   publications:
     image: ''
 achievement_summary:
-  zh: 目前论文17篇，含CCF A 2篇、JCR Q1 2篇；第一作者6篇、共同一作2篇，通讯及共同通讯各1篇。
-  en: I have published 17 papers, including 2 CCF A papers and 2 JCR Q1 papers; I
-    am first author on 6 papers, co-first author on 2, corresponding author on 1,
-    and co-corresponding author on 1.
+  zh: 发表/录用论文17篇，包括CCF A 3篇、B 1篇、C 1篇，JCR Q1 2篇、Q2 2篇；第一/共同第一作者8篇，通信/共同通信作者2篇。
+  en: Published or accepted 17 papers, including 3 CCF A, 1 CCF B, 1 CCF C, 2 JCR
+    Q1, and 2 JCR Q2 papers; 8 as first/co-first author and 2 as corresponding/co-corresponding
+    author.

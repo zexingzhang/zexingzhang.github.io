@@ -368,10 +368,11 @@ def build():
     info = config.get("info", {})
     papers, preprints, stats = process_all_papers(papers_raw, preprints_raw, rankings, info)
     publication_years = sorted({paper["year"] for paper in papers if paper["year"]}, reverse=True)
+    # Recent Outputs: 4 篇最高等级（先按 tier 排序，再按时间降序）
     recent_work = sorted(
         preprints + papers,
-        key=lambda x: (-year_key(x["year"]), paper_rank_priority(x["tags"]), x["title"].lower()),
-    )[:5]
+        key=lambda x: (paper_rank_priority(x["tags"]), -year_key(x["year"]), x["title"].lower()),
+    )[:4]
     decorations = config.get("decorations") or {}
     decoration_gallery = collect_gallery_assets(decorations)
 

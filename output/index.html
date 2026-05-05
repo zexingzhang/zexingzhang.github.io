@@ -206,7 +206,7 @@
             gap: 28px;
             align-items: start;
             min-height: auto;
-            padding: 10px 0 42px;
+            padding: 10px 0 22px;
         }
 
         .hero::before,
@@ -697,7 +697,7 @@
 
         .section {
             position: relative;
-            margin-top: 38px;
+            margin-top: 20px;
             padding-top: 2px;
         }
 
@@ -705,7 +705,7 @@
             content: "";
             position: absolute;
             z-index: 0;
-            top: 26px;
+            top: 14px;
             left: 118px;
             width: min(180px, 28vw);
             height: 1px;
@@ -730,7 +730,7 @@
             align-items: end;
             justify-content: space-between;
             gap: 22px;
-            margin-bottom: 20px;
+            margin-bottom: 12px;
         }
 
         .section-head::after {
@@ -794,10 +794,12 @@
 
         .hero-stat-item em {
             margin-left: 2px;
-            color: rgba(85, 99, 110, 0.65);
-            font-size: 10.5px;
+            color: rgba(85, 99, 110, 0.5);
+            font-size: 9.5px;
             font-style: normal;
             font-weight: 500;
+            letter-spacing: 0;
+            opacity: 0.85;
         }
 
         /* tier 高亮：CCF A 红 / Q1 青 / CCF B 琥珀 */
@@ -1447,8 +1449,8 @@
 
         .reveal {
             opacity: 0;
-            transform: translateY(18px);
-            transition: opacity 560ms ease, transform 560ms ease;
+            transform: translateY(10px);
+            transition: opacity 280ms cubic-bezier(0.22, 0.61, 0.36, 1), transform 280ms cubic-bezier(0.22, 0.61, 0.36, 1);
         }
 
         .reveal.is-visible {
@@ -1599,8 +1601,8 @@
                         <span data-lang="en">Academic Profile</span>
                     </span>
                     <span class="ledger-date">
-                        <span data-lang="zh">更新 2026.05.05 周二</span>
-                        <span data-lang="en">Updated May 5, 2026</span>
+                        <span data-lang="zh">更新 2026.05.06 周三</span>
+                        <span data-lang="en">Updated May 6, 2026</span>
                     </span>
                 </span>
             </div>
@@ -1654,38 +1656,47 @@
                         </strong>
                         <span> · </span>
                         <span data-lang="zh">国防科技大学博士研究生</span>
-                        <span data-lang="en">PhD Student, National University of Defense Technology</span>
+                        <span data-lang="en">Ph.D. Student, National University of Defense Technology</span>
                     </p>
                     <p class="hero-title">
-                        <span data-lang="zh">研究基础模型驱动的智能感知、可信评估与自主决策。</span>
-                        <span data-lang="en">Research on foundation model-driven intelligent perception, trustworthy evaluation, and autonomous decision-making.</span>
+                        <span data-lang="zh">研究基础模型驱动的智能感知与自主决策。</span>
+                        <span data-lang="en">Foundation-model-driven intelligent perception and autonomous decision-making.</span>
                     </p>
                     <p class="hero-brief">
                         <span data-lang="zh">目前在国防科技大学攻读博士学位，研究聚焦基础模型驱动的智能感知与自主决策。<br>围绕大语言模型、推理智能体和多模态生理信号，关注可验证评估、跨模态表示学习与真实场景泛化。</span>
-                        <span data-lang="en">I am currently pursuing a PhD at the National University of Defense Technology, with research focused on foundation model-driven intelligent perception and autonomous decision-making.<br>My work centers on large language models, reasoning agents, and multimodal physiological signals, with an emphasis on verifiable evaluation, cross-modal representation learning, and generalization in real-world scenarios.</span>
+                        <span data-lang="en">Currently pursuing a Ph.D. at the National University of Defense Technology, with research focused on foundation-model-driven intelligent perception and autonomous decision-making.<br>My work spans large language models, reasoning agents, and multimodal physiological signals, with an emphasis on verifiable evaluation, cross-modal representation learning, and generalization in real-world scenarios.</span>
+                    </p>
+
+                    <p class="hero-achievement">
+                        <span data-lang="zh">发表/录用论文17篇，包括CCF A 3篇、B 1篇、C 1篇，JCR Q1 2篇、Q2 2篇；第一/共同第一作者8篇，通信/共同通信作者2篇。</span>
+                        <span data-lang="en">Published or accepted 17 papers, including 3 CCF A, 1 CCF B, 1 CCF C, 2 JCR Q1, and 2 JCR Q2 papers; 8 as first/co-first author and 2 as corresponding/co-corresponding author.</span>
+                        <span class="auto-note" title="通过 OpenAI / Codex CLI 自动整理 · Auto-organized via OpenAI / Codex CLI">
+                            <span data-lang="zh">自动整理</span>
+                            <span data-lang="en">Auto-organized</span>
+                        </span>
                     </p>
 
 
                     <div class="hero-focus">
 
                         <span class="interest">
-                            <span data-lang="zh">基础模型智能感知</span>
-                            <span data-lang="en">Foundation Model-Driven Intelligent Perception</span>
+                            <span data-lang="zh">大语言模型评估</span>
+                            <span data-lang="en">Large Language Model Evaluation</span>
                         </span>
 
                         <span class="interest">
-                            <span data-lang="zh">可信大模型评估</span>
-                            <span data-lang="en">Trustworthy Evaluation of Large Models</span>
+                            <span data-lang="zh">推理智能体博弈</span>
+                            <span data-lang="en">Reasoning-Agent Games</span>
                         </span>
 
                         <span class="interest">
-                            <span data-lang="zh">多模态医学信号</span>
-                            <span data-lang="en">Multimodal Medical Signals</span>
+                            <span data-lang="zh">生理信号基础模型</span>
+                            <span data-lang="en">Physiological-Signal Foundation Models</span>
                         </span>
 
                         <span class="interest">
-                            <span data-lang="zh">生物特征与可穿戴</span>
-                            <span data-lang="en">Biometrics and Wearables</span>
+                            <span data-lang="zh">多模态医学感知</span>
+                            <span data-lang="en">Multimodal Medical Perception</span>
                         </span>
 
                         <span class="auto-note" title="通过 OpenAI / Codex CLI 自动整理 · Auto-organized via OpenAI / Codex CLI">
@@ -1696,14 +1707,14 @@
 
                     <div class="hero-stats" aria-label="Publication statistics">
                         <span class="hero-stat-item">
-                            <strong>16</strong>
+                            <strong>17</strong>
                             <span data-lang="zh">已发表</span>
                             <span data-lang="en">Published</span>
                         </span>
                         <span class="hero-stat-item">
-                            <strong>7</strong>
-                            <span data-lang="zh">第一作者 <em>+1 共一</em></span>
-                            <span data-lang="en">First <em>+1 co-</em></span>
+                            <strong>8</strong>
+                            <span data-lang="zh">第一作者 <em>+2 共一</em></span>
+                            <span data-lang="en">First <em>+2 co-</em></span>
                         </span>
                         <span class="hero-stat-item">
                             <strong>2</strong>
@@ -1712,7 +1723,7 @@
                         </span>
 
                         <span class="hero-stat-item tier-a">
-                            <strong>2</strong> CCF A
+                            <strong>3</strong> CCF A
                         </span>
 
 
@@ -1732,7 +1743,7 @@
 
 
                         <span class="hero-stat-item">
-                            <strong>3</strong> JCR Q2
+                            <strong>4</strong> JCR Q2
                         </span>
 
 
@@ -1778,10 +1789,6 @@
                             <span data-lang="en">Recent Outputs</span>
                         </h2>
                     </div>
-                    <p class="panel-subtitle">
-                        <span data-lang="zh">最近的高水平论文与在投工作 · 默认按等级与时间排序</span>
-                        <span data-lang="en">Recent high-tier papers and working drafts · sorted by tier × recency</span>
-                    </p>
                     <ul class="recent-list">
 
                         <li class="recent-item">
@@ -1805,6 +1812,30 @@
                                 </span>
 
                                 <span class="recent-venue">International Conference on Machine Learning · 2026</span>
+                            </div>
+                        </li>
+
+                        <li class="recent-item">
+                            <div class="recent-headline">
+                                <div class="recent-title">PPGPT: Transferring Next-Token Modeling from Language to PPG Signals</div>
+
+                                <span class="role-chip role-chip-sm role-first">
+                                    <span data-lang="zh">第一作者</span>
+                                    <span data-lang="en">First Author</span>
+                                </span>
+
+                            </div>
+                            <div class="recent-meta">
+
+                                <span class="tier-chip tier-ccf-a">CCF A</span>
+
+
+                                <span class="status-chip status-published">
+                                    <span data-lang="zh">已出版</span>
+                                    <span data-lang="en">Published</span>
+                                </span>
+
+                                <span class="recent-venue">AAAI Conference on Artificial Intelligence · 2026</span>
                             </div>
                         </li>
 
@@ -1853,49 +1884,6 @@
                                 </span>
 
                                 <span class="recent-venue">Engineering Applications of Artificial Intelligence · 2026</span>
-                            </div>
-                        </li>
-
-                        <li class="recent-item">
-                            <div class="recent-headline">
-                                <div class="recent-title">Integrated Channel Equally-Divided and Coordinate Attention Feature Pyramid for subtype detection of lung cancer</div>
-
-                            </div>
-                            <div class="recent-meta">
-
-                                <span class="tier-chip tier-jcr-q1">JCR Q1</span>
-
-
-                                <span class="status-chip status-published">
-                                    <span data-lang="zh">已出版</span>
-                                    <span data-lang="en">Published</span>
-                                </span>
-
-                                <span class="recent-venue">Biomedical Signal Processing and Control · 2026</span>
-                            </div>
-                        </li>
-
-                        <li class="recent-item">
-                            <div class="recent-headline">
-                                <div class="recent-title">SDA-SAM: Semantic-Driven Adaptive Mixed-Precision Quantization for Segment Anything Model</div>
-
-                                <span class="role-chip role-chip-sm role-co-corresponding">
-                                    <span data-lang="zh">共同通讯</span>
-                                    <span data-lang="en">Co-corresponding</span>
-                                </span>
-
-                            </div>
-                            <div class="recent-meta">
-
-                                <span class="tier-chip tier-ccf-c">CCF C</span>
-
-
-                                <span class="status-chip status-accepted">
-                                    <span data-lang="zh">已录用</span>
-                                    <span data-lang="en">Accepted</span>
-                                </span>
-
-                                <span class="recent-venue">Proceedings of the International Joint Conference on Neural Networks · 2026</span>
                             </div>
                         </li>
 
@@ -2014,6 +2002,58 @@
                                 </span>
                             </summary>
                             <p>Time-series foundation models (TSFMs) deliver strong cross-domain generalization, but their scale makes deployment costly. Knowledge distillation is a natural compression route, yet prior TSFM distillation typically imitates teacher outputs, features, or pairwise relations, and therefore remains tightly coupled to teacher-specific training trajectories while underutilizing two empirical properties: (i) high-level representations across model scales tend to converge toward a shared, approximately low-rank geometry, and (ii) layer-wise utility follows a long-tail pattern. We propose consensus subspace distillation, which reframes distillation as aligning a student to a model-agnostic geometric object: a scale-invariant low-rank consensus subspace together with its center statistics. Offline, we screen high-contribution layers via drop-layer marginal loss, estimate a shrinkage-stabilized covariance from their embeddings, and derive a truncated eigensubspace that defines a consensus projector. Online, we project student embeddings into this subspace and match the teacher’s projected mean and covariance using a lightweight mean--covariance objective, enabling stable optimization without rigid pointwise feature binding. To mitigate subset-induced bias, we further introduce a frequency-domain uncertainty injection mechanism that inflates spectral density based on characteristic-function discrepancies and injects dispersion only within the consensus directions. Across forecasting and imputation, the distilled student matches or slightly improves upon the teacher, while exhibiting a predictable trade-off under strict zero-shot classification. With MOMENT-Large as teacher, we achieve about 90% parameter reduction and substantial distillation-time savings while retaining comparable performance across multiple time-series tasks. Code and compressed weights are available at anonymous.4open.science/r/CSD-13C3/.</p>
+                        </details>
+
+                    </article>
+
+                    <article class="paper-card" data-year="2026" data-role="first">
+                        <div class="paper-top">
+                            <div class="paper-text-block">
+                                <div class="paper-headline">
+                                    <h3 class="paper-title">PPGPT: Transferring Next-Token Modeling from Language to PPG Signals</h3>
+
+                                    <span class="role-chip role-first">
+                                        <span data-lang="zh">第一作者</span>
+                                        <span data-lang="en">First Author</span>
+                                    </span>
+
+                                </div>
+
+                                <div class="paper-venue">
+                                    <span>AAAI Conference on Artificial Intelligence</span>
+                                    <span>2026</span>
+
+                                    <span class="status-chip status-published">
+                                        <span data-lang="zh">已出版</span>
+                                        <span data-lang="en">Published</span>
+                                    </span>
+
+
+                                    <a href="https://doi.org/10.1609/aaai.v40i34.40088" target="_blank" rel="noreferrer">DOI</a>
+
+                                </div>
+                            </div>
+
+                            <div class="chip-stack">
+
+                                <span class="tier-chip tier-ccf-a">CCF A</span>
+
+
+
+                            </div>
+
+                        </div>
+
+                        <details class="paper-abstract">
+                            <summary>
+                                <span data-lang="zh">摘要</span>
+                                <span data-lang="en">Abstract</span>
+                                <span class="auto-note" title="通过 OpenAI / Codex CLI 自动整理 · Auto-organized via OpenAI / Codex CLI">
+                                    <span data-lang="zh">自动补全</span>
+                                    <span data-lang="en">Auto-filled</span>
+                                </span>
+                            </summary>
+                            <p>The success of large language models (LLMs) in cognitive tasks prompts the question of whether their next-token prediction (NTP) paradigm can be adapted to model physiological signals from wearable devices. A key target for this adaptation is photoplethysmography (PPG), the most prevalent sensing modality in consumer wearables for non-invasive monitoring of diverse physiological conditions. Unlike in NLP, where NTP aligns with generative objectives, physiological signal analysis involves fundamentally different tasks, such as continuous parameter estimation (regression) and discrete state recognition (classification). This disparity creates a semantic mismatch between the pre-training paradigm and the downstream tasks. To bridge this gap, we propose PPGPT, the first foundation model that reformulates NTP into next-feature token prediction (NFTP), learning hierarchical feature transition probabilities to unify pre-training and downstream objectives. PPGPT features a novel dual-stream encoder that generates feature tokens by jointly modeling temporal dynamics and local-global morphological patterns. The model is developed using a two-stage training framework: it is first pre-trained on a large-scale mixed dataset of 1.6 billion data points and then validated on our newly released BioMTL benchmark, which includes data from 172 subjects over 285 days across seven different tasks. Extensive experiments show that PPGPT significantly outperforms competing methods, achieving a 16.5% improvement in F1-score and a 25.9% reduction in Mean Absolute Error (MAE). Furthermore, the model demonstrates robust few-shot learning capabilities.</p>
                         </details>
 
                     </article>
@@ -2288,6 +2328,68 @@
 
                     </article>
 
+                    <article class="paper-card" data-year="2026" data-role="cofirst">
+                        <div class="paper-top">
+                            <div class="paper-text-block">
+                                <div class="paper-headline">
+                                    <h3 class="paper-title">Adaptive Physiological Subspace Reorganization and Hemodynamic Feature Encoding for Cuffless Blood Pressure Estimation from Photoplethysmography</h3>
+
+                                    <span class="role-chip role-cofirst">
+                                        <span data-lang="zh">共同一作</span>
+                                        <span data-lang="en">Co-first Author</span>
+                                    </span>
+
+                                </div>
+
+                                <p class="paper-authors">
+                                    Qingxin Zhao, Zexing Zhang, Huimin Lu
+                                </p>
+
+                                <div class="paper-venue">
+                                    <span>Digital Signal Processing</span>
+                                    <span>2026</span>
+
+                                    <span class="status-chip status-published">
+                                        <span data-lang="zh">已出版</span>
+                                        <span data-lang="en">Published</span>
+                                    </span>
+
+
+                                    <a href="https://doi.org/10.1016/j.dsp.2026.106185" target="_blank" rel="noreferrer">DOI</a>
+
+                                </div>
+                            </div>
+
+                            <div class="chip-stack">
+
+                                <span class="tier-chip tier-jcr-q2">JCR Q2</span>
+
+
+                                <span class="index-chip">SCI-E</span>
+
+                                <span class="index-chip">SCOPUS</span>
+
+
+                                <span class="other-chip">EI Compendex</span>
+
+                            </div>
+
+                        </div>
+
+                        <details class="paper-abstract">
+                            <summary>
+                                <span data-lang="zh">摘要</span>
+                                <span data-lang="en">Abstract</span>
+                                <span class="auto-note" title="通过 OpenAI / Codex CLI 自动整理 · Auto-organized via OpenAI / Codex CLI">
+                                    <span data-lang="zh">自动补全</span>
+                                    <span data-lang="en">Auto-filled</span>
+                                </span>
+                            </summary>
+                            <p>Current photoplethysmography-based cuffless blood pressure estimation still faces key challenges, including incomplete physiological feature disentanglement, heterogeneous blood pressure distributions across subjects, and limited robustness under real acquisition conditions. To address these issues, we present a hybrid two-stage framework that combines adaptive physiological subspace reorganization with hemodynamic feature encoding. In the first stage, the model performs feature learning and fusion: self-supervised contrastive learning is used to construct compact representations, kernel density-based adaptive binning and separating-hyperplane-guided expert transfer preserve local boundary structure across blood pressure subspaces, and full state-space hemodynamic encoding with coupled channel-spatial attention extracts informative embeddings that are fused with prior physiological features. In the second stage, a downstream Random Forest regressor maps the fused features to systolic blood pressure and diastolic blood pressure. Across extensive datasets, the proposed method reduces the estimation error of systolic blood pressure by 22.7% and that of diastolic blood pressure by 19.3%, satisfying AAMI/ESH standards. Moreover, its practical utility is supported by a community field study of 1071 person-times, demonstrating stable performance in uncontrolled settings.</p>
+                        </details>
+
+                    </article>
+
                     <article class="paper-card" data-year="2025" data-role="coauthor">
                         <div class="paper-top">
                             <div class="paper-text-block">
@@ -2482,50 +2584,6 @@
                             </div>
 
                         </div>
-
-                    </article>
-
-                    <article class="paper-card" data-year="2026" data-role="first">
-                        <div class="paper-top">
-                            <div class="paper-text-block">
-                                <div class="paper-headline">
-                                    <h3 class="paper-title">PPGPT: Transferring Next-Token Modeling from Language to PPG Signals</h3>
-
-                                    <span class="role-chip role-first">
-                                        <span data-lang="zh">第一作者</span>
-                                        <span data-lang="en">First Author</span>
-                                    </span>
-
-                                </div>
-
-                                <div class="paper-venue">
-                                    <span>AAAI Conference on Artificial Intelligence</span>
-                                    <span>2026</span>
-
-                                    <span class="status-chip status-published">
-                                        <span data-lang="zh">已出版</span>
-                                        <span data-lang="en">Published</span>
-                                    </span>
-
-
-                                    <a href="https://doi.org/10.1609/aaai.v40i34.40088" target="_blank" rel="noreferrer">DOI</a>
-
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <details class="paper-abstract">
-                            <summary>
-                                <span data-lang="zh">摘要</span>
-                                <span data-lang="en">Abstract</span>
-                                <span class="auto-note" title="通过 OpenAI / Codex CLI 自动整理 · Auto-organized via OpenAI / Codex CLI">
-                                    <span data-lang="zh">自动补全</span>
-                                    <span data-lang="en">Auto-filled</span>
-                                </span>
-                            </summary>
-                            <p>The success of large language models (LLMs) in cognitive tasks prompts the question of whether their next-token prediction (NTP) paradigm can be adapted to model physiological signals from wearable devices. A key target for this adaptation is photoplethysmography (PPG), the most prevalent sensing modality in consumer wearables for non-invasive monitoring of diverse physiological conditions. Unlike in NLP, where NTP aligns with generative objectives, physiological signal analysis involves fundamentally different tasks, such as continuous parameter estimation (regression) and discrete state recognition (classification). This disparity creates a semantic mismatch between the pre-training paradigm and the downstream tasks. To bridge this gap, we propose PPGPT, the first foundation model that reformulates NTP into next-feature token prediction (NFTP), learning hierarchical feature transition probabilities to unify pre-training and downstream objectives. PPGPT features a novel dual-stream encoder that generates feature tokens by jointly modeling temporal dynamics and local-global morphological patterns. The model is developed using a two-stage training framework: it is first pre-trained on a large-scale mixed dataset of 1.6 billion data points and then validated on our newly released BioMTL benchmark, which includes data from 172 subjects over 285 days across seven different tasks. Extensive experiments show that PPGPT significantly outperforms competing methods, achieving a 16.5% improvement in F1-score and a 25.9% reduction in Mean Absolute Error (MAE). Furthermore, the model demonstrates robust few-shot learning capabilities.</p>
-                        </details>
 
                     </article>
 
@@ -2872,7 +2930,7 @@
                             <span class="activity-date">Service</span>
                             <span>
                                 <span data-lang="zh">审稿服务</span>
-                                <span data-lang="en">Peer Review Service</span>
+                                <span data-lang="en">Reviewing Service</span>
                             </span>
                         </div>
                         <p class="activity-title">
@@ -2901,12 +2959,12 @@
                             <span class="activity-date">2024.12</span>
                             <span>
                                 <span data-lang="zh">中国 · 长春</span>
-                                <span data-lang="en">China · Changchun</span>
+                                <span data-lang="en">Changchun, China</span>
                             </span>
                         </div>
                         <p class="activity-title">
                             <span data-lang="zh">参加 CCF 吉林省研究生学术交流研讨会并作主题汇报，获优秀论文奖。</span>
-                            <span data-lang="en">Attended the CCF Jilin Graduate Academic Exchange Seminar and gave a keynote presentation; received the Outstanding Paper Award.</span>
+                            <span data-lang="en">Attended the CCF Jilin Graduate Academic Exchange Symposium and delivered an invited presentation; received the Excellent Paper Award.</span>
                         </p>
                     </article>
 
@@ -2915,12 +2973,12 @@
                             <span class="activity-date">2024.10</span>
                             <span>
                                 <span data-lang="zh">中国 · 杭州</span>
-                                <span data-lang="en">China · Hangzhou</span>
+                                <span data-lang="en">Hangzhou, China</span>
                             </span>
                         </div>
                         <p class="activity-title">
                             <span data-lang="zh">参加中国计算机大会。</span>
-                            <span data-lang="en">Attended the China National Computer Congress.</span>
+                            <span data-lang="en">Attended the China Computer Congress.</span>
                         </p>
                     </article>
 
@@ -2929,7 +2987,7 @@
                             <span class="activity-date">2023.12</span>
                             <span>
                                 <span data-lang="zh">中国 · 徐州</span>
-                                <span data-lang="en">China · Xuzhou</span>
+                                <span data-lang="en">Xuzhou, China</span>
                             </span>
                         </div>
                         <p class="activity-title">
@@ -3015,7 +3073,7 @@
                             observer.unobserve(entry.target);
                         }
                     }
-                }, { threshold: 0.12 });
+                }, { threshold: 0, rootMargin: "0px 0px -8% 0px" });
 
                 revealItems.forEach((el) => observer.observe(el));
             } else {

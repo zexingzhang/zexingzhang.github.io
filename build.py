@@ -146,7 +146,7 @@ ROLE_LABELS = {
     "coauthor": None,
 }
 STATUS_LABELS = {
-    "published": None,  # 默认状态，不展示
+    "published": {"zh": "已出版", "en": "Published"},
     "accepted": {"zh": "已录用", "en": "Accepted"},
     "under-review": {"zh": "在投审稿", "en": "Under Review"},
 }
@@ -157,6 +157,52 @@ def split_meta_list(value: str | None) -> list[str]:
         return []
     raw = clean_tex(value)
     return [seg.strip() for seg in re.split(r"[,;]", raw) if seg.strip()]
+
+
+def categorize_tag(tag: str) -> tuple[str, str, str]:
+    """Return (category, css_class, display_label). category ∈ {tier, index, other}."""
+    upper = tag.upper()
+    # Tier
+    if "CCF A" in upper:
+        return ("tier", "ccf-a", "CCF A")
+    if "CCF B" in upper:
+        return ("tier", "ccf-b", "CCF B")
+    if "CCF C" in upper:
+        return ("tier", "ccf-c", "CCF C")
+    if "Q1" in upper:
+        return ("tier", "jcr-q1", "JCR Q1")
+    if "Q2" in upper:
+        return ("tier", "jcr-q2", "JCR Q2")
+    if "Q3" in upper:
+        return ("tier", "jcr-q3", "JCR Q3")
+    if "Q4" in upper:
+        return ("tier", "jcr-q4", "JCR Q4")
+    # Index databases
+    if upper in {"SCI", "SCI-E", "EI", "CPCI-S", "CPCI", "SCOPUS", "CSCD"}:
+        return ("index", "", upper)
+    # Awards / preprints / other
+    return ("other", "", tag)
+
+
+def split_tags_by_category(tags: list[str]) -> dict[str, list]:
+    tier: list[dict] = []
+    index: list[dict] = []
+    other: list[dict] = []
+    seen = set()
+    for tag in tags:
+        key = tag.strip().upper()
+        if not key or key in seen:
+            continue
+        seen.add(key)
+        category, css_class, display = categorize_tag(tag)
+        item = {"label": display, "css_class": css_class, "raw": tag}
+        if category == "tier":
+            tier.append(item)
+        elif category == "index":
+            index.append(item)
+        else:
+            other.append(item)
+    return {"tier": tier, "index": index, "other": other}
 
 
 def clean_and_tag_paper(entry: dict, rankings: dict, info: dict, preprint: bool = False) -> dict:
@@ -189,6 +235,7 @@ def clean_and_tag_paper(entry: dict, rankings: dict, info: dict, preprint: bool 
     authors = format_authors(entry.get("author"), info)
     is_first = role == "first" or bool(authors and authors[0]["is_self"])
 
+    categorized = split_tags_by_category(tags)
     return {
         "title": clean_tex(entry.get("title")),
         "authors": authors,
@@ -196,9 +243,12 @@ def clean_and_tag_paper(entry: dict, rankings: dict, info: dict, preprint: bool 
         "year": clean_tex(entry.get("year")),
         "abstract": clean_abstract(entry.get("abstract")),
         "tags": tags,
+        "tier_tags": categorized["tier"],
+        "index_tags": categorized["index"],
+        "other_tags": categorized["other"],
         "links": paper_links(entry),
         "is_first_author": is_first,
-        "role": role,
+        "role": role or "",
         "role_label": role_label,
         "status": status,
         "status_label": status_label,
@@ -215,6 +265,16 @@ def process_all_papers(published_raw, preprints_raw, rankings, info):
         stats["total"] += 1
         if paper["is_first_author"]:
             stats["first_author"] += 1
+        # 按 authorrole 字段细分（与 wizard 中 META_FIELD_AUTHORROLE 对齐）
+        role = paper.get("role") or ""
+        if role == "first":
+            stats["first_only"] += 1
+        elif role == "cofirst":
+            stats["cofirst"] += 1
+        elif role == "corresponding":
+            stats["corresponding"] += 1
+        elif role == "co-corresponding":
+            stats["co_corresponding"] += 1
         for tag in paper["tags"]:
             if "CCF" in tag:
                 stats["ccf_total"] += 1
@@ -232,6 +292,9 @@ def process_all_papers(published_raw, preprints_raw, rankings, info):
                 stats["jcr_q3"] += 1
             if "JCR Q4" in tag:
                 stats["jcr_q4"] += 1
+    # 聚合：含共一/共通讯
+    stats["first_total"] = stats["first_only"] + stats["cofirst"]
+    stats["corresponding_total"] = stats["corresponding"] + stats["co_corresponding"]
 
     preprint_papers = [
         clean_and_tag_paper(entry, rankings, info, preprint=True) for entry in preprints_raw
@@ -247,6 +310,12 @@ def process_all_papers(published_raw, preprints_raw, rankings, info):
     for key in [
         "total",
         "first_author",
+        "first_only",
+        "cofirst",
+        "corresponding",
+        "co_corresponding",
+        "first_total",
+        "corresponding_total",
         "ccf_total",
         "ccf_a",
         "ccf_b",
@@ -302,7 +371,7 @@ def build():
     recent_work = sorted(
         preprints + papers,
         key=lambda x: (-year_key(x["year"]), paper_rank_priority(x["tags"]), x["title"].lower()),
-    )[:4]
+    )[:5]
     decorations = config.get("decorations") or {}
     decoration_gallery = collect_gallery_assets(decorations)
 
@@ -323,6 +392,7 @@ def build():
         education=config.get("education", []),
         activities=config.get("activities", []),
         reviewing=config.get("reviewing", {}),
+        achievement_summary=config.get("achievement_summary", {}),
         decorations=decorations,
         decoration_gallery=decoration_gallery,
         papers=papers,

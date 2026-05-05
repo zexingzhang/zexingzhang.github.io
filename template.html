@@ -331,6 +331,22 @@
             line-height: 1.72;
         }
 
+        /* Codex 自动生成的成果摘要：略柔和、左侧细线锚定来源 */
+        .hero-achievement {
+            position: relative;
+            margin-top: 10px;
+            padding: 8px 12px 8px 14px;
+            border-left: 2px solid rgba(35, 106, 115, 0.32);
+            background: rgba(247, 249, 251, 0.55);
+            border-radius: 0 6px 6px 0;
+            color: #475560;
+            font-size: 14px;
+            line-height: 1.66;
+        }
+        .hero-achievement .auto-note {
+            margin-left: 6px;
+        }
+
         .hero-focus {
             display: flex;
             flex-wrap: wrap;
@@ -495,11 +511,12 @@
             content: "";
             position: absolute;
             z-index: 1;
-            inset: 12px auto auto -12px;
-            width: 64px;
-            height: 64px;
-            border-top: 4px solid var(--coral);
-            border-left: 4px solid var(--coral);
+            inset: 8px auto auto 8px;
+            width: 32px;
+            height: 32px;
+            border-top: 2px solid var(--coral);
+            border-left: 2px solid var(--coral);
+            opacity: 0.42;
             pointer-events: none;
         }
 
@@ -600,51 +617,87 @@
             font-size: 12px;
         }
 
+        .snapshot-item em {
+            display: inline;
+            margin-left: 2px;
+            color: rgba(85, 99, 110, 0.65);
+            font-size: 10.5px;
+            font-style: normal;
+            font-weight: 500;
+        }
+
         .recent-list {
             display: grid;
-            gap: 9px;
+            gap: 11px;
             margin: 0;
             padding: 0;
             list-style: none;
         }
 
-        .recent-list li {
+        .recent-item {
             position: relative;
-            padding-top: 9px;
+            padding-top: 10px;
             border-top: 1px solid rgba(220, 229, 232, 0.82);
             transition: transform 200ms ease, padding-left 200ms ease;
         }
 
-        .recent-list li:first-child {
+        .recent-item:first-child {
             padding-top: 0;
             border-top: 0;
         }
 
-        .recent-list li:hover {
+        .recent-item:hover {
             padding-left: 6px;
             transform: translateX(2px);
         }
 
+        .recent-headline {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
         .recent-title {
+            flex: 1 1 auto;
             display: -webkit-box;
             overflow: hidden;
             color: #2d3740;
             font-size: 13px;
             font-weight: 740;
-            line-height: 1.45;
+            line-height: 1.42;
             -webkit-box-orient: vertical;
             -webkit-line-clamp: 2;
         }
 
         .recent-meta {
-            margin-top: 2px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 6px 8px;
+            margin-top: 5px;
             color: var(--muted);
-            font-size: 12px;
+            font-size: 11.5px;
+        }
+
+        .recent-venue {
+            color: var(--muted);
+            font-size: 11.5px;
+            line-height: 1.3;
+        }
+
+        /* role-chip 缩小变体（用于 recent-list） */
+        .role-chip-sm {
+            margin-left: 0;
+            padding: 1px 8px;
+            font-size: 9.5px;
+            letter-spacing: 0.04em;
+            box-shadow: none;
         }
 
         .section {
             position: relative;
-            margin-top: 68px;
+            margin-top: 38px;
             padding-top: 2px;
         }
 
@@ -652,7 +705,7 @@
             content: "";
             position: absolute;
             z-index: 0;
-            top: 36px;
+            top: 26px;
             left: 118px;
             width: min(180px, 28vw);
             height: 1px;
@@ -662,12 +715,13 @@
             pointer-events: none;
         }
 
+        /* 不再让 .section::before 的 L 角往外凸：贴边 + 缩小 + 半透明 */
         .section::before {
-            inset: -6px auto auto -14px;
-            width: 42px;
-            height: 42px;
-            border-width: 3px;
-            opacity: 0.42;
+            inset: 6px auto auto 6px;
+            width: 28px;
+            height: 28px;
+            border-width: 2px;
+            opacity: 0.34;
         }
 
         .section-head {
@@ -708,20 +762,81 @@
             font-size: 14px;
         }
 
+        /* 幽灵风格徽章：透明度高 + 虚线边 + hover 提示 LLM 来源 */
+        /* Hero 统计条：移自原 Recent Outputs 的 snapshot-grid */
+        .hero-stats {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            gap: 6px 18px;
+            margin: 12px 0 10px;
+            padding: 9px 14px;
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            background: rgba(247, 249, 251, 0.62);
+            font-size: 12.5px;
+            color: var(--muted);
+        }
+
+        .hero-stat-item {
+            display: inline-flex;
+            align-items: baseline;
+            gap: 5px;
+            white-space: nowrap;
+        }
+
+        .hero-stat-item strong {
+            color: var(--accent-strong);
+            font-size: 17px;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .hero-stat-item em {
+            margin-left: 2px;
+            color: rgba(85, 99, 110, 0.65);
+            font-size: 10.5px;
+            font-style: normal;
+            font-weight: 500;
+        }
+
+        /* tier 高亮：CCF A 红 / Q1 青 / CCF B 琥珀 */
+        .hero-stat-item.tier-a strong { color: #9a3e2b; }
+        .hero-stat-item.tier-b strong { color: #8a6308; }
+        .hero-stat-item.tier-q1 strong { color: var(--accent-strong); }
+
         .auto-note {
             display: inline-flex;
             align-items: center;
-            min-height: 20px;
+            gap: 4px;
+            min-height: 18px;
             margin-left: 8px;
-            padding: 2px 7px;
-            border: 1px solid rgba(35, 106, 115, 0.18);
+            padding: 1px 8px 1px 6px;
+            border: 1px dashed rgba(35, 106, 115, 0.26);
             border-radius: 999px;
-            background: rgba(255, 255, 255, 0.68);
-            color: var(--accent-strong);
-            font-size: 11px;
-            font-weight: 760;
-            line-height: 1;
+            background: rgba(255, 255, 255, 0.18);
+            color: rgba(35, 106, 115, 0.55);
+            font-size: 10px;
+            font-weight: 600;
+            line-height: 1.4;
+            letter-spacing: 0.02em;
             vertical-align: middle;
+            cursor: help;
+            transition: opacity 220ms ease, color 220ms ease, border-color 220ms ease, background 220ms ease;
+        }
+        .auto-note::before {
+            content: "";
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: currentColor;
+            opacity: 0.65;
+        }
+        .auto-note:hover {
+            color: var(--accent-strong);
+            border-color: rgba(35, 106, 115, 0.55);
+            background: rgba(255, 255, 255, 0.7);
         }
 
         .inline-decor {
@@ -975,83 +1090,224 @@
             margin: 9px 0 0;
         }
 
-        .tag-row {
+        /* === 论文标签视觉层级 ===
+           层级 1：role (一作/通讯) — 与 title 同行，最高识别度
+           层级 2：tier (CCF A / JCR Q1) — 顶部右侧 chip-stack，强对比
+           层级 3：index (SCI / EI) — 同 chip-stack 下，幽灵描边
+           层级 4：status (已出版 / 已录用) — venue 行内，圆点 + 文字，最弱
+        */
+
+        .chip-stack {
             display: flex;
             flex-wrap: wrap;
             justify-content: flex-end;
+            align-items: flex-start;
             gap: 6px;
-            min-width: 112px;
+            min-width: 92px;
         }
 
-        .tag {
+        /* 顶层 1：role chip - 强存在感的身份徽章 */
+        .role-chip {
             display: inline-flex;
             align-items: center;
-            min-height: 24px;
-            padding: 3px 8px;
-            border: 1px solid var(--line);
-            border-radius: var(--radius);
-            background: #f7f9fa;
-            color: #55636e;
+            gap: 5px;
+            margin-left: 8px;
+            padding: 3px 10px;
+            border-radius: 999px;
+            background: rgba(35, 106, 115, 0.92);
+            color: #ffffff;
             font-size: 11px;
-            font-weight: 820;
-            line-height: 1;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            line-height: 1.5;
+            box-shadow: 0 1px 3px rgba(35, 106, 115, 0.22);
+            white-space: nowrap;
+        }
+        .role-chip.role-first {
+            background: linear-gradient(135deg, #d65f45, #b94a32);
+            box-shadow: 0 1px 4px rgba(216, 95, 69, 0.28);
+        }
+        .role-chip.role-cofirst {
+            background: linear-gradient(135deg, #e88a72, #c66f56);
+            box-shadow: 0 1px 4px rgba(216, 95, 69, 0.22);
+        }
+        .role-chip.role-corresponding {
+            background: linear-gradient(135deg, #236a73, #18555f);
+            box-shadow: 0 1px 4px rgba(35, 106, 115, 0.28);
+        }
+        .role-chip.role-co-corresponding {
+            background: linear-gradient(135deg, #4d8a92, #2f6c75);
+            box-shadow: 0 1px 4px rgba(35, 106, 115, 0.22);
+        }
+        .role-chip.role-coauthor {
+            background: rgba(120, 130, 140, 0.78);
+            box-shadow: none;
+        }
+
+        /* 顶层 2：tier chip - 期刊会议等级 */
+        .tier-chip {
+            display: inline-flex;
+            align-items: center;
+            padding: 3px 9px;
+            border-radius: 6px;
+            border: 1px solid transparent;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.06em;
+            line-height: 1.6;
+            text-transform: uppercase;
+        }
+        .tier-chip.tier-ccf-a {
+            border-color: rgba(216, 95, 69, 0.34);
+            background: rgba(216, 95, 69, 0.13);
+            color: #9a3e2b;
+        }
+        .tier-chip.tier-ccf-b {
+            border-color: rgba(196, 144, 41, 0.34);
+            background: rgba(196, 144, 41, 0.13);
+            color: #8a6308;
+        }
+        .tier-chip.tier-ccf-c {
+            border-color: rgba(150, 130, 100, 0.30);
+            background: rgba(150, 130, 100, 0.10);
+            color: #6a5a40;
+        }
+        .tier-chip.tier-jcr-q1 {
+            border-color: rgba(35, 106, 115, 0.30);
+            background: rgba(35, 106, 115, 0.11);
+            color: var(--accent-strong);
+        }
+        .tier-chip.tier-jcr-q2 {
+            border-color: rgba(35, 106, 115, 0.20);
+            background: rgba(35, 106, 115, 0.07);
+            color: #2d6e74;
+        }
+        .tier-chip.tier-jcr-q3,
+        .tier-chip.tier-jcr-q4 {
+            border-color: rgba(120, 130, 140, 0.25);
+            background: rgba(120, 130, 140, 0.07);
+            color: #5a6770;
+        }
+
+        /* 层级 3：index chip - 幽灵描边 */
+        .index-chip {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 7px;
+            border-radius: 999px;
+            border: 1px dashed rgba(35, 106, 115, 0.30);
+            background: transparent;
+            color: rgba(85, 99, 110, 0.86);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            line-height: 1.6;
             text-transform: uppercase;
         }
 
-        .tag.hot {
-            border-color: rgba(216, 95, 69, 0.24);
-            background: rgba(216, 95, 69, 0.09);
-            color: #9a3e2b;
-        }
-
-        .tag.cool {
-            border-color: rgba(35, 106, 115, 0.20);
-            background: rgba(35, 106, 115, 0.08);
-            color: var(--accent-strong);
-        }
-
-        .tag.soft {
-            border-color: rgba(109, 89, 122, 0.20);
-            background: rgba(109, 89, 122, 0.08);
-            color: var(--violet);
-        }
-
-        .tag.warm {
-            border-color: rgba(196, 144, 41, 0.30);
-            background: rgba(196, 144, 41, 0.12);
-            color: #8a6308;
-        }
-
-        .tag.role {
-            border-color: rgba(35, 106, 115, 0.28);
-            background: rgba(35, 106, 115, 0.10);
-            color: var(--accent-strong);
+        /* 层级 4：status chip - 内联圆点 + 文字 */
+        .status-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 0;
+            border: none;
+            background: none;
+            font-size: 11px;
             font-weight: 600;
-            margin-left: 6px;
+            line-height: 1;
+            letter-spacing: 0;
+        }
+        .status-chip::before {
+            content: "";
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+        .status-chip.status-published { color: #4a7a4d; }
+        .status-chip.status-accepted { color: #b87a14; }
+        .status-chip.status-under-review { color: var(--violet); }
+
+        /* 其它（preprint / award）— 中性方块 */
+        .other-chip {
+            display: inline-flex;
+            align-items: center;
+            padding: 3px 8px;
+            border-radius: 6px;
+            border: 1px solid var(--line);
+            background: #f7f9fa;
+            color: #55636e;
+            font-size: 11px;
+            font-weight: 720;
+            line-height: 1.4;
+            letter-spacing: 0.04em;
         }
 
-        .paper-authors-synth {
-            color: var(--text);
+        /* paper headline 行容器 - title + role-chip 同行 */
+        .paper-headline {
+            display: flex;
+            align-items: baseline;
+            flex-wrap: wrap;
+            gap: 4px 0;
+        }
+        .paper-headline .paper-title {
+            margin-right: 0;
+        }
+
+        /* 筛选条独占一行，避免在 section-head 右侧拥挤换行 */
+        .filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 6px 18px;
+            margin: 4px 0 16px;
+            padding: 10px 14px;
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            background: rgba(247, 249, 251, 0.55);
         }
 
         .filter-group {
-            display: flex;
+            display: inline-flex;
             flex-wrap: wrap;
-            justify-content: flex-end;
-            gap: 8px;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .filter-label {
+            display: inline-flex;
+            align-items: center;
+            margin-right: 4px;
+            color: var(--muted);
+            font-size: 11.5px;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            white-space: nowrap;
         }
 
         .filter-button {
-            padding: 7px 10px;
-            border-color: var(--line);
-            background: rgba(255, 255, 255, 0.62);
+            padding: 4px 10px;
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.7);
             color: var(--muted);
-            font-size: 13px;
-            font-weight: 720;
+            font-size: 12px;
+            font-weight: 700;
+            line-height: 1.6;
+            cursor: pointer;
+            transition: border-color 200ms ease, background 200ms ease, color 200ms ease;
+        }
+
+        .filter-button:hover {
+            border-color: rgba(35, 106, 115, 0.4);
+            color: var(--accent-strong);
         }
 
         .filter-button.active {
-            border-color: rgba(35, 106, 115, 0.34);
+            border-color: rgba(35, 106, 115, 0.45);
             background: var(--accent);
             color: #fff;
         }
@@ -1419,6 +1675,16 @@
                         <span data-lang="zh">{{ bio.zh | linebreaks }}</span>
                         <span data-lang="en">{{ bio.en | linebreaks }}</span>
                     </p>
+                    {% if achievement_summary and (achievement_summary.zh or achievement_summary.en) %}
+                    <p class="hero-achievement">
+                        <span data-lang="zh">{{ achievement_summary.zh }}</span>
+                        <span data-lang="en">{{ achievement_summary.en }}</span>
+                        <span class="auto-note" title="通过 OpenAI / Codex CLI 自动整理 · Auto-organized via OpenAI / Codex CLI">
+                            <span data-lang="zh">自动整理</span>
+                            <span data-lang="en">Auto-organized</span>
+                        </span>
+                    </p>
+                    {% endif %}
                     {% if research_directions %}
                     <div class="hero-focus">
                         {% for item in research_directions[:4] %}
@@ -1427,29 +1693,71 @@
                             <span data-lang="en">{{ item.en }}</span>
                         </span>
                         {% endfor %}
-                        <span class="auto-note">
+                        <span class="auto-note" title="通过 OpenAI / Codex CLI 自动整理 · Auto-organized via OpenAI / Codex CLI">
                             <span data-lang="zh">自动整理</span>
                             <span data-lang="en">Auto-organized</span>
                         </span>
                     </div>
                     {% endif %}
-                    <ul class="hero-timeline" aria-label="Education">
-                        {% for item in education[:1] %}
-                        <li>
-                            <time>{{ item.time }}</time>
-                            <div>
-                                <strong>
-                                    <span data-lang="zh">{{ item.school.zh }}</span>
-                                    <span data-lang="en">{{ item.school.en }}</span>
-                                </strong>
-                                <span>
-                                    <span data-lang="zh">{{ item.degree.zh }}</span>
-                                    <span data-lang="en">{{ item.degree.en }}</span>
-                                </span>
-                            </div>
-                        </li>
-                        {% endfor %}
-                    </ul>
+                    <div class="hero-stats" aria-label="Publication statistics">
+                        <span class="hero-stat-item">
+                            <strong>{{ stats.total }}</strong>
+                            <span data-lang="zh">已发表</span>
+                            <span data-lang="en">Published</span>
+                        </span>
+                        <span class="hero-stat-item">
+                            <strong>{{ stats.first_total }}</strong>
+                            <span data-lang="zh">第一作者{% if stats.cofirst %} <em>+{{ stats.cofirst }} 共一</em>{% endif %}</span>
+                            <span data-lang="en">First{% if stats.cofirst %} <em>+{{ stats.cofirst }} co-</em>{% endif %}</span>
+                        </span>
+                        <span class="hero-stat-item">
+                            <strong>{{ stats.corresponding_total }}</strong>
+                            <span data-lang="zh">通讯{% if stats.co_corresponding %} <em>+{{ stats.co_corresponding }} 共通讯</em>{% endif %}</span>
+                            <span data-lang="en">Corr.{% if stats.co_corresponding %} <em>+{{ stats.co_corresponding }} co-</em>{% endif %}</span>
+                        </span>
+                        {% if stats.ccf_a %}
+                        <span class="hero-stat-item tier-a">
+                            <strong>{{ stats.ccf_a }}</strong> CCF A
+                        </span>
+                        {% endif %}
+                        {% if stats.ccf_b %}
+                        <span class="hero-stat-item tier-b">
+                            <strong>{{ stats.ccf_b }}</strong> CCF B
+                        </span>
+                        {% endif %}
+                        {% if stats.ccf_c %}
+                        <span class="hero-stat-item">
+                            <strong>{{ stats.ccf_c }}</strong> CCF C
+                        </span>
+                        {% endif %}
+                        {% if stats.jcr_q1 %}
+                        <span class="hero-stat-item tier-q1">
+                            <strong>{{ stats.jcr_q1 }}</strong> JCR Q1
+                        </span>
+                        {% endif %}
+                        {% if stats.jcr_q2 %}
+                        <span class="hero-stat-item">
+                            <strong>{{ stats.jcr_q2 }}</strong> JCR Q2
+                        </span>
+                        {% endif %}
+                        {% if stats.jcr_q3 %}
+                        <span class="hero-stat-item">
+                            <strong>{{ stats.jcr_q3 }}</strong> JCR Q3
+                        </span>
+                        {% endif %}
+                        {% if stats.jcr_q4 %}
+                        <span class="hero-stat-item">
+                            <strong>{{ stats.jcr_q4 }}</strong> JCR Q4
+                        </span>
+                        {% endif %}
+                        {% if stats.preprints %}
+                        <span class="hero-stat-item">
+                            <strong>{{ stats.preprints }}</strong>
+                            <span data-lang="zh">在投</span>
+                            <span data-lang="en">Working</span>
+                        </span>
+                        {% endif %}
+                    </div>
                     <div class="hero-actions">
                         {% if info.scholar %}
                         <a class="icon-link" href="{{ info.scholar }}" target="_blank" rel="noreferrer" aria-label="Google Scholar">
@@ -1484,36 +1792,33 @@
                         </h2>
                     </div>
                     <p class="panel-subtitle">
-                        <span data-lang="zh">论文、在投工作与代表性成果。</span>
-                        <span data-lang="en">Publications, working papers, and selected outputs.</span>
+                        <span data-lang="zh">最近的高水平论文与在投工作 · 默认按等级与时间排序</span>
+                        <span data-lang="en">Recent high-tier papers and working drafts · sorted by tier × recency</span>
                     </p>
-                    <div class="snapshot-grid" aria-label="Research statistics">
-                        <div class="snapshot-item">
-                            <strong>{{ stats.total }}</strong>
-                            <span data-lang="zh">已发表论文</span>
-                            <span data-lang="en">Published Papers</span>
-                        </div>
-                        <div class="snapshot-item">
-                            <strong>{{ stats.ccf_a }}</strong>
-                            <span data-lang="zh">CCF A 主会</span>
-                            <span data-lang="en">CCF-A Papers</span>
-                        </div>
-                        <div class="snapshot-item">
-                            <strong>{{ stats.jcr_q1 }}</strong>
-                            <span data-lang="zh">JCR 1区论文</span>
-                            <span data-lang="en">JCR Q1 Papers</span>
-                        </div>
-                        <div class="snapshot-item">
-                            <strong>{{ stats.preprints }}</strong>
-                            <span data-lang="zh">在投工作</span>
-                            <span data-lang="en">Working Papers</span>
-                        </div>
-                    </div>
                     <ul class="recent-list">
-                        {% for p in recent_work[:3] %}
-                        <li>
-                            <div class="recent-title">{{ p.title }}</div>
-                            <div class="recent-meta">{{ p.venue }} · {{ p.year }}</div>
+                        {% for p in recent_work[:5] %}
+                        <li class="recent-item">
+                            <div class="recent-headline">
+                                <div class="recent-title">{{ p.title }}</div>
+                                {% if p.role_label %}
+                                <span class="role-chip role-chip-sm role-{{ p.role }}">
+                                    <span data-lang="zh">{{ p.role_label.zh }}</span>
+                                    <span data-lang="en">{{ p.role_label.en }}</span>
+                                </span>
+                                {% endif %}
+                            </div>
+                            <div class="recent-meta">
+                                {% for t in p.tier_tags[:1] %}
+                                <span class="tier-chip tier-{{ t.css_class }}">{{ t.label }}</span>
+                                {% endfor %}
+                                {% if p.status_label %}
+                                <span class="status-chip status-{{ p.status }}">
+                                    <span data-lang="zh">{{ p.status_label.zh }}</span>
+                                    <span data-lang="en">{{ p.status_label.en }}</span>
+                                </span>
+                                {% endif %}
+                                <span class="recent-venue">{{ p.venue }} · {{ p.year }}</span>
+                            </div>
                         </li>
                         {% endfor %}
                     </ul>
@@ -1529,15 +1834,39 @@
                             {{ inline_decoration("publications") }}
                         </h2>
                         <p class="section-kicker">
-                            <span data-lang="zh">默认按 CCF / JCR 等级排序，可按年份筛选，作者名自动高亮</span>
-                            <span data-lang="en">Sorted by CCF / JCR rank by default, filterable by year with author highlighting</span>
-                            <span class="auto-note">
+                            <span data-lang="zh">默认按 CCF / JCR 等级排序，可按身份与年份联合筛选</span>
+                            <span data-lang="en">Sorted by CCF / JCR rank by default, filterable by author role and year</span>
+                            <span class="auto-note" title="通过 OpenAI / Codex CLI 自动整理 · Auto-organized via OpenAI / Codex CLI">
                                 <span data-lang="zh">自动排序</span>
                                 <span data-lang="en">Auto-sorted</span>
                             </span>
                         </p>
                     </div>
-                    <div class="filter-group" aria-label="Publication filters">
+                </div>
+                <div class="filter-bar" aria-label="Publication filters">
+                    <div class="filter-group" aria-label="Author role">
+                        <span class="filter-label">
+                            <span data-lang="zh">身份</span>
+                            <span data-lang="en">Role</span>
+                        </span>
+                        <button class="filter-button active" type="button" data-filter-role="all">
+                            <span data-lang="zh">全部</span>
+                            <span data-lang="en">All</span>
+                        </button>
+                        <button class="filter-button" type="button" data-filter-role="first">
+                            <span data-lang="zh">第一作者</span>
+                            <span data-lang="en">First</span>
+                        </button>
+                        <button class="filter-button" type="button" data-filter-role="corresponding">
+                            <span data-lang="zh">通讯作者</span>
+                            <span data-lang="en">Corresponding</span>
+                        </button>
+                    </div>
+                    <div class="filter-group" aria-label="Publication year">
+                        <span class="filter-label">
+                            <span data-lang="zh">年份</span>
+                            <span data-lang="en">Year</span>
+                        </span>
                         <button class="filter-button active" type="button" data-filter-year="all">All</button>
                         {% for year in publication_years %}
                         <button class="filter-button" type="button" data-filter-year="{{ year }}">{{ year }}</button>
@@ -1546,56 +1875,48 @@
                 </div>
                 <div class="paper-stack" id="paper-list">
                     {% for p in papers %}
-                    <article class="paper-card" data-year="{{ p.year }}">
+                    <article class="paper-card" data-year="{{ p.year }}" data-role="{{ p.role }}">
                         <div class="paper-top">
-                            <div>
-                                <h3 class="paper-title">{{ p.title }}</h3>
-                                {% if p.authors %}
-                                <p class="paper-authors">
-                                    {% for author in p.authors %}
-                                        {% if author.is_self %}<strong>{{ author.name }}</strong>{% else %}{{ author.name }}{% endif %}{% if not loop.last %}, {% endif %}
-                                    {% endfor %}
+                            <div class="paper-text-block">
+                                <div class="paper-headline">
+                                    <h3 class="paper-title">{{ p.title }}</h3>
                                     {% if p.role_label %}
-                                    <span class="tag role">
+                                    <span class="role-chip role-{{ p.role }}">
                                         <span data-lang="zh">{{ p.role_label.zh }}</span>
                                         <span data-lang="en">{{ p.role_label.en }}</span>
                                     </span>
                                     {% endif %}
-                                </p>
-                                {% elif p.role_label %}
-                                <p class="paper-authors paper-authors-synth">
-                                    <strong>{{ info.name.en }}</strong>
-                                    <span class="tag role">
-                                        <span data-lang="zh">{{ p.role_label.zh }}</span>
-                                        <span data-lang="en">{{ p.role_label.en }}</span>
-                                    </span>
+                                </div>
+                                {% if p.authors %}
+                                <p class="paper-authors">
+                                    {% for author in p.authors %}{{ author.name }}{% if not loop.last %}, {% endif %}{% endfor %}
                                 </p>
                                 {% endif %}
                                 <div class="paper-venue">
                                     <span>{{ p.venue }}</span>
                                     <span>{{ p.year }}</span>
+                                    {% if p.status_label %}
+                                    <span class="status-chip status-{{ p.status }}">
+                                        <span data-lang="zh">{{ p.status_label.zh }}</span>
+                                        <span data-lang="en">{{ p.status_label.en }}</span>
+                                    </span>
+                                    {% endif %}
                                     {% for link in p.links %}
                                     <a href="{{ link.url }}" target="_blank" rel="noreferrer">{{ link.label }}</a>
                                     {% endfor %}
                                 </div>
                             </div>
-                            {% if p.tags or p.status_label %}
-                            <div class="tag-row">
-                                {% for tag in p.tags %}
-                                    {% if "CCF A" in tag or "Q1" in tag %}
-                                    <span class="tag hot">{% if "CCF A" in tag %}CCF A 主会{% else %}{{ tag }}{% endif %}</span>
-                                    {% elif "CCF B" in tag or "Q2" in tag %}
-                                    <span class="tag cool">{{ tag }}</span>
-                                    {% else %}
-                                    <span class="tag">{{ tag }}</span>
-                                    {% endif %}
+                            {% if p.tier_tags or p.index_tags or p.other_tags %}
+                            <div class="chip-stack">
+                                {% for t in p.tier_tags %}
+                                <span class="tier-chip tier-{{ t.css_class }}">{{ t.label }}</span>
                                 {% endfor %}
-                                {% if p.status_label %}
-                                <span class="tag {% if p.status == 'accepted' %}warm{% else %}soft{% endif %}">
-                                    <span data-lang="zh">{{ p.status_label.zh }}</span>
-                                    <span data-lang="en">{{ p.status_label.en }}</span>
-                                </span>
-                                {% endif %}
+                                {% for t in p.index_tags %}
+                                <span class="index-chip">{{ t.label }}</span>
+                                {% endfor %}
+                                {% for t in p.other_tags %}
+                                <span class="other-chip">{{ t.label }}</span>
+                                {% endfor %}
                             </div>
                             {% endif %}
                         </div>
@@ -1604,7 +1925,7 @@
                             <summary>
                                 <span data-lang="zh">摘要</span>
                                 <span data-lang="en">Abstract</span>
-                                <span class="auto-note">
+                                <span class="auto-note" title="通过 OpenAI / Codex CLI 自动整理 · Auto-organized via OpenAI / Codex CLI">
                                     <span data-lang="zh">自动补全</span>
                                     <span data-lang="en">Auto-filled</span>
                                 </span>
@@ -1632,46 +1953,52 @@
                     {% for p in preprints %}
                     <article class="paper-card preprint">
                         <div class="paper-top">
-                            <div>
-                                <h3 class="paper-title">{{ p.title }}</h3>
-                                {% if p.authors %}
-                                <p class="paper-authors">
-                                    {% for author in p.authors %}
-                                        {% if author.is_self %}<strong>{{ author.name }}</strong>{% else %}{{ author.name }}{% endif %}{% if not loop.last %}, {% endif %}
-                                    {% endfor %}
+                            <div class="paper-text-block">
+                                <div class="paper-headline">
+                                    <h3 class="paper-title">{{ p.title }}</h3>
                                     {% if p.role_label %}
-                                    <span class="tag role">
+                                    <span class="role-chip role-{{ p.role }}">
                                         <span data-lang="zh">{{ p.role_label.zh }}</span>
                                         <span data-lang="en">{{ p.role_label.en }}</span>
                                     </span>
                                     {% endif %}
-                                </p>
-                                {% elif p.role_label %}
-                                <p class="paper-authors paper-authors-synth">
-                                    <strong>{{ info.name.en }}</strong>
-                                    <span class="tag role">
-                                        <span data-lang="zh">{{ p.role_label.zh }}</span>
-                                        <span data-lang="en">{{ p.role_label.en }}</span>
-                                    </span>
+                                </div>
+                                {% if p.authors %}
+                                <p class="paper-authors">
+                                    {% for author in p.authors %}{{ author.name }}{% if not loop.last %}, {% endif %}{% endfor %}
                                 </p>
                                 {% endif %}
                                 <div class="paper-venue">
                                     <span>{{ p.venue }}</span>
                                     <span>{{ p.year }}</span>
+                                    {% if p.status_label %}
+                                    <span class="status-chip status-{{ p.status }}">
+                                        <span data-lang="zh">{{ p.status_label.zh }}</span>
+                                        <span data-lang="en">{{ p.status_label.en }}</span>
+                                    </span>
+                                    {% endif %}
                                 </div>
                             </div>
-                            <div class="tag-row">
-                                {% for tag in p.tags %}
-                                <span class="tag soft">{{ tag }}</span>
+                            {% if p.tier_tags or p.index_tags or p.other_tags %}
+                            <div class="chip-stack">
+                                {% for t in p.tier_tags %}
+                                <span class="tier-chip tier-{{ t.css_class }}">{{ t.label }}</span>
+                                {% endfor %}
+                                {% for t in p.index_tags %}
+                                <span class="index-chip">{{ t.label }}</span>
+                                {% endfor %}
+                                {% for t in p.other_tags %}
+                                <span class="other-chip">{{ t.label }}</span>
                                 {% endfor %}
                             </div>
+                            {% endif %}
                         </div>
                         {% if p.abstract %}
                         <details class="paper-abstract">
                             <summary>
                                 <span data-lang="zh">摘要</span>
                                 <span data-lang="en">Abstract</span>
-                                <span class="auto-note">
+                                <span class="auto-note" title="通过 OpenAI / Codex CLI 自动整理 · Auto-organized via OpenAI / Codex CLI">
                                     <span data-lang="zh">自动补全</span>
                                     <span data-lang="en">Auto-filled</span>
                                 </span>
@@ -1849,15 +2176,42 @@
                 requestAnimationFrame(step);
             }
 
+            // 双轴筛选：身份 (data-filter-role) × 年份 (data-filter-year)
+            // role=first 同时匹配 first / cofirst；role=corresponding 同时匹配 corresponding / co-corresponding
+            const filterState = { role: "all", year: "all" };
+
+            const matchesRole = (paperRole, filter) => {
+                if (filter === "all") return true;
+                if (filter === "first") return paperRole === "first" || paperRole === "cofirst";
+                if (filter === "corresponding") return paperRole === "corresponding" || paperRole === "co-corresponding";
+                return paperRole === filter;
+            };
+
+            const applyFilters = () => {
+                document.querySelectorAll("#paper-list .paper-card").forEach((paper) => {
+                    const yearOk = filterState.year === "all" || paper.dataset.year === filterState.year;
+                    const roleOk = matchesRole(paper.dataset.role || "", filterState.role);
+                    paper.classList.toggle("is-hidden", !(yearOk && roleOk));
+                });
+            };
+
             document.querySelectorAll("[data-filter-year]").forEach((button) => {
                 button.addEventListener("click", () => {
-                    const year = button.dataset.filterYear;
+                    filterState.year = button.dataset.filterYear;
                     document.querySelectorAll("[data-filter-year]").forEach((item) => {
                         item.classList.toggle("active", item === button);
                     });
-                    document.querySelectorAll("#paper-list .paper-card").forEach((paper) => {
-                        paper.classList.toggle("is-hidden", year !== "all" && paper.dataset.year !== year);
+                    applyFilters();
+                });
+            });
+
+            document.querySelectorAll("[data-filter-role]").forEach((button) => {
+                button.addEventListener("click", () => {
+                    filterState.role = button.dataset.filterRole;
+                    document.querySelectorAll("[data-filter-role]").forEach((item) => {
+                        item.classList.toggle("active", item === button);
                     });
+                    applyFilters();
                 });
             });
 

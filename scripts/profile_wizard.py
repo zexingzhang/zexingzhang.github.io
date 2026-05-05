@@ -522,6 +522,7 @@ def _enumerate_bilingual_paths(config: dict[str, Any]) -> list[tuple[str, str]]:
     add("info.location.zh", "info.location.en")
     add("bio.zh", "bio.en")
     add("research_profile.zh", "research_profile.en")
+    add("achievement_summary.zh", "achievement_summary.en")
     for idx, _ in enumerate(config.get("interests", [])):
         add(f"interests.{idx}.zh", f"interests.{idx}.en")
     for idx, _ in enumerate(config.get("research_directions", [])):
@@ -868,6 +869,7 @@ def translation_targets(config: dict[str, Any]) -> dict[str, str]:
     add("info.location.en", "info.location.zh")
     add("bio.en", "bio.zh")
     add("research_profile.en", "research_profile.zh")
+    add("achievement_summary.en", "achievement_summary.zh")
     for idx, _ in enumerate(config.get("interests", [])):
         add(f"interests.{idx}.en", f"interests.{idx}.zh")
     for idx, _ in enumerate(config.get("research_directions", [])):
@@ -944,12 +946,60 @@ def translate_config(config: dict[str, Any], model: str | None) -> dict[str, Any
     return config
 
 
+def _publication_stats_for_codex(config: dict) -> tuple[dict[str, int], list[dict]]:
+    """Aggregate publication stats + notable papers, mirroring build.py logic.
+
+    Returns (stats_dict, notable_papers_list) for feeding into Codex prompt.
+    """
+    stats = {
+        "total": 0, "first": 0, "cofirst": 0, "corresponding": 0,
+        "co_corresponding": 0, "ccf_a": 0, "ccf_b": 0, "ccf_c": 0,
+        "jcr_q1": 0, "jcr_q2": 0, "preprints": 0,
+    }
+    notable: list[dict] = []
+    for bib_path in [PUBLISHED_BIB_PATH, PREPRINT_BIB_PATH]:
+        if not bib_path.exists():
+            continue
+        is_preprint = (bib_path == PREPRINT_BIB_PATH)
+        for entry in load_bib(bib_path).entries:
+            if is_preprint:
+                stats["preprints"] += 1
+                continue
+            stats["total"] += 1
+            role = clean_text(entry.get(META_FIELD_AUTHORROLE) or "")
+            if role == "first": stats["first"] += 1
+            elif role == "cofirst": stats["cofirst"] += 1
+            elif role == "corresponding": stats["corresponding"] += 1
+            elif role == "co-corresponding": stats["co_corresponding"] += 1
+            tier_upper = clean_text(entry.get(META_FIELD_VENUETIER) or "").upper()
+            if "CCF A" in tier_upper: stats["ccf_a"] += 1
+            elif "CCF B" in tier_upper: stats["ccf_b"] += 1
+            elif "CCF C" in tier_upper: stats["ccf_c"] += 1
+            if "Q1" in tier_upper: stats["jcr_q1"] += 1
+            elif "Q2" in tier_upper: stats["jcr_q2"] += 1
+            # 收集 notable: CCF A / JCR Q1 或 一作/通讯
+            if any(k in tier_upper for k in ("CCF A", "JCR Q1")) or role in ("first", "corresponding"):
+                notable.append({
+                    "title": clean_text(entry.get("title")),
+                    "venue": clean_text(entry.get("journal") or entry.get("booktitle") or ""),
+                    "year": clean_text(entry.get("year")),
+                    "role": role or "coauthor",
+                    "tier": clean_text(entry.get(META_FIELD_VENUETIER) or ""),
+                })
+    return stats, notable[:10]
+
+
 def auto_classify_research(config: dict[str, Any], model: str | None) -> dict[str, Any]:
+    pub_stats, notable_papers = _publication_stats_for_codex(config)
     prompt = {
         "task": (
             "Condense an academic homepage research profile from the given Chinese profile, "
             "keywords, papers, and abstracts. The style must be concise, formal, direct, "
             "frontier-aware, and credible. Avoid marketing slogans, exaggerated claims, and vague filler. "
+            "Also produce an achievement_summary paragraph that follows the bio_zh naturally and "
+            "summarizes the publication record using the provided publication_stats and notable_papers. "
+            "The achievement_summary should mention specific tier counts (e.g. 'CCF A 1 篇 / JCR Q1 N 篇') "
+            "and first / corresponding author counts where they apply, in 谦虚客观 tone, no marketing language. "
             "Return Chinese and English fields suitable for a personal academic homepage."
         ),
         "profile": {
@@ -957,6 +1007,8 @@ def auto_classify_research(config: dict[str, Any], model: str | None) -> dict[st
             "interests": [item.get("zh", "") for item in config.get("interests", [])],
             "papers": paper_context(),
         },
+        "publication_stats": pub_stats,
+        "notable_papers": notable_papers,
         "requirements": {
             "research_profile_zh": "One sentence, no more than 45 Chinese characters if possible.",
             "research_profile_en": "One concise sentence.",
@@ -965,6 +1017,11 @@ def auto_classify_research(config: dict[str, Any], model: str | None) -> dict[st
                 "Chinese labels should be 6 to 16 Chinese characters where possible, "
                 "with no colon and no sentence punctuation. English labels should be 2 to 6 words."
             ),
+            "achievement_summary_zh": (
+                "One sentence; 50-90 Chinese characters; factual; mention concrete counts "
+                "(e.g. 'CCF A 1 篇'); reads like a continuation of bio_zh, not a brag."
+            ),
+            "achievement_summary_en": "One sentence; 25-45 English words; factual; concrete counts; modest tone.",
         },
     }
     schema = {
@@ -993,15 +1050,24 @@ def auto_classify_research(config: dict[str, Any], model: str | None) -> dict[st
                     "additionalProperties": False,
                 },
             },
+            "achievement_summary": {
+                "type": "object",
+                "properties": {
+                    "zh": {"type": "string"},
+                    "en": {"type": "string"},
+                },
+                "required": ["zh", "en"],
+                "additionalProperties": False,
+            },
         },
-        "required": ["research_profile", "research_directions"],
+        "required": ["research_profile", "research_directions", "achievement_summary"],
         "additionalProperties": False,
     }
     try:
         result = call_codex(
             prompt,
             schema,
-            label="凝练研究方向",
+            label="凝练研究方向 + 成果摘要",
             model=model,
             output_name="codex_research_classification.json",
             timeout=240,
@@ -1012,7 +1078,11 @@ def auto_classify_research(config: dict[str, Any], model: str | None) -> dict[st
 
     config["research_profile"] = result["research_profile"]
     config["research_directions"] = result["research_directions"]
-    notice("已写入 research_profile 与 research_directions。", "ok")
+    config["achievement_summary"] = result["achievement_summary"]
+    notice(
+        "已写入 research_profile / research_directions / achievement_summary。",
+        "ok",
+    )
     return config
 
 

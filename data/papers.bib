@@ -26,16 +26,13 @@
 
 @article{lin2025mbrstcformer,
  abstract = {Emotion recognition is an essential prerequisite for realizing generalized BCI, which possesses an extensive range of applications in real life. EEG-based emotion recognition has become mainstream due to its real-time mapping of brain emotional activities, so a robust EEG-based emotion recognition model is of great interest. However, most existing deep learning emotion recognition methods treat the EEG signal as a whole feature extraction, which will destroy its local stimulation differences and fail to extract local features of the brain region well. Inspired by the cognitive mechanisms of the brain, we propose the multi-brain regions spatiotemporal collaboration transformer (MBRSTCfromer) framework for EEG-based emotion recognition. First, inspired by the prior knowledge, we propose the Multi-Brain Regions Collaboration Network. The EEG data are processed separately after being divided by brain regions, and stimulation scores are presented to quantify the stimulation produced by different brain regions and feedback on the stimulation degree to the MBRSTCfromer. Second, we propose a Cascade Pyramid Spatial Fusion Temporal Convolution Network for multi-brain regions EEG features fusion. Finally, we conduct comprehensive experiments on two mainstream emotion recognition datasets to validate the effectiveness of our proposed MBRSTCfromer framework. We achieved 98.63, 98.15, and 98.58 accuracy on the three dimensions (arousal, valence, and dominance) on the DEAP dataset; and 97.66, 97.07, and 97.97 on the DREAMER dataset.},
- acceptstatus = {published},
- authorrole = {coauthor},
+ authorrole = {cofirst},
  doi = {10.1007/s11571-025-10277-3},
  journal = {Cognitive Neurodynamics},
  number = {1},
  pages = {95},
  publisher = {Springer},
  title = {MBRSTCformer: a knowledge embedded local--global spatiotemporal transformer for emotion recognition},
- venueindex = {SCI-E, Scopus},
- venuetier = {JCR Q2},
  volume = {19},
  year = {2025}
 }
@@ -139,42 +136,33 @@
 
 @article{zhang2025ppg,
  abstract = {Photoplethysmography (PPG) sensors support both physiological monito- ring and biometric identification, making them key components in wearable sensing systems. However, real-world applications face challenges from signal nonstationarity and physiological variability. This work proposes a temporal-frequency manifold disentanglement framework to improve the robustness and accuracy of PPG-based biometric recognition. A closed-form continuous-time (CfC) liquid neural network captures temporal and spectral features from raw PPG signals, while an orthogonal manifold projection separates identity-related and physiological representations. To support physiological analysis, we construct and release a new multiphysiological PPG dataset with synchronized annotations for body mass index (BMI), blood pressure, blood glucose, and heart rate. Our method achieves 94.12% accuracy (F1-score: 0.93), outperforming eight state-of-the-art approaches. Further analysis reveals that BMI, blood glucose, and heart rate strongly influence identity features, highlighting the need for physiologically aware modeling in sensor systems. The proposed framework enhances PPG sensor signal interpretation, offering a scalable solution for real-time biometric sensing applications.},
- acceptstatus = {published},
  authorrole = {first},
  doi = {10.1109/lsens.2025.3590543},
  journal = {IEEE Sensors Letters},
  publisher = {IEEE},
  title = {PPG Sensor-Based Biometric Identification and Physiological Analysis via Temporal-Frequency Disentanglement with Liquid Neural Networks},
- venueindex = {SCI-E, Scopus},
- venuetier = {JCR Q3},
  year = {2025}
 }
 
 @article{zhang2025spore,
  abstract = {Remote Photoplethysmography (rPPG) leverages standard RGB cameras for contactless heart rate monitoring, overcoming the limitations of traditional PPG technology in telemedicine and offering a highly scalable, cost-effective health monitoring solution. Despite the advancements of current deep learning methods, which utilize spatiotemporal convolutional networks to capture subtle rPPG signals, these approaches often fail to fully exploit local similarities and global quasi-periodicity in both spatial and temporal dimensions. Additionally, non-physiological noise remains prevalent in the representation space, impeding the accurate estimation of physiological parameters across diverse representation domains. To address these measurement challenges, we propose Spore, a novel training strategy that integrates a Spatio-Temporal Cooperative Perception Network (STCPNet) and a Separable Network (SpNet). Spore effectively disentangles noise and extracts physiological signals through differential orthogonal disentanglement and parallel approximation techniques, ensuring precise measurement of heart rate. STCPNet meticulously aggregates semantic context across spatial and temporal dimensions, enhancing global-level and trend cross-correlations in a fine-grained manner. Meanwhile, the resource-efficient SpNet identifies and constructs target representation spaces by realigning the distribution of the source latent space, thereby adaptively capturing disentangled physiological signal patterns from the computationally intensive STCPNet. For validation, extensive experiments were conducted not only on multiple benchmark datasets but also through deployment testing in real-world scenarios. The results demonstrate that our proposed training strategy achieves state-of-the-art performance in heart rate measurement while maintaining resource efficiency. The code will be released at https://github.com/zacheryzhang/spore.},
- acceptstatus = {published},
- authorrole = {first},
+ authorrole = {corresponding},
  journal = {Neurocomputing},
  pages = {129717},
  publisher = {Elsevier},
  title = {Spore: Spatio-Temporal Collaborative Perception and representation space disentanglement for remote heart rate measurement},
- venueindex = {SCI-E, EI, Scopus, INSPEC},
- venuetier = {JCR Q1},
  volume = {630},
  year = {2025}
 }
 
 @inproceedings{zhang2026aaai,
  abstract = {The success of large language models (LLMs) in cognitive tasks prompts the question of whether their next-token prediction (NTP) paradigm can be adapted to model physiological signals from wearable devices. A key target for this adaptation is photoplethysmography (PPG), the most prevalent sensing modality in consumer wearables for non-invasive monitoring of diverse physiological conditions. Unlike in NLP, where NTP aligns with generative objectives, physiological signal analysis involves fundamentally different tasks, such as continuous parameter estimation (regression) and discrete state recognition (classification). This disparity creates a semantic mismatch between the pre-training paradigm and the downstream tasks. To bridge this gap, we propose PPGPT, the first foundation model that reformulates NTP into next-feature token prediction (NFTP), learning hierarchical feature transition probabilities to unify pre-training and downstream objectives. PPGPT features a novel dual-stream encoder that generates feature tokens by jointly modeling temporal dynamics and local-global morphological patterns. The model is developed using a two-stage training framework: it is first pre-trained on a large-scale mixed dataset of 1.6 billion data points and then validated on our newly released BioMTL benchmark, which includes data from 172 subjects over 285 days across seven different tasks. Extensive experiments show that PPGPT significantly outperforms competing methods, achieving a 16.5% improvement in F1-score and a 25.9% reduction in Mean Absolute Error (MAE). Furthermore, the model demonstrates robust few-shot learning capabilities.},
- acceptstatus = {published},
  authorrole = {first},
  booktitle = {AAAI Conference on Artificial Intelligence},
  doi = {10.1609/aaai.v40i34.40088},
  number = {9},
  pages = {9400--9408},
  title = {PPGPT: Transferring Next-Token Modeling from Language to PPG Signals},
- venueindex = {EI, Scopus},
- venuetier = {CCF A},
  volume = {39},
  year = {2026}
 }
@@ -208,5 +196,17 @@
  title = {Who's Adam? Benchmarking Hallucinations in Scientific Dialogue},
  venueindex = {EI, Scopus},
  venuetier = {CCF A},
+ year = {2026}
+}
+
+@article{zhao2026adaptive,
+ acceptstatus = {published},
+ author = {Zhao, Qingxin and Zhang, Zexing and Lu, Huimin},
+ authorrole = {cofirst},
+ doi = {10.1016/j.dsp.2026.106185},
+ journal = {Digital Signal Processing},
+ title = {Adaptive Physiological Subspace Reorganization and Hemodynamic Feature Encoding for Cuffless Blood Pressure Estimation from Photoplethysmography},
+ venueindex = {SCI-E, EI Compendex, Scopus},
+ venuetier = {JCR Q2},
  year = {2026}
 }

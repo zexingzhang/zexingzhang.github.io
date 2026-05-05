@@ -4,35 +4,34 @@ info:
     en: Zexing Zhang
   title:
     zh: 国防科技大学博士研究生
-    en: PhD Student, National University of Defense Technology
+    en: Ph.D. Candidate, National University of Defense Technology
   email: zhangzexing1999@163.com
   github: zhangzexing
   scholar: https://scholar.google.com/citations?user=u5F7xvYAAAAJ&hl=zh-CN
   location:
     zh: 中国 · 长沙
-    en: China · Changsha
+    en: Changsha, China
 bio:
   zh: |
     目前在国防科技大学攻读博士学位，研究聚焦基础模型驱动的智能感知与自主决策。
     围绕大语言模型、推理智能体和多模态生理信号，关注可验证评估、跨模态表示学习与真实场景泛化。
   en: |-
-    I am currently pursuing a PhD at the National University of Defense Technology, with research focused on foundation model-driven intelligent perception and autonomous decision-making.
-    My work centers on large language models, reasoning agents, and multimodal physiological signals, with an emphasis on verifiable evaluation, cross-modal representation learning, and generalization in real-world scenarios.
+    I am currently pursuing a Ph.D. at the National University of Defense Technology, with research focused on foundation-model-driven intelligent perception and autonomous decision-making.
+    My work centers on large language models, reasoning agents, and multimodal physiological signals, with interests in verifiable evaluation, cross-modal representation learning, and generalization in real-world scenarios.
 research_profile:
-  zh: 研究基础模型驱动的智能感知、可信评估与自主决策。
-  en: Research on foundation model-driven intelligent perception, trustworthy evaluation,
-    and autonomous decision-making.
+  zh: 研究基础模型驱动的智能感知与自主决策。
+  en: I study foundation-model-driven intelligent perception and autonomous decision-making.
 research_directions:
-- zh: 基础模型智能感知
-  en: Foundation Model-Driven Intelligent Perception
-- zh: 可信大模型评估
-  en: Trustworthy Evaluation of Large Models
-- zh: 多模态医学信号
-  en: Multimodal Medical Signals
-- zh: 生物特征与可穿戴
-  en: Biometrics and Wearables
-- zh: 智能体博弈决策
-  en: Agent-Based Game Decision-Making
+- zh: 大语言模型评估
+  en: Large Language Model Evaluation
+- zh: 推理智能体博弈
+  en: Reasoning Agent Games
+- zh: 多模态生理计算
+  en: Multimodal Physiological Computing
+- zh: 可穿戴智能感知
+  en: Wearable Intelligent Sensing
+- zh: 生物特征识别
+  en: Biometric Recognition
 interests:
 - zh: 大语言模型
   en: Large Language Models
@@ -50,21 +49,21 @@ education:
     en: National University of Defense Technology
   degree:
     zh: 博士研究生
-    en: PhD Student
+    en: Ph.D. Candidate
   time: 2026 - Present
 - school:
     zh: 长春工业大学
     en: Changchun University of Technology
   degree:
     zh: 工学硕士
-    en: Master of Engineering
+    en: M.Eng.
   time: 2023 - 2026
 - school:
     zh: 内蒙古师范大学
     en: Inner Mongolia Normal University
   degree:
     zh: 工学学士
-    en: Bachelor of Engineering
+    en: B.Eng.
   time: 2018 - 2022
 activities:
 - date: '2026.01'
@@ -77,30 +76,30 @@ activities:
 - date: '2024.12'
   title:
     zh: 参加 CCF 吉林省研究生学术交流研讨会并作主题汇报，获优秀论文奖。
-    en: Attended the CCF Jilin Graduate Academic Exchange Seminar and gave a keynote
-      presentation; received the Outstanding Paper Award.
+    en: Attended the CCF Jilin Graduate Academic Exchange Symposium and delivered
+      an invited presentation; received the Excellent Paper Award.
   role:
     zh: 中国 · 长春
-    en: China · Changchun
+    en: Changchun, China
 - date: '2024.10'
   title:
     zh: 参加中国计算机大会。
     en: Attended the China National Computer Congress.
   role:
     zh: 中国 · 杭州
-    en: China · Hangzhou
+    en: Hangzhou, China
 - date: '2023.12'
   title:
     zh: 在中国生物特征识别大会进行汇报交流，获最佳论文提名奖。
-    en: Presented and exchanged research at the Chinese Conference on Biometric Recognition;
+    en: Presented research at the Chinese Conference on Biometric Recognition and
       received a Best Paper Nomination.
   role:
     zh: 中国 · 徐州
-    en: China · Xuzhou
+    en: Xuzhou, China
 reviewing:
   role:
     zh: 审稿服务
-    en: Peer Review Service
+    en: Reviewing Service
   venues:
   - AAAI
   - ESWA
@@ -119,3 +118,8 @@ decorations:
     image: ''
   publications:
     image: ''
+achievement_summary:
+  zh: 目前论文17篇，含CCF A 2篇、JCR Q1 2篇；第一作者6篇、共同一作2篇，通讯及共同通讯各1篇。
+  en: I have published 17 papers, including 2 CCF A papers and 2 JCR Q1 papers; I
+    am first author on 6 papers, co-first author on 2, corresponding author on 1,
+    and co-corresponding author on 1.

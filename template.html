@@ -1,225 +1,1879 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ info.name.zh }} | {{ info.name.en }}</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <meta name="description" content="{{ info.name.en }} academic homepage">
+    <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="8" fill="%23236a73"/><text x="32" y="42" font-size="34" text-anchor="middle" fill="white" font-family="Arial">Z</text></svg>'>
+    <title>{{ info.name.en }} | Academic Homepage</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
-        body { font-family: 'Inter', 'Noto Sans SC', sans-serif; }
-        .lang-zh { display: none; }
-        body.en-mode .lang-en { display: none; }
-        body.en-mode .lang-zh { display: block; }
-    </style>
-    <script>
-        function toggleLang() {
-            document.body.classList.toggle('en-mode');
-            const btn = document.getElementById('lang-btn');
-            btn.innerText = document.body.classList.contains('en-mode') ? '中文' : 'English';
+        :root {
+            color-scheme: light;
+            --bg: #f7f9fb;
+            --surface: #ffffff;
+            --ink: #20252b;
+            --muted: #65727d;
+            --line: #dce5e8;
+            --accent: #236a73;
+            --accent-strong: #184d54;
+            --coral: #d65f45;
+            --olive: #708d38;
+            --violet: #6d597a;
+            --radius: 8px;
+            --shadow: 0 18px 52px rgba(32, 37, 43, 0.08);
         }
-    </script>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            position: relative;
+            margin: 0;
+            background:
+                repeating-linear-gradient(112deg, rgba(35, 106, 115, 0.032) 0 1px, transparent 1px 26px),
+                linear-gradient(135deg, #fbfaf6 0%, #f5faf9 44%, #fbf4ef 100%);
+            color: var(--ink);
+            font-family: Inter, "Segoe UI", "Noto Sans SC", "Microsoft YaHei", Arial, sans-serif;
+            line-height: 1.65;
+            letter-spacing: 0;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background:
+                linear-gradient(165deg, transparent 0 18%, rgba(255, 255, 255, 0.68) 18% 19%, transparent 19% 100%),
+                linear-gradient(24deg, transparent 0 58%, rgba(35, 106, 115, 0.055) 58% 59%, transparent 59% 100%);
+            pointer-events: none;
+        }
+
+        body.lang-zh [data-lang="en"],
+        body.lang-en [data-lang="zh"] {
+            display: none !important;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .scroll-progress {
+            position: fixed;
+            inset: 0 auto auto 0;
+            z-index: 20;
+            width: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--coral), var(--olive));
+        }
+
+        .page {
+            width: min(1120px, calc(100% - 40px));
+            margin: 0 auto;
+            padding: 14px 0 56px;
+        }
+
+        .topbar {
+            position: relative;
+            z-index: 15;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+            margin: 0 0 6px;
+            padding: 8px 0;
+        }
+
+        .corner-ledger {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            min-height: 36px;
+            padding: 7px 12px;
+            border: 1px solid rgba(220, 229, 232, 0.84);
+            border-radius: var(--radius);
+            background: rgba(255, 255, 255, 0.58);
+            color: var(--accent-strong);
+            font-size: 12px;
+            font-weight: 780;
+            letter-spacing: 0;
+            box-shadow: 0 10px 28px rgba(32, 37, 43, 0.05);
+            overflow: hidden;
+        }
+
+        .corner-ledger::after {
+            content: "";
+            position: absolute;
+            inset: auto 10px 5px 32px;
+            height: 1px;
+            background: linear-gradient(90deg, var(--coral), transparent);
+            transform-origin: left;
+            animation: ledgerSweep 3.6s ease-in-out infinite;
+        }
+
+        .ledger-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--coral);
+            box-shadow: 0 0 0 0 rgba(214, 95, 69, 0.34);
+            animation: dotPulse 2.4s ease-out infinite;
+        }
+
+        .ledger-copy {
+            display: grid;
+            gap: 2px;
+        }
+
+        .ledger-title {
+            line-height: 1;
+        }
+
+        .ledger-date {
+            color: var(--muted);
+            font-family: "Segoe UI", Arial, sans-serif;
+            font-size: 10px;
+            font-weight: 720;
+            line-height: 1;
+            white-space: nowrap;
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .nav a,
+        .lang-toggle,
+        .filter-button {
+            border: 1px solid transparent;
+            border-radius: var(--radius);
+            background: transparent;
+            color: inherit;
+            font: inherit;
+            cursor: pointer;
+            transition: background 180ms ease, border-color 180ms ease, color 180ms ease, transform 180ms ease;
+        }
+
+        .nav a,
+        .lang-toggle {
+            position: relative;
+            padding: 8px 10px;
+        }
+
+        .nav a::after {
+            content: "";
+            position: absolute;
+            left: 10px;
+            right: 10px;
+            bottom: 4px;
+            height: 2px;
+            border-radius: 99px;
+            background: var(--coral);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 220ms ease;
+        }
+
+        .nav a:hover,
+        .lang-toggle:hover,
+        .filter-button:hover {
+            border-color: var(--line);
+            background: var(--surface);
+            color: var(--accent-strong);
+        }
+
+        .nav a:hover::after {
+            transform: scaleX(1);
+        }
+
+        .hero {
+            position: relative;
+            display: grid;
+            grid-template-columns: minmax(0, 0.98fr) 54px minmax(340px, 1.02fr);
+            gap: 28px;
+            align-items: start;
+            min-height: auto;
+            padding: 10px 0 42px;
+        }
+
+        .hero::before,
+        .hero::after {
+            content: "";
+            position: absolute;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .hero::before {
+            left: -8%;
+            top: 20%;
+            width: 46%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(214, 95, 69, 0.58), transparent);
+            transform: rotate(-8deg);
+            animation: railTravel 7.6s ease-in-out infinite;
+        }
+
+        .hero::after {
+            right: 2%;
+            bottom: 8%;
+            width: 34%;
+            height: 54px;
+            border-top: 1px solid rgba(35, 106, 115, 0.14);
+            border-bottom: 1px solid rgba(35, 106, 115, 0.10);
+            transform: skewY(-8deg);
+            animation: paperDrift 8.2s ease-in-out infinite;
+        }
+
+        .hero-copy {
+            position: relative;
+            z-index: 2;
+            padding: 12px 0 20px;
+        }
+
+        .hero-ambient {
+            position: absolute;
+            left: 330px;
+            top: 20px;
+            z-index: -1;
+            display: grid;
+            grid-template-columns: repeat(3, 44px);
+            gap: 10px;
+            pointer-events: none;
+            opacity: 0.62;
+        }
+
+        .ambient-tick {
+            height: 8px;
+            border-radius: 99px;
+            background: rgba(35, 106, 115, 0.16);
+            transform-origin: left;
+            animation: tickStretch 4.4s ease-in-out infinite;
+        }
+
+        .ambient-tick:nth-child(2) {
+            background: rgba(214, 95, 69, 0.20);
+            animation-delay: -1.2s;
+        }
+
+        .ambient-tick:nth-child(3) {
+            background: rgba(112, 141, 56, 0.18);
+            animation-delay: -2.2s;
+        }
+
+        .eyebrow {
+            position: absolute;
+            left: 0;
+            top: -16px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin: 0;
+            color: var(--accent-strong);
+            font-size: 12px;
+            font-weight: 760;
+            text-transform: uppercase;
+        }
+
+        .eyebrow::before {
+            content: "";
+            width: 24px;
+            height: 2px;
+            background: var(--coral);
+        }
+
+        h1 {
+            max-width: 620px;
+            margin: 0;
+            font-size: clamp(32px, 4.6vw, 52px);
+            font-weight: 840;
+            line-height: 1.04;
+            letter-spacing: 0;
+        }
+
+        .byline {
+            margin: 12px 0 0;
+            color: var(--muted);
+            font-size: 15px;
+            line-height: 1.55;
+        }
+
+        .byline strong {
+            color: var(--accent-strong);
+            font-weight: 820;
+        }
+
+        .hero-title {
+            max-width: 620px;
+            margin: 18px 0 0;
+            color: var(--muted);
+            font-size: 16px;
+            line-height: 1.62;
+        }
+
+        .hero-brief {
+            margin-top: 18px;
+            color: #33404a;
+            font-size: 15px;
+            line-height: 1.72;
+        }
+
+        .hero-focus {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 18px 0 0;
+        }
+
+        .hero-timeline {
+            display: grid;
+            gap: 9px;
+            margin: 18px 0 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .hero-timeline li {
+            display: grid;
+            grid-template-columns: 88px minmax(0, 1fr);
+            gap: 10px;
+            align-items: baseline;
+            padding-top: 9px;
+            border-top: 1px solid rgba(220, 229, 232, 0.80);
+        }
+
+        .hero-timeline li:first-child {
+            border-top: 0;
+            padding-top: 0;
+        }
+
+        .hero-timeline time {
+            color: var(--coral);
+            font-size: 12px;
+            font-weight: 780;
+        }
+
+        .hero-timeline strong {
+            color: var(--ink);
+            font-size: 14px;
+        }
+
+        .hero-timeline span {
+            display: block;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .interest,
+        .mini-chip {
+            display: inline-flex;
+            align-items: center;
+            min-height: 30px;
+            padding: 6px 9px;
+            border: 1px solid rgba(35, 106, 115, 0.18);
+            border-radius: var(--radius);
+            background: rgba(255, 255, 255, 0.72);
+            color: var(--accent-strong);
+            font-size: 13px;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 9px;
+            margin-top: 20px;
+        }
+
+        .reading-rail {
+            position: relative;
+            z-index: 2;
+            min-height: 430px;
+            align-self: stretch;
+        }
+
+        .reading-rail::before {
+            content: "";
+            position: absolute;
+            top: 92px;
+            bottom: 78px;
+            left: 50%;
+            width: 1px;
+            background: linear-gradient(180deg, transparent, rgba(35, 106, 115, 0.24), transparent);
+        }
+
+        .reading-arrow {
+            position: sticky;
+            top: 120px;
+            display: grid;
+            width: 44px;
+            height: 44px;
+            place-items: center;
+            margin: 122px auto 0;
+            border: 1px solid rgba(220, 229, 232, 0.9);
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.72);
+            color: var(--accent-strong);
+            box-shadow: 0 12px 28px rgba(32, 37, 43, 0.06);
+            animation: arrowNudge 2.8s ease-in-out infinite;
+        }
+
+        .reading-arrow svg {
+            width: 19px;
+            height: 19px;
+        }
+
+        .icon-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            min-height: 38px;
+            padding: 8px 10px;
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            background: rgba(255, 255, 255, 0.76);
+            color: var(--ink);
+            font-size: 13px;
+            font-weight: 700;
+            transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease, color 180ms ease;
+        }
+
+        .icon-link svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .icon-link:hover {
+            transform: translateY(-2px);
+            border-color: rgba(35, 106, 115, 0.34);
+            color: var(--accent-strong);
+            box-shadow: 0 14px 36px rgba(35, 106, 115, 0.11);
+        }
+
+        .research-panel {
+            position: relative;
+            overflow: visible;
+            isolation: isolate;
+            z-index: 6;
+            margin-top: 18px;
+            padding: 22px;
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            background: rgba(255, 255, 255, 0.84);
+            box-shadow: var(--shadow);
+        }
+
+        .research-panel,
+        .activity-card,
+        .paper-card {
+            backdrop-filter: blur(10px);
+        }
+
+        .section-head,
+        .paper-stack,
+        .activity-grid {
+            position: relative;
+            z-index: 2;
+        }
+
+        .research-panel::before,
+        .section::before {
+            content: "";
+            position: absolute;
+            z-index: 1;
+            inset: 12px auto auto -12px;
+            width: 64px;
+            height: 64px;
+            border-top: 4px solid var(--coral);
+            border-left: 4px solid var(--coral);
+            pointer-events: none;
+        }
+
+        .research-panel::after {
+            content: "";
+            position: absolute;
+            z-index: 0;
+            inset: 0;
+            border-radius: inherit;
+            background: linear-gradient(110deg, transparent 0 42%, rgba(255, 255, 255, 0.56) 50%, transparent 58% 100%);
+            transform: translateX(-130%);
+            clip-path: inset(0 round var(--radius));
+            pointer-events: none;
+            animation: panelGlide 6.8s ease-in-out infinite;
+        }
+
+        .panel-title {
+            position: relative;
+            z-index: 3;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .panel-title h2 {
+            margin: 0;
+            font-size: 20px;
+        }
+
+        .snapshot-grid,
+        .recent-list,
+        .panel-subtitle {
+            position: relative;
+            z-index: 2;
+        }
+
+        .panel-subtitle {
+            margin: -8px 0 16px;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .snapshot-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        .snapshot-item {
+            position: relative;
+            overflow: hidden;
+            padding: 13px;
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            background: rgba(247, 249, 251, 0.78);
+            transition: transform 220ms ease, border-color 220ms ease, background 220ms ease;
+        }
+
+        .snapshot-item::before {
+            content: "";
+            position: absolute;
+            left: 13px;
+            right: 13px;
+            bottom: 9px;
+            height: 2px;
+            border-radius: 99px;
+            background: linear-gradient(90deg, var(--accent), transparent);
+            opacity: 0.34;
+            transform: scaleX(0.34);
+            transform-origin: left;
+            transition: transform 260ms ease;
+        }
+
+        .snapshot-item:hover {
+            transform: translateY(-3px);
+            border-color: rgba(35, 106, 115, 0.25);
+            background: rgba(255, 255, 255, 0.86);
+        }
+
+        .snapshot-item:hover::before {
+            transform: scaleX(1);
+        }
+
+        .snapshot-item strong {
+            display: block;
+            color: var(--accent-strong);
+            font-size: 24px;
+            line-height: 1;
+        }
+
+        .snapshot-item span {
+            display: block;
+            margin-top: 7px;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .recent-list {
+            display: grid;
+            gap: 9px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .recent-list li {
+            position: relative;
+            padding-top: 9px;
+            border-top: 1px solid rgba(220, 229, 232, 0.82);
+            transition: transform 200ms ease, padding-left 200ms ease;
+        }
+
+        .recent-list li:first-child {
+            padding-top: 0;
+            border-top: 0;
+        }
+
+        .recent-list li:hover {
+            padding-left: 6px;
+            transform: translateX(2px);
+        }
+
+        .recent-title {
+            display: -webkit-box;
+            overflow: hidden;
+            color: #2d3740;
+            font-size: 13px;
+            font-weight: 740;
+            line-height: 1.45;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+        }
+
+        .recent-meta {
+            margin-top: 2px;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .section {
+            position: relative;
+            margin-top: 68px;
+            padding-top: 2px;
+        }
+
+        .section::after {
+            content: "";
+            position: absolute;
+            z-index: 0;
+            top: 36px;
+            left: 118px;
+            width: min(180px, 28vw);
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(35, 106, 115, 0.32), rgba(214, 95, 69, 0.42), transparent);
+            transform-origin: left;
+            animation: sectionTrace 5.8s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        .section::before {
+            inset: -6px auto auto -14px;
+            width: 42px;
+            height: 42px;
+            border-width: 3px;
+            opacity: 0.42;
+        }
+
+        .section-head {
+            position: relative;
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+            gap: 22px;
+            margin-bottom: 20px;
+        }
+
+        .section-head::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -10px;
+            width: 116px;
+            height: 2px;
+            border-radius: 99px;
+            background: linear-gradient(90deg, var(--coral), rgba(35, 106, 115, 0.45), transparent);
+            transform-origin: left;
+            animation: tickStretch 4.6s ease-in-out infinite;
+        }
+
+        .section-head h2 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 0;
+            font-size: 27px;
+            line-height: 1.16;
+            letter-spacing: 0;
+        }
+
+        .section-kicker {
+            margin: 7px 0 0;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .auto-note {
+            display: inline-flex;
+            align-items: center;
+            min-height: 20px;
+            margin-left: 8px;
+            padding: 2px 7px;
+            border: 1px solid rgba(35, 106, 115, 0.18);
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.68);
+            color: var(--accent-strong);
+            font-size: 11px;
+            font-weight: 760;
+            line-height: 1;
+            vertical-align: middle;
+        }
+
+        .inline-decor {
+            display: inline-block;
+            flex: 0 0 auto;
+            width: auto;
+            height: var(--inline-decor-height, 72px);
+            max-width: 118px;
+            object-fit: contain;
+            pointer-events: none;
+            opacity: 0.88;
+            filter: drop-shadow(0 14px 18px rgba(32, 37, 43, 0.13));
+            transform: rotate(var(--decor-rotate, 0deg));
+            animation: decorFloat 6.4s ease-in-out infinite;
+        }
+
+        .inline-decor[hidden] {
+            display: none;
+        }
+
+        .publications-inline {
+            --decor-rotate: -3deg;
+            --inline-decor-height: 76px;
+        }
+
+        .preprints-inline {
+            --decor-rotate: 5deg;
+            --inline-decor-height: 72px;
+        }
+
+        .activities-inline {
+            --decor-rotate: -8deg;
+            --inline-decor-height: 72px;
+        }
+
+        .hero-focus .auto-note {
+            margin-left: 0;
+            color: var(--muted);
+            font-weight: 700;
+        }
+
+        .section-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1.35fr) minmax(260px, 0.65fr);
+            gap: 32px;
+            align-items: start;
+        }
+
+        .bio-text {
+            margin: 0;
+            color: #33404a;
+            font-size: 16px;
+            text-align: justify;
+        }
+
+        .timeline {
+            display: grid;
+            gap: 16px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 22px;
+        }
+
+        .timeline-item::before {
+            content: "";
+            position: absolute;
+            inset: 7px auto 0 4px;
+            width: 2px;
+            background: var(--line);
+        }
+
+        .timeline-item::after {
+            content: "";
+            position: absolute;
+            top: 7px;
+            left: 0;
+            width: 10px;
+            height: 10px;
+            border: 2px solid var(--surface);
+            border-radius: 50%;
+            background: var(--olive);
+            box-shadow: 0 0 0 1px rgba(112, 141, 56, 0.28);
+        }
+
+        .timeline-item:last-child::before {
+            display: none;
+        }
+
+        .timeline-school {
+            font-weight: 780;
+            line-height: 1.3;
+        }
+
+        .timeline-meta {
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .activity-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .service-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.88), rgba(247, 250, 249, 0.84));
+        }
+
+        .activity-card,
+        .paper-card {
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            background: rgba(255, 255, 255, 0.82);
+            transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease, background 220ms ease;
+        }
+
+        .activity-card {
+            padding: 16px;
+        }
+
+        .activity-card:hover,
+        .paper-card:hover {
+            transform: translateY(-4px) rotate(-0.15deg);
+            border-color: rgba(35, 106, 115, 0.30);
+            box-shadow: 0 18px 44px rgba(32, 37, 43, 0.09);
+            background: rgba(255, 255, 255, 0.92);
+        }
+
+        .activity-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 10px;
+            color: var(--muted);
+            font-size: 12px;
+            font-weight: 720;
+        }
+
+        .activity-date {
+            color: var(--coral);
+        }
+
+        .activity-title {
+            margin: 0;
+            color: #2c353d;
+            font-size: 15px;
+            line-height: 1.55;
+        }
+
+        .paper-stack {
+            display: grid;
+            gap: 14px;
+        }
+
+        .paper-card {
+            position: relative;
+            overflow: hidden;
+            padding: 19px 20px;
+        }
+
+        .paper-card::before {
+            content: "";
+            position: absolute;
+            inset: 0 auto 0 0;
+            width: 4px;
+            background: var(--accent);
+            opacity: 0.78;
+            transition: width 220ms ease, opacity 220ms ease;
+        }
+
+        .paper-card:hover::before {
+            width: 7px;
+            opacity: 1;
+        }
+
+        .paper-card.preprint::before {
+            background: var(--violet);
+        }
+
+        .paper-top {
+            display: flex;
+            justify-content: space-between;
+            gap: 18px;
+            align-items: flex-start;
+        }
+
+        .paper-title {
+            max-width: 850px;
+            margin: 0;
+            font-size: 17px;
+            font-weight: 780;
+            line-height: 1.42;
+        }
+
+        .paper-authors {
+            margin: 9px 0 0;
+            color: #4c5964;
+            font-size: 14px;
+        }
+
+        .paper-authors strong {
+            color: var(--accent-strong);
+            font-weight: 820;
+        }
+
+        .paper-venue {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+            align-items: center;
+            margin-top: 9px;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .paper-abstract {
+            margin-top: 14px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(220, 229, 232, 0.76);
+            color: #46535e;
+            font-size: 13px;
+            line-height: 1.68;
+        }
+
+        .paper-abstract summary {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            color: var(--accent-strong);
+            font-size: 12px;
+            font-weight: 780;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .paper-abstract summary::before {
+            content: "";
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--coral);
+        }
+
+        .paper-abstract p {
+            margin: 9px 0 0;
+        }
+
+        .tag-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            gap: 6px;
+            min-width: 112px;
+        }
+
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            min-height: 24px;
+            padding: 3px 8px;
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            background: #f7f9fa;
+            color: #55636e;
+            font-size: 11px;
+            font-weight: 820;
+            line-height: 1;
+            text-transform: uppercase;
+        }
+
+        .tag.hot {
+            border-color: rgba(216, 95, 69, 0.24);
+            background: rgba(216, 95, 69, 0.09);
+            color: #9a3e2b;
+        }
+
+        .tag.cool {
+            border-color: rgba(35, 106, 115, 0.20);
+            background: rgba(35, 106, 115, 0.08);
+            color: var(--accent-strong);
+        }
+
+        .tag.soft {
+            border-color: rgba(109, 89, 122, 0.20);
+            background: rgba(109, 89, 122, 0.08);
+            color: var(--violet);
+        }
+
+        .tag.warm {
+            border-color: rgba(196, 144, 41, 0.30);
+            background: rgba(196, 144, 41, 0.12);
+            color: #8a6308;
+        }
+
+        .tag.role {
+            border-color: rgba(35, 106, 115, 0.28);
+            background: rgba(35, 106, 115, 0.10);
+            color: var(--accent-strong);
+            font-weight: 600;
+            margin-left: 6px;
+        }
+
+        .paper-authors-synth {
+            color: var(--text);
+        }
+
+        .filter-group {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+
+        .filter-button {
+            padding: 7px 10px;
+            border-color: var(--line);
+            background: rgba(255, 255, 255, 0.62);
+            color: var(--muted);
+            font-size: 13px;
+            font-weight: 720;
+        }
+
+        .filter-button.active {
+            border-color: rgba(35, 106, 115, 0.34);
+            background: var(--accent);
+            color: #fff;
+        }
+
+        .paper-card.is-hidden {
+            display: none;
+        }
+
+        .decor {
+            position: absolute;
+            z-index: 40;
+            display: block;
+            width: var(--decor-size, 84px);
+            max-width: 26vw;
+            max-height: var(--decor-max-height, none);
+            height: auto;
+            pointer-events: none;
+            opacity: var(--decor-opacity, 0.62);
+            filter: drop-shadow(0 18px 24px rgba(32, 37, 43, 0.16));
+            transform: translate3d(var(--mx, 0), var(--my, 0), 0) rotate(var(--decor-rotate, 0deg));
+            transition: transform 280ms ease-out;
+            animation: decorFloat 6.4s ease-in-out infinite;
+        }
+
+        .gallery-decor[hidden] {
+            display: none;
+        }
+
+        .decor.hero-decor {
+            --decor-size: 116px;
+            --decor-opacity: 0.94;
+            --decor-rotate: -5deg;
+            right: 2px;
+            top: 28px;
+            bottom: auto;
+        }
+
+        .decor.bio-decor {
+            --decor-size: 74px;
+            --decor-opacity: 0.48;
+            --decor-rotate: 6deg;
+            right: 2px;
+            top: -26px;
+            animation-delay: -1.2s;
+        }
+
+        .decor.activities-decor {
+            --decor-size: 76px;
+            --decor-max-height: 92px;
+            --decor-opacity: 0.86;
+            --decor-rotate: -8deg;
+            right: auto;
+            left: 278px;
+            top: -24px;
+            bottom: auto;
+            animation-delay: -2.1s;
+        }
+
+        .decor.preprints-decor {
+            --decor-size: 78px;
+            --decor-max-height: 92px;
+            --decor-opacity: 0.84;
+            --decor-rotate: 5deg;
+            left: auto;
+            right: auto;
+            left: 316px;
+            top: -24px;
+            animation-delay: -3.2s;
+        }
+
+        .decor.publications-decor {
+            --decor-size: 76px;
+            --decor-max-height: 92px;
+            --decor-opacity: 0.86;
+            --decor-rotate: -3deg;
+            right: auto;
+            left: 150px;
+            top: -24px;
+            animation-delay: -4.1s;
+        }
+
+        @keyframes ledgerSweep {
+            0%, 100% { transform: scaleX(0.28); opacity: 0.45; }
+            50% { transform: scaleX(1); opacity: 0.9; }
+        }
+
+        @keyframes dotPulse {
+            0% { box-shadow: 0 0 0 0 rgba(214, 95, 69, 0.32); }
+            70% { box-shadow: 0 0 0 9px rgba(214, 95, 69, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(214, 95, 69, 0); }
+        }
+
+        @keyframes railTravel {
+            0%, 100% { transform: translateX(-12px) rotate(-8deg); opacity: 0.35; }
+            50% { transform: translateX(36px) rotate(-8deg); opacity: 0.78; }
+        }
+
+        @keyframes paperDrift {
+            0%, 100% { transform: translateY(0) skewY(-8deg); opacity: 0.46; }
+            50% { transform: translateY(-10px) skewY(-8deg); opacity: 0.72; }
+        }
+
+        @keyframes tickStretch {
+            0%, 100% { transform: scaleX(0.4); opacity: 0.35; }
+            50% { transform: scaleX(1); opacity: 0.85; }
+        }
+
+        @keyframes sectionTrace {
+            0%, 100% { transform: scaleX(0.36); opacity: 0.28; }
+            48% { transform: scaleX(1); opacity: 0.72; }
+        }
+
+        @keyframes panelGlide {
+            0%, 18% { transform: translateX(-130%); opacity: 0; }
+            34% { opacity: 0.8; }
+            54%, 100% { transform: translateX(130%); opacity: 0; }
+        }
+
+        @keyframes decorFloat {
+            0%, 100% { translate: 0 0; }
+            50% { translate: 0 -9px; }
+        }
+
+        @keyframes arrowNudge {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(5px); }
+        }
+
+        .footer {
+            margin-top: 84px;
+            padding-top: 22px;
+            border-top: 1px solid var(--line);
+            color: var(--muted);
+            font-size: 13px;
+            text-align: center;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(18px);
+            transition: opacity 560ms ease, transform 560ms ease;
+        }
+
+        .reveal.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                scroll-behavior: auto !important;
+                animation: none !important;
+                transition: none !important;
+            }
+
+            .reveal {
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .page {
+                width: min(100% - 28px, 720px);
+                padding-top: 10px;
+            }
+
+            .topbar {
+                margin-bottom: 12px;
+            }
+
+            .corner-ledger {
+                max-width: 210px;
+            }
+
+            .nav a {
+                display: none;
+            }
+
+            .hero,
+            .section-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .hero {
+                gap: 24px;
+                min-height: auto;
+                padding-top: 4px;
+            }
+
+            .reading-rail {
+                display: none;
+            }
+
+            .hero-ambient {
+                left: 0;
+                top: -2px;
+            }
+
+            .activity-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 620px) {
+            .page {
+                width: calc(100% - 24px);
+            }
+
+            h1 {
+                font-size: 38px;
+            }
+
+            .hero-title {
+                font-size: 16px;
+            }
+
+            .hero-copy {
+                padding-top: 4px;
+            }
+
+            .hero-timeline li {
+                grid-template-columns: 1fr;
+                gap: 2px;
+            }
+
+            .snapshot-grid,
+            .activity-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-head,
+            .paper-top {
+                display: grid;
+                justify-content: stretch;
+            }
+
+            .filter-group,
+            .tag-row {
+                justify-content: flex-start;
+            }
+
+            .decor {
+                max-width: 72px;
+                opacity: 0.42;
+            }
+
+            .decor.hero-decor {
+                --decor-size: 78px;
+                right: 4px;
+                top: 28px;
+                bottom: auto;
+            }
+
+            .decor.publications-decor,
+            .decor.preprints-decor,
+            .decor.activities-decor {
+                --decor-size: 66px;
+                --decor-max-height: 76px;
+                right: 6px;
+                left: auto;
+                top: -30px;
+                bottom: auto;
+            }
+
+            .inline-decor {
+                height: 58px;
+                max-width: 86px;
+            }
+        }
+    </style>
 </head>
-<body class="bg-gray-50 text-gray-800 transition-colors duration-300">
+<body class="lang-zh">
+    {% macro decoration(slot, fallback) -%}
+        {% set item = decorations.get(slot, {}) %}
+        {% if item.image %}
+        <img class="decor {{ slot }}-decor" src="{{ item.image }}" alt="" aria-hidden="true" loading="lazy">
+        {% else %}
+        <img class="decor gallery-decor {{ slot }}-decor" data-slot="{{ slot }}" alt="" aria-hidden="true" loading="lazy" hidden>
+        {% endif %}
+    {%- endmacro %}
 
-    <div class="max-w-5xl mx-auto px-6 py-12">
-        
-        <!-- Header -->
-        <div class="flex justify-between items-center mb-12">
-            <div>
-                <h1 class="text-3xl font-bold text-gray-900">
-                    <span class="lang-zh">{{ info.name.zh }}</span>
-                    <span class="lang-en">{{ info.name.en }}</span>
-                </h1>
-                <p class="text-gray-500 mt-1">
-                    <span class="lang-zh">{{ info.location.zh }}</span>
-                    <span class="lang-en">{{ info.location.en }}</span>
-                </p>
-            </div>
-            <button id="lang-btn" onclick="toggleLang()" class="px-4 py-2 border border-gray-300 rounded hover:bg-white transition text-sm">
-                简体中文
-            </button>
-        </div>
+    {% macro inline_decoration(slot) -%}
+        {% set item = decorations.get(slot, {}) %}
+        {% if item.image %}
+        <img class="inline-decor {{ slot }}-inline" src="{{ item.image }}" alt="" aria-hidden="true" loading="lazy">
+        {% else %}
+        <img class="inline-decor gallery-decor {{ slot }}-inline" data-slot="{{ slot }}" alt="" aria-hidden="true" loading="lazy" hidden>
+        {% endif %}
+    {%- endmacro %}
 
-        <!-- 布局第一部分：简介 (左) + 教育 (右) -->
-        <div class="grid md:grid-cols-3 gap-8 mb-12">
-            <!-- Left: Bio (占2/3宽度) -->
-            <div class="md:col-span-2">
-                <h2 class="text-xl font-bold mb-4 border-b pb-2">
-                    <span class="lang-zh">个人简介</span>
-                    <span class="lang-en">Biography</span>
-                </h2>
-                <div class="prose text-gray-600 leading-relaxed mb-4 text-justify">
-                    <div class="lang-zh">{{ bio.zh }}</div>
-                    <div class="lang-en">{{ bio.en }}</div>
-                </div>
-                
-                <div class="bg-blue-50 border-l-4 border-blue-500 p-4 text-sm text-blue-900 rounded-r">
-                    <span class="lang-zh font-semibold">
-                        🏆 自动总结：截至目前，已发表论文 {{ stats.total }} 篇。<br>
-                        其中包含 Q1/Q2 分区 SCI 检索论文 {{ stats.jcr_q1 + stats.jcr_q2 }} 篇，以及CCF A类推荐会议。
+    <div class="scroll-progress" id="scroll-progress"></div>
+
+    <div class="page">
+        <header class="topbar">
+            <div class="corner-ledger" aria-label="Academic profile">
+                <span class="ledger-dot"></span>
+                <span class="ledger-copy">
+                    <span class="ledger-title">
+                        <span data-lang="zh">学术主页</span>
+                        <span data-lang="en">Academic Profile</span>
                     </span>
-                    <span class="lang-en font-semibold">
-                        🏆 Auto-summary: {{ stats.total }} papers published to date. <br>
-                        This includes {{ stats.jcr_q1 + stats.jcr_q2 }} SCI-indexed papers (Q1/Q2) and CCF-A recommended conference papers.
+                    <span class="ledger-date">
+                        <span data-lang="zh">更新 {{ build_date.zh }}</span>
+                        <span data-lang="en">Updated {{ build_date.en }}</span>
                     </span>
-                </div>
+                </span>
             </div>
+            <nav class="nav" aria-label="Primary navigation">
+                <a href="#top">
+                    <span data-lang="zh">研究方向</span>
+                    <span data-lang="en">Overview</span>
+                </a>
+                <a href="#publications">
+                    <span data-lang="zh">发表论文</span>
+                    <span data-lang="en">Publications</span>
+                </a>
+                {% if preprints %}
+                <a href="#preprints">
+                    <span data-lang="zh">预印本</span>
+                    <span data-lang="en">Preprints</span>
+                </a>
+                {% endif %}
+                <a href="#activities">
+                    <span data-lang="zh">学术服务</span>
+                    <span data-lang="en">Service</span>
+                </a>
+                <button class="lang-toggle" id="lang-toggle" type="button" aria-label="Switch language">EN</button>
+            </nav>
+        </header>
 
-            <!-- Right: Education (占1/3宽度) -->
-            <div class="bg-white p-6 rounded-lg shadow-sm h-fit border border-gray-100">
-                <h3 class="font-bold text-gray-900 mb-4 flex items-center gap-2">
-                    <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path></svg>
-                    <span class="lang-zh">教育经历</span>
-                    <span class="lang-en">Education</span>
-                </h3>
-                <ul class="space-y-5">
-                    {% for edu in edu %}
-                    <li class="relative pl-4 border-l-2 border-gray-200">
-                        <!-- 小圆点装饰 -->
-                        <div class="absolute -left-[5px] top-1.5 w-2 h-2 rounded-full bg-gray-300"></div>
-                        <div class="font-bold text-gray-800 text-sm">
-                            <span class="lang-zh">{{ edu.school.zh }}</span>
-                            <span class="lang-en">{{ edu.school.en }}</span>
+        <main id="top">
+            <section class="hero">
+                {{ decoration("hero", "agent") }}
+                <div class="hero-copy reveal">
+                    <div class="hero-ambient" aria-hidden="true">
+                        <span class="ambient-tick"></span>
+                        <span class="ambient-tick"></span>
+                        <span class="ambient-tick"></span>
+                    </div>
+                    <p class="eyebrow">
+                        <span data-lang="zh">Research Focus</span>
+                        <span data-lang="en">Academic Profile</span>
+                    </p>
+                    <h1>
+                        <span data-lang="zh">研究方向</span>
+                        <span data-lang="en">Research Overview</span>
+                    </h1>
+                    <p class="byline">
+                        <strong>
+                            <span data-lang="zh">{{ info.name.zh }}</span>
+                            <span data-lang="en">{{ info.name.en }}</span>
+                        </strong>
+                        <span> · </span>
+                        <span data-lang="zh">{{ info.title.zh }}</span>
+                        <span data-lang="en">{{ info.title.en }}</span>
+                    </p>
+                    <p class="hero-title">
+                        <span data-lang="zh">{{ research_profile.zh or "面向可验证智能与可信感知，研究语言模型、智能体决策和多模态生理信号建模。" }}</span>
+                        <span data-lang="en">{{ research_profile.en or "Research on verifiable intelligence, trustworthy perception, language models, agent decision-making, and multimodal physiological signal modeling." }}</span>
+                    </p>
+                    <p class="hero-brief">
+                        <span data-lang="zh">{{ bio.zh | linebreaks }}</span>
+                        <span data-lang="en">{{ bio.en | linebreaks }}</span>
+                    </p>
+                    {% if research_directions %}
+                    <div class="hero-focus">
+                        {% for item in research_directions[:4] %}
+                        <span class="interest">
+                            <span data-lang="zh">{{ item.zh }}</span>
+                            <span data-lang="en">{{ item.en }}</span>
+                        </span>
+                        {% endfor %}
+                        <span class="auto-note">
+                            <span data-lang="zh">自动整理</span>
+                            <span data-lang="en">Auto-organized</span>
+                        </span>
+                    </div>
+                    {% endif %}
+                    <ul class="hero-timeline" aria-label="Education">
+                        {% for item in education[:1] %}
+                        <li>
+                            <time>{{ item.time }}</time>
+                            <div>
+                                <strong>
+                                    <span data-lang="zh">{{ item.school.zh }}</span>
+                                    <span data-lang="en">{{ item.school.en }}</span>
+                                </strong>
+                                <span>
+                                    <span data-lang="zh">{{ item.degree.zh }}</span>
+                                    <span data-lang="en">{{ item.degree.en }}</span>
+                                </span>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    <div class="hero-actions">
+                        {% if info.scholar %}
+                        <a class="icon-link" href="{{ info.scholar }}" target="_blank" rel="noreferrer" aria-label="Google Scholar">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="M6 11v4c2 2 10 2 12 0v-4"/><path d="M21 8v7"/></svg>
+                            Scholar
+                        </a>
+                        {% endif %}
+                        {% if info.github %}
+                        <a class="icon-link" href="https://github.com/{{ info.github }}" target="_blank" rel="noreferrer" aria-label="GitHub">
+                            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.18-3.37-1.18-.45-1.16-1.1-1.47-1.1-1.47-.9-.62.07-.6.07-.6 1 .07 1.53 1.04 1.53 1.04.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.08.63-1.33-2.22-.25-4.55-1.11-4.55-4.95 0-1.09.39-1.99 1.03-2.69-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.03A9.5 9.5 0 0 1 12 6c.85 0 1.7.11 2.5.34 1.9-1.3 2.74-1.03 2.74-1.03.55 1.38.2 2.4.1 2.65.64.7 1.03 1.6 1.03 2.69 0 3.85-2.34 4.69-4.57 4.94.36.31.68.92.68 1.86V21c0 .26.18.58.69.48A10 10 0 0 0 12 2Z"/></svg>
+                            GitHub
+                        </a>
+                        {% endif %}
+                        <a class="icon-link" href="mailto:{{ info.email }}" aria-label="Email">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><path d="M4 6h16v12H4z"/><path d="m4 7 8 6 8-6"/></svg>
+                            Email
+                        </a>
+                    </div>
+                </div>
+
+                <div class="reading-rail" aria-hidden="true">
+                    <div class="reading-arrow">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+                    </div>
+                </div>
+
+                <aside class="research-panel reveal">
+                    <div class="panel-title">
+                        <h2>
+                            <span data-lang="zh">近期成果</span>
+                            <span data-lang="en">Recent Outputs</span>
+                        </h2>
+                    </div>
+                    <p class="panel-subtitle">
+                        <span data-lang="zh">论文、在投工作与代表性成果。</span>
+                        <span data-lang="en">Publications, working papers, and selected outputs.</span>
+                    </p>
+                    <div class="snapshot-grid" aria-label="Research statistics">
+                        <div class="snapshot-item">
+                            <strong>{{ stats.total }}</strong>
+                            <span data-lang="zh">已发表论文</span>
+                            <span data-lang="en">Published Papers</span>
                         </div>
-                        <div class="text-xs text-gray-500 mt-0.5">
-                            <span class="lang-zh">{{ edu.degree.zh }}</span>
-                            <span class="lang-en">{{ edu.degree.en }}</span>
+                        <div class="snapshot-item">
+                            <strong>{{ stats.ccf_a }}</strong>
+                            <span data-lang="zh">CCF A 主会</span>
+                            <span data-lang="en">CCF-A Papers</span>
                         </div>
-                        <div class="text-xs text-gray-400 font-mono mt-0.5">
-                            {{ edu.time }}
+                        <div class="snapshot-item">
+                            <strong>{{ stats.jcr_q1 }}</strong>
+                            <span data-lang="zh">JCR 1区论文</span>
+                            <span data-lang="en">JCR Q1 Papers</span>
                         </div>
-                    </li>
+                        <div class="snapshot-item">
+                            <strong>{{ stats.preprints }}</strong>
+                            <span data-lang="zh">在投工作</span>
+                            <span data-lang="en">Working Papers</span>
+                        </div>
+                    </div>
+                    <ul class="recent-list">
+                        {% for p in recent_work[:3] %}
+                        <li>
+                            <div class="recent-title">{{ p.title }}</div>
+                            <div class="recent-meta">{{ p.venue }} · {{ p.year }}</div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </aside>
+            </section>
+
+            <section class="section reveal" id="publications">
+                <div class="section-head">
+                    <div>
+                        <h2>
+                            <span data-lang="zh">发表论文</span>
+                            <span data-lang="en">Publications</span>
+                            {{ inline_decoration("publications") }}
+                        </h2>
+                        <p class="section-kicker">
+                            <span data-lang="zh">默认按 CCF / JCR 等级排序，可按年份筛选，作者名自动高亮</span>
+                            <span data-lang="en">Sorted by CCF / JCR rank by default, filterable by year with author highlighting</span>
+                            <span class="auto-note">
+                                <span data-lang="zh">自动排序</span>
+                                <span data-lang="en">Auto-sorted</span>
+                            </span>
+                        </p>
+                    </div>
+                    <div class="filter-group" aria-label="Publication filters">
+                        <button class="filter-button active" type="button" data-filter-year="all">All</button>
+                        {% for year in publication_years %}
+                        <button class="filter-button" type="button" data-filter-year="{{ year }}">{{ year }}</button>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="paper-stack" id="paper-list">
+                    {% for p in papers %}
+                    <article class="paper-card" data-year="{{ p.year }}">
+                        <div class="paper-top">
+                            <div>
+                                <h3 class="paper-title">{{ p.title }}</h3>
+                                {% if p.authors %}
+                                <p class="paper-authors">
+                                    {% for author in p.authors %}
+                                        {% if author.is_self %}<strong>{{ author.name }}</strong>{% else %}{{ author.name }}{% endif %}{% if not loop.last %}, {% endif %}
+                                    {% endfor %}
+                                    {% if p.role_label %}
+                                    <span class="tag role">
+                                        <span data-lang="zh">{{ p.role_label.zh }}</span>
+                                        <span data-lang="en">{{ p.role_label.en }}</span>
+                                    </span>
+                                    {% endif %}
+                                </p>
+                                {% elif p.role_label %}
+                                <p class="paper-authors paper-authors-synth">
+                                    <strong>{{ info.name.en }}</strong>
+                                    <span class="tag role">
+                                        <span data-lang="zh">{{ p.role_label.zh }}</span>
+                                        <span data-lang="en">{{ p.role_label.en }}</span>
+                                    </span>
+                                </p>
+                                {% endif %}
+                                <div class="paper-venue">
+                                    <span>{{ p.venue }}</span>
+                                    <span>{{ p.year }}</span>
+                                    {% for link in p.links %}
+                                    <a href="{{ link.url }}" target="_blank" rel="noreferrer">{{ link.label }}</a>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            {% if p.tags or p.status_label %}
+                            <div class="tag-row">
+                                {% for tag in p.tags %}
+                                    {% if "CCF A" in tag or "Q1" in tag %}
+                                    <span class="tag hot">{% if "CCF A" in tag %}CCF A 主会{% else %}{{ tag }}{% endif %}</span>
+                                    {% elif "CCF B" in tag or "Q2" in tag %}
+                                    <span class="tag cool">{{ tag }}</span>
+                                    {% else %}
+                                    <span class="tag">{{ tag }}</span>
+                                    {% endif %}
+                                {% endfor %}
+                                {% if p.status_label %}
+                                <span class="tag {% if p.status == 'accepted' %}warm{% else %}soft{% endif %}">
+                                    <span data-lang="zh">{{ p.status_label.zh }}</span>
+                                    <span data-lang="en">{{ p.status_label.en }}</span>
+                                </span>
+                                {% endif %}
+                            </div>
+                            {% endif %}
+                        </div>
+                        {% if p.abstract %}
+                        <details class="paper-abstract">
+                            <summary>
+                                <span data-lang="zh">摘要</span>
+                                <span data-lang="en">Abstract</span>
+                                <span class="auto-note">
+                                    <span data-lang="zh">自动补全</span>
+                                    <span data-lang="en">Auto-filled</span>
+                                </span>
+                            </summary>
+                            <p>{{ p.abstract }}</p>
+                        </details>
+                        {% endif %}
+                    </article>
                     {% endfor %}
-                </ul>
-                <div class="mt-6 pt-4 border-t flex flex-col gap-2">
-                    <a href="mailto:{{ info.email }}" class="flex items-center text-sm text-gray-600 hover:text-blue-600 transition">
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                        {{ info.email }}
-                    </a>
                 </div>
-            </div>
-        </div>
+            </section>
 
-        <!-- NEW: Academic Activities (Full Width, Horizontal Cards) -->
-        {% if activities %}
-        <section class="mb-16">
-            <h2 class="text-xl font-bold mb-6 flex items-center gap-2 text-gray-800">
-                <span class="w-1 h-6 bg-purple-500 rounded-full"></span>
-                <span class="lang-zh">学术活动 & 服务</span>
-                <span class="lang-en">Activities & Services</span>
-            </h2>
-            
-            <!-- Grid Layout for Activities -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {% for act in activities %}
-                <div class="bg-white p-4 rounded border border-gray-200 hover:border-purple-300 hover:shadow-md transition group">
-                    <div class="flex justify-between items-start mb-2">
-                        <span class="text-xs font-mono font-semibold text-purple-600 bg-purple-50 px-2 py-1 rounded">
-                            {{ act.date }}
-                        </span>
-                        <span class="text-xs text-gray-400 border px-1.5 rounded">
-                            <span class="lang-zh">{{ act.role.zh }}</span>
-                            <span class="lang-en">{{ act.role.en }}</span>
-                        </span>
-                    </div>
-                    <div class="text-sm font-medium text-gray-800 group-hover:text-purple-700 transition">
-                        <span class="lang-zh">{{ act.title.zh }}</span>
-                        <span class="lang-en">{{ act.title.en }}</span>
+            {% if preprints %}
+            <section class="section reveal" id="preprints">
+                <div class="section-head">
+                    <div>
+                        <h2>
+                            <span data-lang="zh">预印本与在投工作</span>
+                            <span data-lang="en">Preprints & Working Papers</span>
+                            {{ inline_decoration("preprints") }}
+                        </h2>
                     </div>
                 </div>
-                {% endfor %}
-            </div>
-        </section>
-        {% endif %}
+                <div class="paper-stack">
+                    {% for p in preprints %}
+                    <article class="paper-card preprint">
+                        <div class="paper-top">
+                            <div>
+                                <h3 class="paper-title">{{ p.title }}</h3>
+                                {% if p.authors %}
+                                <p class="paper-authors">
+                                    {% for author in p.authors %}
+                                        {% if author.is_self %}<strong>{{ author.name }}</strong>{% else %}{{ author.name }}{% endif %}{% if not loop.last %}, {% endif %}
+                                    {% endfor %}
+                                    {% if p.role_label %}
+                                    <span class="tag role">
+                                        <span data-lang="zh">{{ p.role_label.zh }}</span>
+                                        <span data-lang="en">{{ p.role_label.en }}</span>
+                                    </span>
+                                    {% endif %}
+                                </p>
+                                {% elif p.role_label %}
+                                <p class="paper-authors paper-authors-synth">
+                                    <strong>{{ info.name.en }}</strong>
+                                    <span class="tag role">
+                                        <span data-lang="zh">{{ p.role_label.zh }}</span>
+                                        <span data-lang="en">{{ p.role_label.en }}</span>
+                                    </span>
+                                </p>
+                                {% endif %}
+                                <div class="paper-venue">
+                                    <span>{{ p.venue }}</span>
+                                    <span>{{ p.year }}</span>
+                                </div>
+                            </div>
+                            <div class="tag-row">
+                                {% for tag in p.tags %}
+                                <span class="tag soft">{{ tag }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% if p.abstract %}
+                        <details class="paper-abstract">
+                            <summary>
+                                <span data-lang="zh">摘要</span>
+                                <span data-lang="en">Abstract</span>
+                                <span class="auto-note">
+                                    <span data-lang="zh">自动补全</span>
+                                    <span data-lang="en">Auto-filled</span>
+                                </span>
+                            </summary>
+                            <p>{{ p.abstract }}</p>
+                        </details>
+                        {% endif %}
+                    </article>
+                    {% endfor %}
+                </div>
+            </section>
+            {% endif %}
 
-        <!-- NEW: Preprints (Full Width) -->
-        {% if preprints %}
-        <section class="mb-12">
-            <h2 class="text-xl font-bold mb-6 flex items-center gap-2 text-gray-700">
-                <span class="w-1 h-6 bg-gray-400 rounded-full"></span>
-                <span>
-                    <span class="lang-zh">待发表 / 预印本</span>
-                    <span class="lang-en">Preprints / Working Papers</span>
-                </span>
-            </h2>
-            <div class="space-y-4">
-                {% for p in preprints %}
-                <div class="bg-gray-50 p-4 rounded-lg border border-dashed border-gray-300 hover:border-gray-400 transition">
-                    <div class="flex flex-col-reverse md:flex-row md:justify-between md:items-start gap-2">
-                        <h3 class="font-semibold text-md text-gray-700 leading-snug">
-                            {{ p.title }}
-                        </h3>
-                        <div class="shrink-0">
-                            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider bg-gray-200 text-gray-600">
-                                PREPRINT
+            {% if activities or reviewing.venues %}
+            <section class="section reveal" id="activities">
+                <div class="section-head">
+                    <div>
+                        <h2>
+                            <span data-lang="zh">学术服务与交流</span>
+                            <span data-lang="en">Service & Exchanges</span>
+                            {{ inline_decoration("activities") }}
+                        </h2>
+                        <p class="section-kicker">
+                            <span data-lang="zh">审稿服务、会议交流与学术报告</span>
+                            <span data-lang="en">Reviewing, conference exchanges, and academic talks</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="activity-grid">
+                    {% if reviewing.venues %}
+                    <article class="activity-card service-card">
+                        <div class="activity-meta">
+                            <span class="activity-date">Service</span>
+                            <span>
+                                <span data-lang="zh">{{ reviewing.role.zh or "审稿服务" }}</span>
+                                <span data-lang="en">{{ reviewing.role.en or "Reviewer" }}</span>
                             </span>
                         </div>
-                    </div>
-                    <div class="text-sm text-gray-600 mt-1">
-                        {{ p.author }}
-                    </div>
-                    <div class="text-xs text-gray-500 mt-1 italic">
-                        {{ p.venue }}
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-        </section>
-        {% endif %}
-
-        <!-- Publications -->
-        <section>
-            <h2 class="text-xl font-bold mb-6 flex items-center gap-2 justify-between">
-                <div class="flex items-center gap-2">
-                    <span class="w-1 h-6 bg-blue-600 rounded-full"></span>
-                    <span>
-                        <span class="lang-zh">发表论文</span>
-                        <span class="lang-en">Publications</span>
-                    </span>
-                </div>
-                <span class="text-xs font-normal text-gray-500 bg-gray-100 px-2 py-1 rounded">
-                    Total: {{ stats.total }}
-                </span>
-            </h2>
-
-            <div class="space-y-6">
-                {% for p in papers %}
-                <div class="group bg-white p-5 rounded-lg border border-transparent shadow-sm hover:shadow-md transition ring-1 ring-gray-100 hover:ring-gray-200">
-                    <div class="flex flex-col-reverse md:flex-row md:justify-between md:items-start gap-2">
-                        <h3 class="font-semibold text-lg text-gray-900 leading-snug group-hover:text-blue-700 transition">
-                            {{ p.title }}
-                        </h3>
-                        <!-- Tags -->
-                        <div class="flex gap-1 shrink-0 flex-wrap justify-end">
-                            {% for tag in p.tags %}
-                            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider border
-                                {% if 'A' in tag or 'Q1' in tag %} bg-red-50 text-red-700 border-red-100
-                                {% elif 'B' in tag or 'Q2' in tag %} bg-blue-50 text-blue-700 border-blue-100
-                                {% else %} bg-green-50 text-green-700 border-green-100 {% endif %}">
-                                {{ tag }}
+                        <p class="activity-title">
+                            <span data-lang="zh">审稿服务：{{ reviewing.venues | join("、") }} 等期刊/会议。</span>
+                            <span data-lang="en">Reviewing service: {{ reviewing.venues | join(", ") }}.</span>
+                        </p>
+                    </article>
+                    {% endif %}
+                    {% for act in activities %}
+                    <article class="activity-card">
+                        <div class="activity-meta">
+                            <span class="activity-date">{{ act.date }}</span>
+                            <span>
+                                <span data-lang="zh">{{ act.role.zh }}</span>
+                                <span data-lang="en">{{ act.role.en }}</span>
                             </span>
-                            {% endfor %}
                         </div>
-                    </div>
-                    
-                    <div class="text-sm text-gray-600 mt-2">
-                        {{ p.author }}
-                    </div>
-                      
-                    <div class="text-xs text-gray-500 mt-2 italic flex gap-2 items-center">
-                        <span class="font-medium text-gray-700">{{ p.venue }}</span> 
-                        <span>({{ p.year }})</span>
-                    </div>
+                        <p class="activity-title">
+                            <span data-lang="zh">{{ act.title.zh }}</span>
+                            <span data-lang="en">{{ act.title.en }}</span>
+                        </p>
+                    </article>
+                    {% endfor %}
                 </div>
-                {% endfor %}
-            </div>
-        </section>
+            </section>
+            {% endif %}
+        </main>
 
-        <footer class="mt-20 pt-6 border-t text-center text-gray-400 text-sm">
-            <p>&copy; 2025 {{ info.name.en }}. Built with SOTA-Generator.</p>
+        <footer class="footer">
+            <span>&copy; {{ build_year }} {{ info.name.en }}.</span>
         </footer>
-
     </div>
+
+    <script>
+        (() => {
+            const decorationGallery = {{ decoration_gallery | tojson }};
+            const body = document.body;
+            const langToggle = document.getElementById("lang-toggle");
+            const progress = document.getElementById("scroll-progress");
+            const storedLang = localStorage.getItem("homepage-language") || "zh";
+
+            function shuffled(items) {
+                const copy = [...items];
+                for (let index = copy.length - 1; index > 0; index -= 1) {
+                    const swapIndex = Math.floor(Math.random() * (index + 1));
+                    [copy[index], copy[swapIndex]] = [copy[swapIndex], copy[index]];
+                }
+                return copy;
+            }
+
+            if (decorationGallery.length) {
+                const pool = shuffled(decorationGallery);
+                document.querySelectorAll(".gallery-decor").forEach((item, index) => {
+                    item.src = pool[index % pool.length];
+                    item.hidden = false;
+                });
+            }
+
+            function setLanguage(lang) {
+                body.classList.toggle("lang-en", lang === "en");
+                body.classList.toggle("lang-zh", lang !== "en");
+                document.documentElement.lang = lang === "en" ? "en" : "zh-CN";
+                langToggle.textContent = lang === "en" ? "中文" : "EN";
+                localStorage.setItem("homepage-language", lang);
+            }
+
+            setLanguage(storedLang);
+            langToggle.addEventListener("click", () => {
+                setLanguage(body.classList.contains("lang-en") ? "zh" : "en");
+            });
+
+            function updateProgress() {
+                const max = document.documentElement.scrollHeight - window.innerHeight;
+                const ratio = max > 0 ? window.scrollY / max : 0;
+                progress.style.width = `${Math.min(1, Math.max(0, ratio)) * 100}%`;
+            }
+
+            window.addEventListener("scroll", updateProgress, { passive: true });
+            updateProgress();
+
+            const revealItems = [...document.querySelectorAll(".reveal")];
+
+            function revealElement(el) {
+                if (el.classList.contains("is-visible")) {
+                    return;
+                }
+                el.classList.add("is-visible");
+                el.querySelectorAll(".snapshot-item strong").forEach((counter) => {
+                    animateCounter(counter);
+                });
+            }
+
+            if ("IntersectionObserver" in window) {
+                const observer = new IntersectionObserver((entries) => {
+                    for (const entry of entries) {
+                        if (entry.isIntersecting) {
+                            revealElement(entry.target);
+                            observer.unobserve(entry.target);
+                        }
+                    }
+                }, { threshold: 0.12 });
+
+                revealItems.forEach((el) => observer.observe(el));
+            } else {
+                revealItems.forEach(revealElement);
+            }
+
+            requestAnimationFrame(() => {
+                revealItems.forEach((el) => {
+                    const rect = el.getBoundingClientRect();
+                    if (rect.top < window.innerHeight * 0.96 && rect.bottom > 0) {
+                        revealElement(el);
+                    }
+                });
+            });
+
+            function animateCounter(counter) {
+                if (counter.dataset.animated === "true") {
+                    return;
+                }
+                const target = Number.parseInt(counter.textContent, 10);
+                if (!Number.isFinite(target)) {
+                    return;
+                }
+                counter.dataset.animated = "true";
+                const duration = 760;
+                const start = performance.now();
+                const step = (now) => {
+                    const progress = Math.min(1, (now - start) / duration);
+                    const eased = 1 - Math.pow(1 - progress, 3);
+                    counter.textContent = String(Math.round(target * eased));
+                    if (progress < 1) {
+                        requestAnimationFrame(step);
+                    } else {
+                        counter.textContent = String(target);
+                    }
+                };
+                counter.textContent = "0";
+                requestAnimationFrame(step);
+            }
+
+            document.querySelectorAll("[data-filter-year]").forEach((button) => {
+                button.addEventListener("click", () => {
+                    const year = button.dataset.filterYear;
+                    document.querySelectorAll("[data-filter-year]").forEach((item) => {
+                        item.classList.toggle("active", item === button);
+                    });
+                    document.querySelectorAll("#paper-list .paper-card").forEach((paper) => {
+                        paper.classList.toggle("is-hidden", year !== "all" && paper.dataset.year !== year);
+                    });
+                });
+            });
+
+            const decorItems = document.querySelectorAll(".decor");
+            if (decorItems.length && window.matchMedia("(pointer: fine)").matches) {
+                window.addEventListener("pointermove", (event) => {
+                    const x = (event.clientX / window.innerWidth - 0.5) * 8;
+                    const y = (event.clientY / window.innerHeight - 0.5) * 6;
+                    decorItems.forEach((item, index) => {
+                        const depth = 1 + index * 0.16;
+                        item.style.setProperty("--mx", `${x * depth}px`);
+                        item.style.setProperty("--my", `${y * depth}px`);
+                    });
+                }, { passive: true });
+            }
+        })();
+    </script>
 </body>
 </html>

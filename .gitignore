@@ -1,0 +1,7 @@
+__pycache__/
+*.py[cod]
+
+# Keep original high-resolution decoration sources local.
+# The published site should use output/assets/decorations/gallery_optimized/.
+output/assets/decorations/gallery/*
+!output/assets/decorations/gallery/.gitkeep

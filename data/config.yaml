@@ -2,76 +2,120 @@ info:
   name:
     zh: 张泽兴
     en: Zexing Zhang
+  title:
+    zh: 国防科技大学博士研究生
+    en: PhD Student, National University of Defense Technology
   email: zhangzexing1999@163.com
   github: zhangzexing
   scholar: https://scholar.google.com/citations?user=u5F7xvYAAAAJ&hl=zh-CN
   location:
-    zh: 中国·长沙
-    en: Changsha, China
-
+    zh: 中国 · 长沙
+    en: China · Changsha
 bio:
   zh: |
-    Hi，我是国防科技大学的博士研究生。<br>
-    我的研究兴趣主要集中在大语言模型、智能体博弈、多模态医学生物特征识别。<br>
-    目前，我专注于SFT、Reward Models、MultiTurn-RL、EQ-Mind、Reasoning Agent、Memory Agent的应用与研究。<br>
-    此外，我也是AAAI、ESWA、EAAI、JBHI、NEUCOM等期刊/会议的审稿人。<br>
-    欢迎交流合作！<br>
-  en: |
-    I am a Ph.D. student at the National University of Defense Technology (NUDT).<br>
-    My research interests primarily focus on Large Language Models (LLMs), Agent Games, and Multimodal Medical Biometrics.<br>
-    Currently, I am dedicated to the research and application of SFT, Reward Models, MultiTurn-RL, EQ-Mind, Reasoning Agents, and Memory Agents.<br>
-    Additionally, I serve as a reviewer for several journals and conferences, including AAAI, ESWA, EAAI, JBHI, and NEUCOM.<br>
-    I am always open to academic discussions and collaborations.<br>
-
+    目前在国防科技大学攻读博士学位，研究聚焦基础模型驱动的智能感知与自主决策。
+    围绕大语言模型、推理智能体和多模态生理信号，关注可验证评估、跨模态表示学习与真实场景泛化。
+  en: |-
+    I am currently pursuing a PhD at the National University of Defense Technology, with research focused on foundation model-driven intelligent perception and autonomous decision-making.
+    My work centers on large language models, reasoning agents, and multimodal physiological signals, with an emphasis on verifiable evaluation, cross-modal representation learning, and generalization in real-world scenarios.
+research_profile:
+  zh: 研究基础模型驱动的智能感知、可信评估与自主决策。
+  en: Research on foundation model-driven intelligent perception, trustworthy evaluation,
+    and autonomous decision-making.
+research_directions:
+- zh: 基础模型智能感知
+  en: Foundation Model-Driven Intelligent Perception
+- zh: 可信大模型评估
+  en: Trustworthy Evaluation of Large Models
+- zh: 多模态医学信号
+  en: Multimodal Medical Signals
+- zh: 生物特征与可穿戴
+  en: Biometrics and Wearables
+- zh: 智能体博弈决策
+  en: Agent-Based Game Decision-Making
+interests:
+- zh: 大语言模型
+  en: Large Language Models
+- zh: 智能体博弈
+  en: Agent Games
+- zh: 多模态医学
+  en: Multimodal Medicine
+- zh: 生物特征识别
+  en: Biometric Recognition
+- zh: 强化学习
+  en: Reinforcement Learning
 education:
-  - school:
-      zh: 国防科技大学
-      en: National University of Defense Technology
-    degree:
-      zh: 博士研究生
-      en: Ph.D. Student
-    time: 2026 - Present
-  - school:
-      zh: 长春工业大学
-      en: Changchun University of Technology
-    degree:
-      zh: 工学硕士
-      en: M.E.
-    time: 2023 - 2026
-  - school:
-      zh: 内蒙古师范大学
-      en: Inner Mongolia Normal University
-    degree:
-      zh: 工学学士
-      en: B.E.
-    time: 2018 - 2022
-    
+- school:
+    zh: 国防科技大学
+    en: National University of Defense Technology
+  degree:
+    zh: 博士研究生
+    en: PhD Student
+  time: 2026 - Present
+- school:
+    zh: 长春工业大学
+    en: Changchun University of Technology
+  degree:
+    zh: 工学硕士
+    en: Master of Engineering
+  time: 2023 - 2026
+- school:
+    zh: 内蒙古师范大学
+    en: Inner Mongolia Normal University
+  degree:
+    zh: 工学学士
+    en: Bachelor of Engineering
+  time: 2018 - 2022
 activities:
-  - date: "2026.01"
-    title:
-      zh: "即将前往AAAI人工智能会议汇报交流。"
-      en: "Heading to the AAAI artificial intelligence conference for reporting and exchange."
-    role:
-      zh: "新加坡"
-      en: "Singapore"
-  - date: "2024.12"
-    title:
-      zh: "CCF吉林省研究生学术交流研讨会，主题汇报，获评为优秀论文奖。"
-      en: "CCF Jilin Province Universities Computer Science Graduate Academic Exchange Symposium, the theme report was awarded the Outstanding Paper Award."
-    role:
-      zh: "中国，长春"
-      en: "Changchun, China"
-  - date: "2024.10"
-    title:
-      zh: "参加中国计算机大会。"
-      en: "Attended the China Computer Conference."
-    role:
-      zh: "中国，杭州"
-      en: "Hangzhou, China"
-  - date: "2023.12"
-    title:
-      zh: "中国生物特征识别大会汇报交流，获评最佳论文提名奖。"
-      en: "Reported and exchanged at the China Biometric Recognition Conference, and received the Best Paper Nomination Award."
-    role:
-      zh: "中国，徐州"
-      en: "Xuzhou, China"
+- date: '2026.01'
+  title:
+    zh: 前往 AAAI 人工智能会议进行汇报交流。
+    en: Presented and exchanged research at the AAAI Conference on Artificial Intelligence.
+  role:
+    zh: 新加坡
+    en: Singapore
+- date: '2024.12'
+  title:
+    zh: 参加 CCF 吉林省研究生学术交流研讨会并作主题汇报，获优秀论文奖。
+    en: Attended the CCF Jilin Graduate Academic Exchange Seminar and gave a keynote
+      presentation; received the Outstanding Paper Award.
+  role:
+    zh: 中国 · 长春
+    en: China · Changchun
+- date: '2024.10'
+  title:
+    zh: 参加中国计算机大会。
+    en: Attended the China National Computer Congress.
+  role:
+    zh: 中国 · 杭州
+    en: China · Hangzhou
+- date: '2023.12'
+  title:
+    zh: 在中国生物特征识别大会进行汇报交流，获最佳论文提名奖。
+    en: Presented and exchanged research at the Chinese Conference on Biometric Recognition;
+      received a Best Paper Nomination.
+  role:
+    zh: 中国 · 徐州
+    en: China · Xuzhou
+reviewing:
+  role:
+    zh: 审稿服务
+    en: Peer Review Service
+  venues:
+  - AAAI
+  - ESWA
+  - EAAI
+  - JBHI
+  - NEUCOM
+decorations:
+  gallery_dir: assets/decorations/gallery_optimized
+  hero:
+    image: ''
+  bio:
+    image: ''
+  activities:
+    image: ''
+  preprints:
+    image: ''
+  publications:
+    image: ''

@@ -1,11 +1,11 @@
-# 模糊匹配规则：如果Key包含在论文的Journal字段中，则应用这些Tags
+# 模糊匹配规则：如果 key 出现在论文的 journal/booktitle 字段中，则应用对应 tags。
 "Proceedings of the AAAI Conference on Artificial Intelligence":
   tags: ["CCF A"]
-  color: "red" # blue, green, red, yellow, gray
-  
+  color: "red"
+
 "Neurocomputing":
   tags: ["JCR Q1"]
-  color: "red" # blue, green, red, yellow, gray
+  color: "red"
 
 "Biomedical Signal Processing and Control":
   tags: ["JCR Q1"]

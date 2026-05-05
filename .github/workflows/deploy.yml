@@ -2,9 +2,8 @@ name: Build and Deploy
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
 
-# 【核心修复】：添加这部分权限配置
 permissions:
   contents: write
 
@@ -18,11 +17,10 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.9'
+          python-version: "3.9"
 
       - name: Install dependencies
-        run: |
-          pip install pyyaml bibtexparser jinja2
+        run: pip install -r requirements.txt
 
       - name: Build Site
         run: python build.py

@@ -1721,7 +1721,7 @@
                         </span>
 
                         <span class="hero-stat-item tier-a">
-                            <strong>2</strong> CCF A
+                            <strong>3</strong> CCF A
                         </span>
 
 
@@ -1819,6 +1819,30 @@
 
                         <li class="recent-item">
                             <div class="recent-headline">
+                                <div class="recent-title">PPGPT: Transferring Next-Token Modeling from Language to PPG Signals</div>
+
+                                <span class="role-chip role-chip-sm role-first">
+                                    <span data-lang="zh">第一作者</span>
+                                    <span data-lang="en">First Author</span>
+                                </span>
+
+                            </div>
+                            <div class="recent-meta">
+
+                                <span class="tier-chip tier-ccf-a">CCF A</span>
+
+
+                                <span class="status-chip status-published">
+                                    <span data-lang="zh">已出版</span>
+                                    <span data-lang="en">Published</span>
+                                </span>
+
+                                <span class="recent-venue">AAAI Conference on Artificial Intelligence · 2026</span>
+                            </div>
+                        </li>
+
+                        <li class="recent-item">
+                            <div class="recent-headline">
                                 <div class="recent-title">Who&#39;s Adam? Benchmarking Hallucinations in Scientific Dialogue</div>
 
                                 <span class="role-chip role-chip-sm role-first">
@@ -1881,30 +1905,6 @@
                                 </span>
 
                                 <span class="recent-venue">Biomedical Signal Processing and Control · 2026</span>
-                            </div>
-                        </li>
-
-                        <li class="recent-item">
-                            <div class="recent-headline">
-                                <div class="recent-title">Adaptive Physiological Subspace Reorganization and Hemodynamic Feature Encoding for Cuffless Blood Pressure Estimation from Photoplethysmography</div>
-
-                                <span class="role-chip role-chip-sm role-cofirst">
-                                    <span data-lang="zh">共同一作</span>
-                                    <span data-lang="en">Co-first Author</span>
-                                </span>
-
-                            </div>
-                            <div class="recent-meta">
-
-                                <span class="tier-chip tier-jcr-q2">JCR Q2</span>
-
-
-                                <span class="status-chip status-published">
-                                    <span data-lang="zh">已出版</span>
-                                    <span data-lang="en">Published</span>
-                                </span>
-
-                                <span class="recent-venue">Digital Signal Processing · 2026</span>
                             </div>
                         </li>
 
@@ -2023,6 +2023,58 @@
                                 </span>
                             </summary>
                             <p>Time-series foundation models (TSFMs) deliver strong cross-domain generalization, but their scale makes deployment costly. Knowledge distillation is a natural compression route, yet prior TSFM distillation typically imitates teacher outputs, features, or pairwise relations, and therefore remains tightly coupled to teacher-specific training trajectories while underutilizing two empirical properties: (i) high-level representations across model scales tend to converge toward a shared, approximately low-rank geometry, and (ii) layer-wise utility follows a long-tail pattern. We propose consensus subspace distillation, which reframes distillation as aligning a student to a model-agnostic geometric object: a scale-invariant low-rank consensus subspace together with its center statistics. Offline, we screen high-contribution layers via drop-layer marginal loss, estimate a shrinkage-stabilized covariance from their embeddings, and derive a truncated eigensubspace that defines a consensus projector. Online, we project student embeddings into this subspace and match the teacher’s projected mean and covariance using a lightweight mean--covariance objective, enabling stable optimization without rigid pointwise feature binding. To mitigate subset-induced bias, we further introduce a frequency-domain uncertainty injection mechanism that inflates spectral density based on characteristic-function discrepancies and injects dispersion only within the consensus directions. Across forecasting and imputation, the distilled student matches or slightly improves upon the teacher, while exhibiting a predictable trade-off under strict zero-shot classification. With MOMENT-Large as teacher, we achieve about 90% parameter reduction and substantial distillation-time savings while retaining comparable performance across multiple time-series tasks. Code and compressed weights are available at anonymous.4open.science/r/CSD-13C3/.</p>
+                        </details>
+
+                    </article>
+
+                    <article class="paper-card" data-year="2026" data-role="first">
+                        <div class="paper-top">
+                            <div class="paper-text-block">
+                                <div class="paper-headline">
+                                    <h3 class="paper-title">PPGPT: Transferring Next-Token Modeling from Language to PPG Signals</h3>
+
+                                    <span class="role-chip role-first">
+                                        <span data-lang="zh">第一作者</span>
+                                        <span data-lang="en">First Author</span>
+                                    </span>
+
+                                </div>
+
+                                <div class="paper-venue">
+                                    <span>AAAI Conference on Artificial Intelligence</span>
+                                    <span>2026</span>
+
+                                    <span class="status-chip status-published">
+                                        <span data-lang="zh">已出版</span>
+                                        <span data-lang="en">Published</span>
+                                    </span>
+
+
+                                    <a href="https://doi.org/10.1609/aaai.v40i34.40088" target="_blank" rel="noreferrer">DOI</a>
+
+                                </div>
+                            </div>
+
+                            <div class="chip-stack">
+
+                                <span class="tier-chip tier-ccf-a">CCF A</span>
+
+
+
+                            </div>
+
+                        </div>
+
+                        <details class="paper-abstract">
+                            <summary>
+                                <span data-lang="zh">摘要</span>
+                                <span data-lang="en">Abstract</span>
+                                <span class="auto-note" title="通过 OpenAI / Codex CLI 自动整理 · Auto-organized via OpenAI / Codex CLI">
+                                    <span data-lang="zh">自动补全</span>
+                                    <span data-lang="en">Auto-filled</span>
+                                </span>
+                            </summary>
+                            <p>The success of large language models (LLMs) in cognitive tasks prompts the question of whether their next-token prediction (NTP) paradigm can be adapted to model physiological signals from wearable devices. A key target for this adaptation is photoplethysmography (PPG), the most prevalent sensing modality in consumer wearables for non-invasive monitoring of diverse physiological conditions. Unlike in NLP, where NTP aligns with generative objectives, physiological signal analysis involves fundamentally different tasks, such as continuous parameter estimation (regression) and discrete state recognition (classification). This disparity creates a semantic mismatch between the pre-training paradigm and the downstream tasks. To bridge this gap, we propose PPGPT, the first foundation model that reformulates NTP into next-feature token prediction (NFTP), learning hierarchical feature transition probabilities to unify pre-training and downstream objectives. PPGPT features a novel dual-stream encoder that generates feature tokens by jointly modeling temporal dynamics and local-global morphological patterns. The model is developed using a two-stage training framework: it is first pre-trained on a large-scale mixed dataset of 1.6 billion data points and then validated on our newly released BioMTL benchmark, which includes data from 172 subjects over 285 days across seven different tasks. Extensive experiments show that PPGPT significantly outperforms competing methods, achieving a 16.5% improvement in F1-score and a 25.9% reduction in Mean Absolute Error (MAE). Furthermore, the model demonstrates robust few-shot learning capabilities.</p>
                         </details>
 
                     </article>
@@ -2541,50 +2593,6 @@
                             </div>
 
                         </div>
-
-                    </article>
-
-                    <article class="paper-card" data-year="2026" data-role="first">
-                        <div class="paper-top">
-                            <div class="paper-text-block">
-                                <div class="paper-headline">
-                                    <h3 class="paper-title">PPGPT: Transferring Next-Token Modeling from Language to PPG Signals</h3>
-
-                                    <span class="role-chip role-first">
-                                        <span data-lang="zh">第一作者</span>
-                                        <span data-lang="en">First Author</span>
-                                    </span>
-
-                                </div>
-
-                                <div class="paper-venue">
-                                    <span>AAAI Conference on Artificial Intelligence</span>
-                                    <span>2026</span>
-
-                                    <span class="status-chip status-published">
-                                        <span data-lang="zh">已出版</span>
-                                        <span data-lang="en">Published</span>
-                                    </span>
-
-
-                                    <a href="https://doi.org/10.1609/aaai.v40i34.40088" target="_blank" rel="noreferrer">DOI</a>
-
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <details class="paper-abstract">
-                            <summary>
-                                <span data-lang="zh">摘要</span>
-                                <span data-lang="en">Abstract</span>
-                                <span class="auto-note" title="通过 OpenAI / Codex CLI 自动整理 · Auto-organized via OpenAI / Codex CLI">
-                                    <span data-lang="zh">自动补全</span>
-                                    <span data-lang="en">Auto-filled</span>
-                                </span>
-                            </summary>
-                            <p>The success of large language models (LLMs) in cognitive tasks prompts the question of whether their next-token prediction (NTP) paradigm can be adapted to model physiological signals from wearable devices. A key target for this adaptation is photoplethysmography (PPG), the most prevalent sensing modality in consumer wearables for non-invasive monitoring of diverse physiological conditions. Unlike in NLP, where NTP aligns with generative objectives, physiological signal analysis involves fundamentally different tasks, such as continuous parameter estimation (regression) and discrete state recognition (classification). This disparity creates a semantic mismatch between the pre-training paradigm and the downstream tasks. To bridge this gap, we propose PPGPT, the first foundation model that reformulates NTP into next-feature token prediction (NFTP), learning hierarchical feature transition probabilities to unify pre-training and downstream objectives. PPGPT features a novel dual-stream encoder that generates feature tokens by jointly modeling temporal dynamics and local-global morphological patterns. The model is developed using a two-stage training framework: it is first pre-trained on a large-scale mixed dataset of 1.6 billion data points and then validated on our newly released BioMTL benchmark, which includes data from 172 subjects over 285 days across seven different tasks. Extensive experiments show that PPGPT significantly outperforms competing methods, achieving a 16.5% improvement in F1-score and a 25.9% reduction in Mean Absolute Error (MAE). Furthermore, the model demonstrates robust few-shot learning capabilities.</p>
-                        </details>
 
                     </article>
 

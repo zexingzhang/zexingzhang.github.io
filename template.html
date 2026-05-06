@@ -806,6 +806,7 @@
         .hero-stat-item.tier-a strong { color: #9a3e2b; }
         .hero-stat-item.tier-b strong { color: #8a6308; }
         .hero-stat-item.tier-q1 strong { color: var(--accent-strong); }
+        .hero-stat-item.tier-impact strong { color: #524977; }
 
         .auto-note {
             display: inline-flex;
@@ -1205,6 +1206,21 @@
             letter-spacing: 0.06em;
             line-height: 1.6;
             text-transform: uppercase;
+        }
+
+        .impact-chip {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 7px;
+            border-radius: 999px;
+            border: 1px solid rgba(82, 73, 119, 0.24);
+            background: rgba(82, 73, 119, 0.08);
+            color: #524977;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.04em;
+            line-height: 1.6;
+            white-space: nowrap;
         }
 
         /* 层级 4：status chip - 内联圆点 + 文字 */
@@ -1752,6 +1768,14 @@
                             <strong>{{ stats.jcr_q4 }}</strong> JCR Q4
                         </span>
                         {% endif %}
+                        {%- if stats.impact_factor_count %}
+                        <span class="hero-stat-item tier-impact" title="Calculated from impactfactor in papers.bib or impact_factor in rankings.yaml">
+                            <strong>{{ stats.impact_factor_total_display }}</strong>
+                            <span data-lang="zh">累计IF</span>
+                            <span data-lang="en">Cum. IF</span>
+                            <em>{{ stats.impact_factor_count }} papers</em>
+                        </span>
+                        {%- endif %}
                         {% if stats.preprints %}
                         <span class="hero-stat-item">
                             <strong>{{ stats.preprints }}</strong>
@@ -1904,11 +1928,14 @@
                                     {% endfor %}
                                 </div>
                             </div>
-                            {% if p.tier_tags or p.index_tags or p.other_tags %}
+                            {% if p.tier_tags or p.index_tags or p.other_tags or p.impact_factor_display %}
                             <div class="chip-stack">
                                 {% for t in p.tier_tags %}
                                 <span class="tier-chip tier-{{ t.css_class }}">{{ t.label }}</span>
                                 {% endfor %}
+                                {%- if p.impact_factor_display %}
+                                <span class="impact-chip">IF {{ p.impact_factor_display }}</span>
+                                {%- endif %}
                                 {% for t in p.index_tags %}
                                 <span class="index-chip">{{ t.label }}</span>
                                 {% endfor %}
@@ -1977,11 +2004,14 @@
                                     {% endif %}
                                 </div>
                             </div>
-                            {% if p.tier_tags or p.index_tags or p.other_tags %}
+                            {% if p.tier_tags or p.index_tags or p.other_tags or p.impact_factor_display %}
                             <div class="chip-stack">
                                 {% for t in p.tier_tags %}
                                 <span class="tier-chip tier-{{ t.css_class }}">{{ t.label }}</span>
                                 {% endfor %}
+                                {%- if p.impact_factor_display %}
+                                <span class="impact-chip">IF {{ p.impact_factor_display }}</span>
+                                {%- endif %}
                                 {% for t in p.index_tags %}
                                 <span class="index-chip">{{ t.label }}</span>
                                 {% endfor %}

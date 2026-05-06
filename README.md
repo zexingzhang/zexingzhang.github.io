@@ -129,7 +129,8 @@ py scripts/profile_wizard.py --compress-gallery
 
 ## 论文 / 预印本 / 期刊等级
 
-论文都在 `data/papers.bib` 和 `data/preprints.bib`；venue → tags / color 映射在 `data/rankings.yaml`。三者**都可以在向导里完整维护**（主菜单 → `1` 录入与维护 → `5` / `6` / `7`），不必手编。
+论文都在 `data/papers.bib` 和 `data/preprints.bib`；venue → tags / color / impact_factor 映射在 `data/rankings.yaml`。三者**都可以在向导里完整维护**（主菜单 → `1` 录入与维护 → `5` / `6` / `7`），不必手编。
+累计影响因子会在构建时自动计算：单篇论文可在 Bib 里写 `impactfactor = {5.1}`，也可在 `rankings.yaml` 的期刊映射里写 `impact_factor: 5.1`，单篇字段优先于期刊映射。
 
 **新增论文走引导式流程**，只问真正需要你回答的问题：
 

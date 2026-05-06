@@ -114,11 +114,15 @@ def format_authors(author_field: str | None, info: dict) -> list[dict]:
     return authors
 
 
-def match_rankings(venue_name: str, rankings: dict) -> list[str]:
+def match_ranking_meta(venue_name: str, rankings: dict) -> dict:
     for key, meta in rankings.items():
-        if key.lower() in venue_name.lower():
-            return list(meta.get("tags", []))
-    return []
+        if key.lower() in venue_name.lower() and isinstance(meta, dict):
+            return meta
+    return {}
+
+
+def match_rankings(venue_name: str, rankings: dict) -> list[str]:
+    return list(match_ranking_meta(venue_name, rankings).get("tags", []))
 
 
 def paper_links(entry: dict) -> list[dict]:
@@ -137,6 +141,8 @@ PAPER_META_AUTHORROLE = "authorrole"      # first/cofirst/corresponding/co-corre
 PAPER_META_VENUETIER = "venuetier"        # 自由文本，逗号/分号分隔；优先于 rankings.yaml
 PAPER_META_VENUEINDEX = "venueindex"      # 自由文本，逗号分隔（SCI / EI / Scopus / ...）
 PAPER_META_ACCEPTSTATUS = "acceptstatus"  # published/accepted/under-review
+PAPER_META_IMPACTFACTOR = "impactfactor"  # Journal impact factor for cumulative IF stats
+IMPACT_FACTOR_KEYS = (PAPER_META_IMPACTFACTOR, "impact_factor", "impact-factor")
 
 ROLE_LABELS = {
     "first": {"zh": "第一作者", "en": "First Author"},
@@ -157,6 +163,37 @@ def split_meta_list(value: str | None) -> list[str]:
         return []
     raw = clean_tex(value)
     return [seg.strip() for seg in re.split(r"[,;]", raw) if seg.strip()]
+
+
+def parse_impact_factor(value: object) -> float | None:
+    raw = clean_tex(str(value or "")).replace(",", ".")
+    matches = re.findall(r"\d+(?:\.\d+)?", raw)
+    if not matches:
+        return None
+    decimals = [match for match in matches if "." in match]
+    number = float((decimals or matches)[0])
+    return number if number >= 0 else None
+
+
+def format_metric_number(value: float | int | None) -> str:
+    if value is None:
+        return ""
+    text = f"{float(value):.3f}".rstrip("0").rstrip(".")
+    if not text:
+        return "0.0"
+    return text if "." in text else f"{text}.0"
+
+
+def paper_impact_factor(entry: dict, ranking_meta: dict) -> float | None:
+    for key in IMPACT_FACTOR_KEYS:
+        parsed = parse_impact_factor(entry.get(key))
+        if parsed is not None:
+            return parsed
+    for key in IMPACT_FACTOR_KEYS:
+        parsed = parse_impact_factor(ranking_meta.get(key))
+        if parsed is not None:
+            return parsed
+    return None
 
 
 def categorize_tag(tag: str) -> tuple[str, str, str]:
@@ -207,13 +244,14 @@ def split_tags_by_category(tags: list[str]) -> dict[str, list]:
 
 def clean_and_tag_paper(entry: dict, rankings: dict, info: dict, preprint: bool = False) -> dict:
     venue_name = clean_tex(entry.get("journal") or entry.get("booktitle") or "Preprint / Under Review")
+    ranking_meta = match_ranking_meta(venue_name, rankings)
 
     # 等级：优先使用 paper 自带 venuetier，否则查 rankings.yaml
     explicit_tier = split_meta_list(entry.get(PAPER_META_VENUETIER))
     if explicit_tier:
         tier_tags = explicit_tier
     else:
-        tier_tags = match_rankings(venue_name, rankings)
+        tier_tags = list(ranking_meta.get("tags", []))
 
     # 检索：paper 自带 venueindex 全部加进去
     index_tags = split_meta_list(entry.get(PAPER_META_VENUEINDEX))
@@ -234,6 +272,7 @@ def clean_and_tag_paper(entry: dict, rankings: dict, info: dict, preprint: bool 
 
     authors = format_authors(entry.get("author"), info)
     is_first = role == "first" or bool(authors and authors[0]["is_self"])
+    impact_factor = paper_impact_factor(entry, ranking_meta)
 
     categorized = split_tags_by_category(tags)
     return {
@@ -252,6 +291,8 @@ def clean_and_tag_paper(entry: dict, rankings: dict, info: dict, preprint: bool 
         "role_label": role_label,
         "status": status,
         "status_label": status_label,
+        "impact_factor": impact_factor,
+        "impact_factor_display": format_metric_number(impact_factor),
     }
 
 
@@ -292,6 +333,9 @@ def process_all_papers(published_raw, preprints_raw, rankings, info):
                 stats["jcr_q3"] += 1
             if "JCR Q4" in tag:
                 stats["jcr_q4"] += 1
+        if paper["impact_factor"] is not None:
+            stats["impact_factor_count"] += 1
+            stats["impact_factor_total"] += paper["impact_factor"]
     # 聚合：含共一/共通讯
     stats["first_total"] = stats["first_only"] + stats["cofirst"]
     stats["corresponding_total"] = stats["corresponding"] + stats["co_corresponding"]
@@ -306,6 +350,8 @@ def process_all_papers(published_raw, preprints_raw, rankings, info):
     preprint_papers.sort(key=lambda x: (-year_key(x["year"]), x["title"].lower()))
 
     stats["q1_q2"] = stats["jcr_q1"] + stats["jcr_q2"]
+    stats["impact_factor_total"] = round(float(stats["impact_factor_total"]), 3)
+    stats["impact_factor_total_display"] = format_metric_number(stats["impact_factor_total"])
     stats["preprints"] = len(preprint_papers)
     for key in [
         "total",
@@ -325,6 +371,7 @@ def process_all_papers(published_raw, preprints_raw, rankings, info):
         "jcr_q3",
         "jcr_q4",
         "q1_q2",
+        "impact_factor_count",
         "preprints",
     ]:
         stats[key] = int(stats[key])
@@ -412,9 +459,15 @@ def build():
     OUTPUT_DIR.mkdir(exist_ok=True)
     (OUTPUT_DIR / "index.html").write_text(output_html, encoding="utf-8")
 
+    impact_note = (
+        f", cumulative IF {stats['impact_factor_total_display']}"
+        if stats["impact_factor_count"]
+        else ""
+    )
     print(
         f"Build success: {stats['total']} published papers, "
-        f"{stats['preprints']} preprints, {len(publication_years)} publication years."
+        f"{stats['preprints']} preprints, {len(publication_years)} publication years"
+        f"{impact_note}."
     )
 
 

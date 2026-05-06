@@ -1391,6 +1391,7 @@ TYPE_TO_VENUE_FIELD = {
 OPTIONAL_BIB_FIELDS = [
     "author",
     "doi",
+    "impactfactor",
     "abstract",
     "pages",
     "volume",
@@ -1407,6 +1408,7 @@ META_FIELD_AUTHORROLE = "authorrole"      # first / cofirst / corresponding / co
 META_FIELD_VENUETIER = "venuetier"        # 文本标签，如 "CCF A" / "JCR Q1"；多个用逗号分隔
 META_FIELD_VENUEINDEX = "venueindex"      # 检索情况，逗号分隔，如 "SCI, EI" / "EI" / "Scopus"
 META_FIELD_ACCEPTSTATUS = "acceptstatus"  # published / accepted / under-review
+META_FIELD_IMPACTFACTOR = "impactfactor"  # 期刊影响因子；build.py 自动累加
 
 # (key, 中文显示, 简短标签)
 AUTHOR_ROLES: list[tuple[str, str, str]] = [
@@ -2102,6 +2104,22 @@ def _prompt_tier(current: str = "") -> str:
     return _prompt_bib_value("等级 (venuetier)", current, required=False)
 
 
+def _valid_impact_factor(value: str) -> bool:
+    if not clean_text(value):
+        return True
+    return bool(re.fullmatch(r"\d+(?:[.,]\d+)?", clean_text(value)))
+
+
+def _prompt_impact_factor(current: str = "") -> str:
+    """Prompt for journal impact factor. Stored as a plain number-like string."""
+    notice("填写数字即可，如 5.1；留空保留旧值，输 - 清空。", "info")
+    while True:
+        value = _prompt_bib_value("影响因子 (impactfactor)", current, required=False)
+        if _valid_impact_factor(value):
+            return value.replace(",", ".")
+        notice("影响因子请填写数字，例如 5.1。", "warn")
+
+
 def _bib_summary_table(entries: list[dict], config: dict) -> Table:
     table = Table(box=None, show_header=True, padding=(0, 1), header_style="bold cyan")
     table.add_column("idx", style="bold yellow", width=4)
@@ -2109,6 +2127,7 @@ def _bib_summary_table(entries: list[dict], config: dict) -> Table:
     table.add_column("身份", width=6, style="magenta")
     table.add_column("等级", width=10, style="yellow")
     table.add_column("检索", width=10, style="cyan")
+    table.add_column("IF", width=6, style="bright_magenta")
     table.add_column("状态", width=8, style="green")
     table.add_column("摘要", width=4, justify="center")
     table.add_column("venue", style="dim")
@@ -2127,6 +2146,8 @@ def _bib_summary_table(entries: list[dict], config: dict) -> Table:
         tier_cell = Text(_truncate(tier_value, 10)) if tier_value else dim_dash
         index_value = clean_text(entry.get(META_FIELD_VENUEINDEX) or "")
         index_cell = Text(_truncate(index_value, 10)) if index_value else dim_dash
+        impact_value = clean_text(entry.get(META_FIELD_IMPACTFACTOR) or "")
+        impact_cell = Text(_truncate(impact_value, 6)) if impact_value else dim_dash
         accept_key = clean_text(entry.get(META_FIELD_ACCEPTSTATUS) or "")
         accept_text = ACCEPT_KEY_TO_SHORT.get(accept_key, "")
         accept_cell = Text(accept_text) if accept_text and accept_text != "—" else dim_dash
@@ -2137,6 +2158,7 @@ def _bib_summary_table(entries: list[dict], config: dict) -> Table:
             role_cell,
             tier_cell,
             index_cell,
+            impact_cell,
             accept_cell,
             has_abs,
             _truncate(venue, 28),
@@ -2339,6 +2361,10 @@ def _add_bib_entry_guided(
         v = clean_text(codex_meta.get(codex_key) or "")
         if v:
             entry[bib_key] = v
+    if entry_type == "article" and prompt_yes_no("是否填写期刊影响因子 (用于累计 IF)", False):
+        impact_value = _prompt_impact_factor("")
+        if impact_value:
+            entry[META_FIELD_IMPACTFACTOR] = impact_value
     # DOI 优先用联网检索的，其次用 Codex 给的
     doi_value = fetched.get("doi") or codex_meta.get("doi")
     if doi_value:
@@ -2363,6 +2389,7 @@ def _add_bib_entry_guided(
         summary.add_row("我的身份", ROLE_KEY_TO_LABEL.get(role, role))
     summary.add_row("等级", entry.get(META_FIELD_VENUETIER, "[dim](无)[/dim]"))
     summary.add_row("检索", entry.get(META_FIELD_VENUEINDEX, "[dim](无)[/dim]"))
+    summary.add_row("影响因子", entry.get(META_FIELD_IMPACTFACTOR, "[dim](无)[/dim]"))
     summary.add_row(
         "状态",
         ACCEPT_KEY_TO_LABEL.get(entry.get(META_FIELD_ACCEPTSTATUS, ""), "[dim](无)[/dim]"),
@@ -2417,6 +2444,7 @@ def _entry_detail_panel(entry: dict, config: dict) -> Panel:
     has_abs = "[green]✔ 已有[/green]" if clean_text(entry.get("abstract")) else "[red]✘ 缺失[/red]"
     tier_value = clean_text(entry.get(META_FIELD_VENUETIER) or "") or "[dim]—[/dim]"
     index_value = clean_text(entry.get(META_FIELD_VENUEINDEX) or "") or "[dim]—[/dim]"
+    impact_value = clean_text(entry.get(META_FIELD_IMPACTFACTOR) or "") or "[dim]—[/dim]"
     accept_label = ACCEPT_KEY_TO_LABEL.get(
         clean_text(entry.get(META_FIELD_ACCEPTSTATUS) or ""), "[dim]—[/dim]"
     )
@@ -2434,6 +2462,7 @@ def _entry_detail_panel(entry: dict, config: dict) -> Panel:
         f"[cyan]我的身份[/cyan]  [magenta]{role_disp}[/magenta]   "
         f"[cyan]等级[/cyan]  [yellow]{tier_value}[/yellow]   "
         f"[cyan]检索[/cyan]  [bright_cyan]{index_value}[/bright_cyan]   "
+        f"[cyan]IF[/cyan]  [bright_magenta]{impact_value}[/bright_magenta]   "
         f"[cyan]状态[/cyan]  [green]{escape(accept_label) if not accept_label.startswith('[') else accept_label}[/green]\n"
         f"[cyan]摘要[/cyan]  {has_abs}   [cyan]DOI[/cyan]  {doi_disp}"
     )
@@ -2466,6 +2495,7 @@ def _edit_bib_entry_simple(
                 MenuItem("5", "改等级 (venuetier)", "如 CCF A / JCR Q1；可写多个用分号分隔。"),
                 MenuItem("6", "改检索 (venueindex)", "如 SCI / EI / Scopus；逗号分隔。"),
                 MenuItem("7", "改录用状态 (acceptstatus)", "已出版 / 已录用 / 在投。"),
+                MenuItem("i", "改影响因子 (impactfactor)", "用于自动计算累计 IF；可留空。"),
                 MenuItem(
                     "8",
                     "Codex 一键补全此条",
@@ -2554,6 +2584,15 @@ def _edit_bib_entry_simple(
                     entry[META_FIELD_ACCEPTSTATUS] = new_val
                 else:
                     entry.pop(META_FIELD_ACCEPTSTATUS, None)
+                modified = True
+        elif choice in {"i", "I"}:
+            current = clean_text(entry.get(META_FIELD_IMPACTFACTOR) or "")
+            new_val = _prompt_impact_factor(current)
+            if new_val != current:
+                if new_val:
+                    entry[META_FIELD_IMPACTFACTOR] = new_val
+                else:
+                    entry.pop(META_FIELD_IMPACTFACTOR, None)
                 modified = True
         elif choice == "8":
             try:
@@ -2805,11 +2844,13 @@ def _rankings_table(data: dict[str, Any]) -> Table:
     table.add_column("idx", style="bold yellow", width=4)
     table.add_column("venue (substring)", style="cyan")
     table.add_column("tags")
+    table.add_column("IF", style="bright_magenta", width=6)
     table.add_column("color", style="dim", width=10)
     for i, (venue, meta) in enumerate(data.items(), 1):
         tags = ", ".join(meta.get("tags", []) if isinstance(meta, dict) else [])
+        impact_factor = clean_text(str(meta.get("impact_factor", "") if isinstance(meta, dict) else ""))
         color = (meta.get("color", "") if isinstance(meta, dict) else "") or ""
-        table.add_row(str(i), _truncate(venue, 50), tags or "[dim](无)[/dim]", color)
+        table.add_row(str(i), _truncate(venue, 50), tags or "[dim](无)[/dim]", impact_factor or "[dim]—[/dim]", color)
     return table
 
 
@@ -2840,7 +2881,13 @@ def _edit_one_ranking(venue: str | None, current: dict[str, Any]) -> tuple[str, 
         color_default,
     )
 
-    return new_venue, {"tags": tags, "color": color}
+    current_impact = clean_text(str(current.get("impact_factor") or current.get("impactfactor") or ""))
+    impact_factor = _prompt_impact_factor(current_impact)
+
+    new_meta = {"tags": tags, "color": color}
+    if impact_factor:
+        new_meta["impact_factor"] = impact_factor
+    return new_venue, new_meta
 
 
 def rankings_editor() -> None:
@@ -3398,7 +3445,7 @@ def data_entry_menu(config: dict[str, Any], model: str | None, state: dict[str, 
             MenuItem("4", "审稿服务", "审稿期刊会议 + 服务角色。"),
             MenuItem("5", "已发表论文 (papers.bib)", "引导式新增；身份+venue Codex 展开+自动补全。"),
             MenuItem("6", "预印本 (preprints.bib)", "引导式新增；身份+venue Codex 展开+自动补全。"),
-            MenuItem("7", "期刊/会议等级 (rankings.yaml)", "维护 venue → tags / color 映射。"),
+            MenuItem("7", "期刊/会议等级 (rankings.yaml)", "维护 venue → tags / color / IF 映射。"),
             MenuItem("8", "对照编辑中英文", "修正 Codex 翻译；按字段编号编辑。"),
             MenuItem("0", "返回主菜单", ""),
         ]

@@ -1,32 +1,41 @@
 # 模糊匹配规则：如果 key 出现在论文的 journal/booktitle 字段中，则应用对应 tags。
-"Proceedings of the AAAI Conference on Artificial Intelligence":
-  tags: ["CCF A"]
-  color: "red"
-
-"Neurocomputing":
-  tags: ["JCR Q1"]
-  color: "red"
-
-"Biomedical Signal Processing and Control":
-  tags: ["JCR Q1"]
-  color: "red"
-
-"The Visual Computer":
-  tags: ["JCR Q2"]
-  color: "green"
-
-"ICASSP":
-  tags: ["CCF B"]
-  color: "red"
-
-"IEEE Sensors Letters":
-  tags: ["JCR Q2"]
-  color: "green"
-
-"Cognitive Neurodynamics":
-  tags: ["JCR Q2"]
-  color: "green"
-
-"17th Chinese Conference on Biometric Recognition":
-  tags: ["Best Paper Runner-up Award"]
-  color: "yellow"
+Proceedings of the AAAI Conference on Artificial Intelligence:
+  tags:
+  - CCF A
+  color: red
+  impact_factor: '0'
+Neurocomputing:
+  tags:
+  - JCR Q1
+  color: red
+  impact_factor: '6.5'
+Biomedical Signal Processing and Control:
+  tags:
+  - JCR Q1
+  color: red
+  impact_factor: '4.9'
+The Visual Computer:
+  tags:
+  - JCR Q2
+  color: green
+  impact_factor: '2.9'
+ICASSP:
+  tags:
+  - CCF B
+  color: red
+  impact_factor: '0'
+IEEE Sensors Letters:
+  tags:
+  - JCR Q2
+  color: green
+  impact_factor: '2.2'
+Cognitive Neurodynamics:
+  tags:
+  - JCR Q2
+  color: green
+  impact_factor: '3.9'
+17th Chinese Conference on Biometric Recognition:
+  tags:
+  - Best Paper Runner-up Award
+  color: yellow
+  impact_factor: '0'

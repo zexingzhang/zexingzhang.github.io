@@ -172,7 +172,7 @@ def parse_impact_factor(value: object) -> float | None:
         return None
     decimals = [match for match in matches if "." in match]
     number = float((decimals or matches)[0])
-    return number if number >= 0 else None
+    return number if number > 0 else None
 
 
 def format_metric_number(value: float | int | None) -> str:

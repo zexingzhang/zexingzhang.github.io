@@ -50,6 +50,8 @@ OUTPUT_DIR = ROOT / "output"
 DEFAULT_GALLERY = "assets/decorations/gallery"
 DEFAULT_OPTIMIZED_GALLERY = "assets/decorations/gallery_optimized"
 IMAGE_EXTENSIONS = {".png", ".webp", ".jpg", ".jpeg"}
+DEFAULT_WEBP_QUALITY = 64
+DEFAULT_MAX_IMAGE_SIDE = 1000
 
 console = Console()
 
@@ -451,6 +453,7 @@ def edit_basic_info(config: dict[str, Any]) -> None:
     info = config.setdefault("info", {})
     info.setdefault("name", {})
     info.setdefault("title", {})
+    info.setdefault("academic_year", {})
     info.setdefault("location", {})
     config.setdefault("bio", {})
 
@@ -460,6 +463,11 @@ def edit_basic_info(config: dict[str, Any]) -> None:
     set_nested(config, "info.name.zh", prompt_line("中文姓名", get_nested(config, "info.name.zh"), True))
     set_nested(config, "info.name.en", prompt_line("英文姓名", get_nested(config, "info.name.en"), True))
     set_nested(config, "info.title.zh", prompt_line("中文身份/标题", get_nested(config, "info.title.zh"), True))
+    set_nested(
+        config,
+        "info.academic_year.zh",
+        prompt_line("博士年级（如 博一）", get_nested(config, "info.academic_year.zh", "博一")),
+    )
     set_nested(
         config,
         "info.email",
@@ -518,6 +526,7 @@ def _enumerate_bilingual_paths(config: dict[str, Any]) -> list[tuple[str, str]]:
             entries.append((zh_path, en_path))
 
     add("info.title.zh", "info.title.en")
+    add("info.academic_year.zh", "info.academic_year.en")
     add("info.name.zh", "info.name.en")
     add("info.location.zh", "info.location.en")
     add("bio.zh", "bio.en")
@@ -613,6 +622,7 @@ def render_status(config: dict[str, Any], state: dict[str, bool], dirty: bool) -
     name_zh = get_nested(config, "info.name.zh", "(未填)")
     name_en = get_nested(config, "info.name.en", "(no name)")
     title_zh = get_nested(config, "info.title.zh", "(未填身份)")
+    academic_year_zh = get_nested(config, "info.academic_year.zh", "")
     email = get_nested(config, "info.email", "")
     github = get_nested(config, "info.github", "")
     edu_count = len(config.get("education", []) or [])
@@ -640,8 +650,11 @@ def render_status(config: dict[str, Any], state: dict[str, bool], dirty: bool) -
     )
     pub_missing_str = f" ({pub_missing} 缺摘要)" if pub_missing else ""
     pre_missing_str = f" ({pre_missing} 缺摘要)" if pre_missing else ""
+    profile_bits = [str(title_zh)]
+    if academic_year_zh:
+        profile_bits.append(str(academic_year_zh))
     body = (
-        f"[bold cyan]{name_zh}[/bold cyan] / {name_en}  ·  {title_zh}\n"
+        f"[bold cyan]{name_zh}[/bold cyan] / {name_en}  ·  {' · '.join(profile_bits)}\n"
         f"{contact_line}\n\n"
         f"教育 [bold]{edu_count}[/bold] 条 │ "
         f"活动 [bold]{act_count}[/bold] 条 │ "
@@ -866,6 +879,7 @@ def translation_targets(config: dict[str, Any]) -> dict[str, str]:
             targets[en_path] = value
 
     add("info.title.en", "info.title.zh")
+    add("info.academic_year.en", "info.academic_year.zh")
     add("info.location.en", "info.location.zh")
     add("bio.en", "bio.zh")
     add("research_profile.en", "research_profile.zh")
@@ -3166,23 +3180,23 @@ def optimize_gallery_wizard(config: dict[str, Any]) -> dict[str, Any]:
     preset = choose_menu(
         "图片压缩方案",
         [
-            MenuItem("1", "均衡推荐", "WebP quality=84，最长边 1600。适合高质量透明素材。"),
-            MenuItem("2", "高清优先", "WebP quality=92，最长边 2200。文件更大但细节更稳。"),
-            MenuItem("3", "速度优先", "WebP quality=78，最长边 1200。加载最快。"),
+            MenuItem("1", "均衡推荐", "WebP quality=64，最长边 1000。默认更小，适合网页快速加载。"),
+            MenuItem("2", "高清优先", "WebP quality=72，最长边 1200。文件稍大但细节更稳。"),
+            MenuItem("3", "速度优先", "WebP quality=58，最长边 900。加载最快。"),
             MenuItem("4", "自定义", "手动输入质量和最长边。"),
         ],
         default="1",
     )
 
     if preset == "1":
-        quality, max_side = 84, 1600
+        quality, max_side = DEFAULT_WEBP_QUALITY, DEFAULT_MAX_IMAGE_SIDE
     elif preset == "2":
-        quality, max_side = 92, 2200
+        quality, max_side = 72, 1200
     elif preset == "3":
-        quality, max_side = 78, 1200
+        quality, max_side = 58, 900
     else:
-        quality = int(prompt_line("WebP 质量 1-100", "86", True))
-        max_side = int(prompt_line("最长边像素", "1600", True))
+        quality = int(prompt_line("WebP 质量 1-100", str(DEFAULT_WEBP_QUALITY), True))
+        max_side = int(prompt_line("最长边像素", str(DEFAULT_MAX_IMAGE_SIDE), True))
         quality = max(1, min(100, quality))
         max_side = max(320, max_side)
 
@@ -3329,8 +3343,8 @@ def prepare_publish_assets(config: dict[str, Any], config_path: Path) -> tuple[d
             config,
             DEFAULT_GALLERY,
             DEFAULT_OPTIMIZED_GALLERY,
-            quality=84,
-            max_side=1600,
+            quality=DEFAULT_WEBP_QUALITY,
+            max_side=DEFAULT_MAX_IMAGE_SIDE,
             update_config=True,
         )
     else:
@@ -3732,8 +3746,18 @@ def main() -> int:
         default=DEFAULT_OPTIMIZED_GALLERY,
         help="优化输出目录，相对 output/",
     )
-    parser.add_argument("--quality", type=int, default=84, help="WebP 质量，默认 84")
-    parser.add_argument("--max-side", type=int, default=1600, help="最长边像素，默认 1600")
+    parser.add_argument(
+        "--quality",
+        type=int,
+        default=DEFAULT_WEBP_QUALITY,
+        help=f"WebP 质量，默认 {DEFAULT_WEBP_QUALITY}",
+    )
+    parser.add_argument(
+        "--max-side",
+        type=int,
+        default=DEFAULT_MAX_IMAGE_SIDE,
+        help=f"最长边像素，默认 {DEFAULT_MAX_IMAGE_SIDE}",
+    )
     parser.add_argument(
         "--workers",
         type=int,

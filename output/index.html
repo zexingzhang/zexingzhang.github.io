@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -173,6 +173,50 @@
             padding: 8px 10px;
         }
 
+        .lang-toggle {
+            display: inline-grid;
+            place-items: center;
+            min-width: 58px;
+            overflow: hidden;
+            border-color: rgba(35, 106, 115, 0.22);
+            background: rgba(255, 255, 255, 0.58);
+            color: var(--accent-strong);
+            font-weight: 820;
+            box-shadow: 0 8px 22px rgba(32, 37, 43, 0.05);
+        }
+
+        .lang-toggle::before {
+            content: "";
+            position: absolute;
+            inset: -55% 70% -55% -80%;
+            background: linear-gradient(105deg, transparent, rgba(255, 255, 255, 0.86), transparent);
+            transform: translateX(-120%) rotate(10deg);
+            pointer-events: none;
+        }
+
+        .lang-toggle::after {
+            content: "";
+            position: absolute;
+            inset: 4px;
+            border: 1px solid rgba(214, 95, 69, 0.22);
+            border-radius: 6px;
+            opacity: 0;
+            transform: scale(0.82);
+            pointer-events: none;
+        }
+
+        .lang-toggle.is-switching {
+            animation: langTogglePop 520ms cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .lang-toggle.is-switching::before {
+            animation: langToggleShine 520ms ease;
+        }
+
+        .lang-toggle.is-switching::after {
+            animation: langToggleRing 520ms ease;
+        }
+
         .nav a::after {
             content: "";
             position: absolute;
@@ -314,6 +358,22 @@
         .byline strong {
             color: var(--accent-strong);
             font-weight: 820;
+        }
+
+        .academic-year {
+            display: inline-flex;
+            align-items: center;
+            min-height: 22px;
+            padding: 1px 8px;
+            border: 1px solid rgba(35, 106, 115, 0.18);
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.52);
+            color: var(--accent-strong);
+            font-size: 12px;
+            font-weight: 780;
+            line-height: 1.4;
+            white-space: nowrap;
+            vertical-align: 1px;
         }
 
         .hero-title {
@@ -463,8 +523,11 @@
             border-radius: var(--radius);
             background: rgba(255, 255, 255, 0.76);
             color: var(--ink);
+            font-family: inherit;
             font-size: 13px;
             font-weight: 700;
+            line-height: 1.2;
+            cursor: pointer;
             transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease, color 180ms ease;
         }
 
@@ -478,6 +541,10 @@
             border-color: rgba(35, 106, 115, 0.34);
             color: var(--accent-strong);
             box-shadow: 0 14px 36px rgba(35, 106, 115, 0.11);
+        }
+
+        .icon-link.is-paused {
+            cursor: default;
         }
 
         .research-panel {
@@ -1474,6 +1541,41 @@
             transform: translateY(0);
         }
 
+        body.language-switching [data-lang] {
+            animation: languageContentIn 430ms cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        @keyframes langTogglePop {
+            0% { transform: translateY(0) scale(1); }
+            38% { transform: translateY(-2px) scale(1.08); }
+            100% { transform: translateY(0) scale(1); }
+        }
+
+        @keyframes langToggleShine {
+            0% { transform: translateX(-120%) rotate(10deg); opacity: 0; }
+            25% { opacity: 1; }
+            100% { transform: translateX(250%) rotate(10deg); opacity: 0; }
+        }
+
+        @keyframes langToggleRing {
+            0% { opacity: 0; transform: scale(0.82); }
+            38% { opacity: 1; transform: scale(1.02); }
+            100% { opacity: 0; transform: scale(1.22); }
+        }
+
+        @keyframes languageContentIn {
+            0% {
+                opacity: 0;
+                transform: translateY(6px);
+                filter: blur(2px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+                filter: blur(0);
+            }
+        }
+
         @media (prefers-reduced-motion: reduce) {
             *,
             *::before,
@@ -1600,7 +1702,7 @@
         }
     </style>
 </head>
-<body class="lang-zh">
+<body class="lang-en">
 
 
 
@@ -1641,7 +1743,7 @@
                     <span data-lang="zh">学术服务</span>
                     <span data-lang="en">Service</span>
                 </a>
-                <button class="lang-toggle" id="lang-toggle" type="button" aria-label="Switch language">EN</button>
+                <button class="lang-toggle" id="lang-toggle" type="button" aria-label="Switch to Chinese">中文</button>
             </nav>
         </header>
 
@@ -1673,6 +1775,13 @@
                         <span> · </span>
                         <span data-lang="zh">国防科技大学博士研究生</span>
                         <span data-lang="en">Ph.D. Student, National University of Defense Technology</span>
+
+                        <span> · </span>
+                        <span class="academic-year">
+                            <span data-lang="zh">博一</span>
+                            <span data-lang="en">Ph.D. Year 1</span>
+                        </span>
+
                     </p>
                     <p class="hero-title">
                         <span data-lang="zh">研究基础模型驱动的智能感知与自主决策。</span>
@@ -1780,16 +1889,16 @@
                     </div>
                     <div class="hero-actions">
 
-                        <a class="icon-link" href="https://scholar.google.com/citations?user=u5F7xvYAAAAJ&amp;hl=zh-CN" target="_blank" rel="noreferrer" aria-label="Google Scholar">
+                        <button class="icon-link is-paused" type="button" aria-disabled="true" aria-label="Google Scholar" title="Google Scholar link temporarily disabled">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="M6 11v4c2 2 10 2 12 0v-4"/><path d="M21 8v7"/></svg>
                             Scholar
-                        </a>
+                        </button>
 
 
-                        <a class="icon-link" href="https://github.com/zhangzexing" target="_blank" rel="noreferrer" aria-label="GitHub">
+                        <button class="icon-link is-paused" type="button" aria-disabled="true" aria-label="GitHub" title="GitHub link temporarily disabled">
                             <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.18-3.37-1.18-.45-1.16-1.1-1.47-1.1-1.47-.9-.62.07-.6.07-.6 1 .07 1.53 1.04 1.53 1.04.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.08.63-1.33-2.22-.25-4.55-1.11-4.55-4.95 0-1.09.39-1.99 1.03-2.69-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.03A9.5 9.5 0 0 1 12 6c.85 0 1.7.11 2.5.34 1.9-1.3 2.74-1.03 2.74-1.03.55 1.38.2 2.4.1 2.65.64.7 1.03 1.6 1.03 2.69 0 3.85-2.34 4.69-4.57 4.94.36.31.68.92.68 1.86V21c0 .26.18.58.69.48A10 10 0 0 0 12 2Z"/></svg>
                             GitHub
-                        </a>
+                        </button>
 
                         <a class="icon-link" href="mailto:zhangzexing1999@163.com" aria-label="Email">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><path d="M4 6h16v12H4z"/><path d="m4 7 8 6 8-6"/></svg>
@@ -3041,7 +3150,10 @@
             const body = document.body;
             const langToggle = document.getElementById("lang-toggle");
             const progress = document.getElementById("scroll-progress");
-            const storedLang = localStorage.getItem("homepage-language") || "zh";
+            const languageStorageKey = "homepage-language-v2";
+            const storedLang = localStorage.getItem(languageStorageKey);
+            const initialLang = storedLang === "zh" || storedLang === "en" ? storedLang : "en";
+            const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
             function shuffled(items) {
                 const copy = [...items];
@@ -3060,17 +3172,38 @@
                 });
             }
 
-            function setLanguage(lang) {
-                body.classList.toggle("lang-en", lang === "en");
-                body.classList.toggle("lang-zh", lang !== "en");
-                document.documentElement.lang = lang === "en" ? "en" : "zh-CN";
-                langToggle.textContent = lang === "en" ? "中文" : "EN";
-                localStorage.setItem("homepage-language", lang);
+            function setLanguage(lang, options = {}) {
+                const normalized = lang === "zh" ? "zh" : "en";
+                body.classList.toggle("lang-en", normalized === "en");
+                body.classList.toggle("lang-zh", normalized !== "en");
+                document.documentElement.lang = normalized === "en" ? "en" : "zh-CN";
+                langToggle.textContent = normalized === "en" ? "中文" : "EN";
+                langToggle.dataset.currentLang = normalized;
+                langToggle.setAttribute("aria-pressed", String(normalized === "en"));
+                langToggle.setAttribute(
+                    "aria-label",
+                    normalized === "en" ? "Switch to Chinese" : "Switch to English"
+                );
+                langToggle.title = normalized === "en" ? "Switch to Chinese" : "Switch to English";
+                localStorage.setItem(languageStorageKey, normalized);
+
+                if (options.animate && !reduceMotion.matches) {
+                    body.classList.remove("language-switching");
+                    langToggle.classList.remove("is-switching");
+                    window.requestAnimationFrame(() => {
+                        body.classList.add("language-switching");
+                        langToggle.classList.add("is-switching");
+                        window.setTimeout(() => {
+                            body.classList.remove("language-switching");
+                            langToggle.classList.remove("is-switching");
+                        }, 560);
+                    });
+                }
             }
 
-            setLanguage(storedLang);
+            setLanguage(initialLang);
             langToggle.addEventListener("click", () => {
-                setLanguage(body.classList.contains("lang-en") ? "zh" : "en");
+                setLanguage(body.classList.contains("lang-en") ? "zh" : "en", { animate: true });
             });
 
             function updateProgress() {

@@ -125,7 +125,7 @@ decorations:
 py scripts/profile_wizard.py --compress-gallery
 ```
 
-脚本会保留原图，输出 WebP 优化版到 `output/assets/decorations/gallery_optimized/`，并默认把网页图库切换到优化目录。压缩使用 `ProcessPoolExecutor`（spawn 模式）并行，默认进程数 = `min(8, cpu_count)`，700+ 张图通常能拿到 4-6 倍加速。
+脚本会保留原图，输出 WebP 优化版到 `output/assets/decorations/gallery_optimized/`，并默认把网页图库切换到优化目录。默认压缩参数是 `quality=64`、最长边 `1000px`，偏向更快加载；需要更高清时可传 `--quality` / `--max-side`。压缩使用 `ProcessPoolExecutor`（spawn 模式）并行，默认进程数 = `min(8, cpu_count)`，700+ 张图通常能拿到 4-6 倍加速。
 
 ## 论文 / 预印本 / 期刊等级
 

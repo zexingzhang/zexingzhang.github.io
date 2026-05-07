@@ -50,8 +50,8 @@ OUTPUT_DIR = ROOT / "output"
 DEFAULT_GALLERY = "assets/decorations/gallery"
 DEFAULT_OPTIMIZED_GALLERY = "assets/decorations/gallery_optimized"
 IMAGE_EXTENSIONS = {".png", ".webp", ".jpg", ".jpeg"}
-DEFAULT_WEBP_QUALITY = 64
-DEFAULT_MAX_IMAGE_SIDE = 1000
+DEFAULT_WEBP_QUALITY = 52
+DEFAULT_MAX_IMAGE_SIDE = 750
 
 console = Console()
 
@@ -3067,6 +3067,14 @@ def _decide_workers(image_count: int, requested: int | None = None) -> int:
     return max(1, min(8, cpu, image_count))
 
 
+def path_size_bytes(path: Path) -> int:
+    if not path.exists():
+        return 0
+    if path.is_file():
+        return path.stat().st_size
+    return sum(item.stat().st_size for item in path.rglob("*") if item.is_file())
+
+
 def optimize_gallery(
     config: dict[str, Any],
     source_rel: str,
@@ -3172,6 +3180,67 @@ def optimize_gallery(
     return config
 
 
+def optimize_gallery_to_target(
+    config: dict[str, Any],
+    source_rel: str,
+    target_rel: str,
+    quality: int,
+    max_side: int,
+    update_config: bool,
+    target_mb: float,
+    workers: int | None = None,
+    min_quality: int = 36,
+    min_side: int = 560,
+    max_attempts: int = 4,
+) -> dict[str, Any]:
+    target_bytes = int(max(0.1, target_mb) * 1024 * 1024)
+    target_dir = output_relative_path(target_rel)
+    attempt_quality = max(min_quality, min(100, quality))
+    attempt_side = max(min_side, max_side)
+
+    for attempt in range(1, max(1, max_attempts) + 1):
+        notice(
+            f"目标压缩第 {attempt}/{max_attempts} 轮："
+            f"quality={attempt_quality}，最长边={attempt_side}，目标≈{target_mb:.1f} MB。",
+            "info",
+        )
+        config = optimize_gallery(
+            config,
+            source_rel,
+            target_rel,
+            attempt_quality,
+            attempt_side,
+            update_config,
+            workers=workers,
+        )
+        current_bytes = path_size_bytes(target_dir)
+        current_mb = current_bytes / 1024 / 1024
+        if current_bytes <= target_bytes:
+            notice(f"已达到目标：当前约 {current_mb:.2f} MB。", "ok")
+            return config
+        if attempt >= max_attempts:
+            notice(
+                f"未完全达到目标：当前约 {current_mb:.2f} MB，"
+                f"可继续降低 --min-quality / --min-side 或手动设更小 --quality / --max-side。",
+                "warn",
+            )
+            return config
+
+        ratio = target_bytes / max(1, current_bytes)
+        next_quality = max(min_quality, int(attempt_quality * max(0.62, ratio ** 0.35)))
+        next_side = max(min_side, int(attempt_side * max(0.72, ratio ** 0.5)))
+        if next_quality == attempt_quality and next_side == attempt_side:
+            next_quality = max(min_quality, attempt_quality - 6)
+            if next_quality == attempt_quality:
+                next_side = max(min_side, attempt_side - 80)
+        if next_quality == attempt_quality and next_side == attempt_side:
+            notice("已经到达设置的质量/尺寸下限，停止自动压缩。", "warn")
+            return config
+        attempt_quality, attempt_side = next_quality, next_side
+
+    return config
+
+
 def optimize_gallery_wizard(config: dict[str, Any]) -> dict[str, Any]:
     section_title("压缩透明装饰图库")
     current_gallery = gallery_source(config)
@@ -3180,20 +3249,29 @@ def optimize_gallery_wizard(config: dict[str, Any]) -> dict[str, Any]:
     preset = choose_menu(
         "图片压缩方案",
         [
-            MenuItem("1", "均衡推荐", "WebP quality=64，最长边 1000。默认更小，适合网页快速加载。"),
-            MenuItem("2", "高清优先", "WebP quality=72，最长边 1200。文件稍大但细节更稳。"),
-            MenuItem("3", "速度优先", "WebP quality=58，最长边 900。加载最快。"),
+            MenuItem("1", "均衡推荐", "WebP quality=52，最长边 750。默认更小，适合网页快速加载。"),
+            MenuItem("2", "高清优先", "WebP quality=64，最长边 1000。文件稍大但细节更稳。"),
+            MenuItem("3", "速度优先", "WebP quality=48，最长边 700。加载最快。"),
             MenuItem("4", "自定义", "手动输入质量和最长边。"),
+            MenuItem("5", "目标体积", "输入目标总 MB，脚本自动多轮调低 quality / 最长边。"),
         ],
         default="1",
     )
 
+    target_mb: float | None = None
     if preset == "1":
         quality, max_side = DEFAULT_WEBP_QUALITY, DEFAULT_MAX_IMAGE_SIDE
     elif preset == "2":
-        quality, max_side = 72, 1200
+        quality, max_side = 64, 1000
     elif preset == "3":
-        quality, max_side = 58, 900
+        quality, max_side = 48, 700
+    elif preset == "5":
+        quality, max_side = DEFAULT_WEBP_QUALITY, DEFAULT_MAX_IMAGE_SIDE
+        try:
+            target_mb = float(prompt_line("目标图库总大小 MB", "25", True))
+        except ValueError:
+            notice("无法解析目标大小，已回退到默认压缩。", "warn")
+            target_mb = None
     else:
         quality = int(prompt_line("WebP 质量 1-100", str(DEFAULT_WEBP_QUALITY), True))
         max_side = int(prompt_line("最长边像素", str(DEFAULT_MAX_IMAGE_SIDE), True))
@@ -3213,6 +3291,17 @@ def optimize_gallery_wizard(config: dict[str, Any]) -> dict[str, Any]:
     except ValueError:
         workers = default_workers
         notice(f"无法解析进程数，已回退到 {workers}。", "warn")
+    if target_mb:
+        return optimize_gallery_to_target(
+            config,
+            source_rel,
+            target_rel,
+            quality,
+            max_side,
+            update_config,
+            target_mb,
+            workers=workers,
+        )
     return optimize_gallery(
         config, source_rel, target_rel, quality, max_side, update_config, workers=workers
     )
@@ -3759,6 +3848,30 @@ def main() -> int:
         help=f"最长边像素，默认 {DEFAULT_MAX_IMAGE_SIDE}",
     )
     parser.add_argument(
+        "--target-mb",
+        type=float,
+        default=0,
+        help="目标优化图库总大小（MB）；大于 0 时自动多轮调低 quality / 最长边",
+    )
+    parser.add_argument(
+        "--min-quality",
+        type=int,
+        default=36,
+        help="配合 --target-mb 使用的最低 WebP 质量，默认 36",
+    )
+    parser.add_argument(
+        "--min-side",
+        type=int,
+        default=560,
+        help="配合 --target-mb 使用的最小最长边像素，默认 560",
+    )
+    parser.add_argument(
+        "--target-attempts",
+        type=int,
+        default=4,
+        help="配合 --target-mb 使用的最多自动压缩轮数，默认 4",
+    )
+    parser.add_argument(
         "--workers",
         type=int,
         default=0,
@@ -3785,15 +3898,32 @@ def main() -> int:
 
     if args.compress_gallery:
         source_rel = args.gallery_source or gallery_source(config)
-        config = optimize_gallery(
-            config,
-            source_rel,
-            args.gallery_output,
-            max(1, min(100, args.quality)),
-            max(320, args.max_side),
-            not args.no_update_gallery_config,
-            workers=args.workers if args.workers else None,
-        )
+        quality = max(1, min(100, args.quality))
+        max_side = max(320, args.max_side)
+        if args.target_mb and args.target_mb > 0:
+            config = optimize_gallery_to_target(
+                config,
+                source_rel,
+                args.gallery_output,
+                quality,
+                max_side,
+                not args.no_update_gallery_config,
+                args.target_mb,
+                workers=args.workers if args.workers else None,
+                min_quality=max(1, min(100, args.min_quality)),
+                min_side=max(320, args.min_side),
+                max_attempts=max(1, args.target_attempts),
+            )
+        else:
+            config = optimize_gallery(
+                config,
+                source_rel,
+                args.gallery_output,
+                quality,
+                max_side,
+                not args.no_update_gallery_config,
+                workers=args.workers if args.workers else None,
+            )
         save_config(args.config, config)
         if not args.no_build:
             run_build()

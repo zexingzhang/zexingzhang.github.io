@@ -1017,7 +1017,93 @@
         }
 
         .service-card {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.88), rgba(247, 250, 249, 0.84));
+            grid-column: 1 / -1;
+            position: relative;
+            overflow: hidden;
+            padding: 20px 22px 22px;
+            background:
+                linear-gradient(135deg, rgba(255, 255, 255, 0.94), rgba(241, 248, 247, 0.88));
+        }
+
+        .service-card::after {
+            content: "";
+            position: absolute;
+            inset: 0 auto 0 0;
+            width: 4px;
+            background: linear-gradient(180deg, var(--accent), var(--olive));
+            opacity: 0.86;
+        }
+
+        .service-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .service-intro {
+            max-width: 900px;
+            margin: 0;
+            color: #35434c;
+            font-size: 15px;
+            line-height: 1.7;
+        }
+
+        .service-groups {
+            display: grid;
+            grid-template-columns: minmax(0, 2fr) minmax(250px, 0.85fr);
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .service-group {
+            padding: 14px 15px 15px;
+            border: 1px solid rgba(35, 106, 115, 0.13);
+            border-radius: var(--radius);
+            background: rgba(255, 255, 255, 0.64);
+        }
+
+        .service-group-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+            color: var(--accent-strong);
+            font-size: 11px;
+            font-weight: 820;
+            letter-spacing: 0.09em;
+            text-transform: uppercase;
+        }
+
+        .service-group-label::before {
+            content: "";
+            width: 18px;
+            height: 2px;
+            border-radius: 999px;
+            background: var(--coral);
+        }
+
+        .service-venue-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+        }
+
+        .service-venue {
+            display: inline-flex;
+            align-items: center;
+            min-height: 30px;
+            padding: 5px 9px;
+            border: 1px solid rgba(35, 106, 115, 0.14);
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.78);
+            color: #33454d;
+            font-size: 12px;
+            font-weight: 660;
+            line-height: 1.35;
+        }
+
+        .service-group--conference .service-venue {
+            border-color: rgba(112, 141, 56, 0.22);
+            background: rgba(244, 248, 236, 0.88);
+            color: #445725;
         }
 
         .activity-card,
@@ -1632,6 +1718,10 @@
             .activity-grid {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
             }
+
+            .service-groups {
+                grid-template-columns: 1fr;
+            }
         }
 
         @media (max-width: 620px) {
@@ -2166,18 +2256,51 @@
                 </div>
                 <div class="activity-grid">
                     {% if reviewing.venues %}
+                    {% set conference_venues = reviewing.conference_venues or [] %}
+                    {% set venue_display = reviewing.venue_display or {} %}
                     <article class="activity-card service-card">
                         <div class="activity-meta">
-                            <span class="activity-date">Service</span>
+                            <span class="activity-date">
+                                <span data-lang="zh">同行评审</span>
+                                <span data-lang="en">Peer Review</span>
+                            </span>
                             <span>
                                 <span data-lang="zh">{{ reviewing.role.zh or "审稿服务" }}</span>
                                 <span data-lang="en">{{ reviewing.role.en or "Reviewer" }}</span>
                             </span>
                         </div>
-                        <p class="activity-title">
-                            <span data-lang="zh">审稿服务：{{ reviewing.venues | join("、") }} 等期刊/会议。</span>
-                            <span data-lang="en">Reviewing service: {{ reviewing.venues | join(", ") }}.</span>
+                        <p class="service-intro">
+                            <span data-lang="zh">{{ reviewing.intro.zh or "受邀为国际期刊和会议提供同行评审。" }}</span>
+                            <span data-lang="en">{{ reviewing.intro.en or "Invited to provide peer review for international journals and conferences." }}</span>
                         </p>
+                        <div class="service-groups">
+                            <div class="service-group">
+                                <div class="service-group-label">
+                                    <span data-lang="zh">国际期刊</span>
+                                    <span data-lang="en">International Journals</span>
+                                </div>
+                                <div class="service-venue-list" role="list">
+                                    {% for venue in reviewing.venues %}
+                                    {% if venue not in conference_venues %}
+                                    <span class="service-venue" role="listitem">{{ venue_display.get(venue, venue) }}</span>
+                                    {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="service-group service-group--conference">
+                                <div class="service-group-label">
+                                    <span data-lang="zh">国际会议</span>
+                                    <span data-lang="en">International Conferences</span>
+                                </div>
+                                <div class="service-venue-list" role="list">
+                                    {% for venue in reviewing.venues %}
+                                    {% if venue in conference_venues %}
+                                    <span class="service-venue" role="listitem">{{ venue_display.get(venue, venue) }}</span>
+                                    {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
                     </article>
                     {% endif %}
                     {% for act in activities %}

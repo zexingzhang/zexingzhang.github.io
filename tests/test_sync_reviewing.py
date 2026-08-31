@@ -70,6 +70,13 @@ class ReviewingSyncTests(unittest.TestCase):
         )
         self.assertEqual(classify_eml(path, self.rules), ("accepted", "ICIC"))
 
+    def test_new_journal_alias(self) -> None:
+        path = self.sample(
+            "Review submission confirmation - Scientific Reports",
+            "We have received your review for Scientific Reports.",
+        )
+        self.assertEqual(classify_eml(path, self.rules), ("completed", "Scientific Reports"))
+
     def test_attachments_are_ignored(self) -> None:
         message = EmailMessage()
         message["From"] = "editor@journal.example"

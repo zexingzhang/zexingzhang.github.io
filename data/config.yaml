@@ -108,14 +108,34 @@ activities:
     en: Xuzhou, China
 reviewing:
   role:
-    zh: 审稿服务
-    en: Reviewing Service
-  venues:
+    zh: 代表性同行评审服务
+    en: Selected Peer-Review Service
+  intro:
+    zh: 受邀为人工智能、多媒体与生物医学计算领域的国际期刊和会议提供同行评审。
+    en: Invited to provide peer review for international journals and conferences across artificial intelligence, multimedia, and biomedical computing.
+  conference_venues:
   - AAAI
+  - ICIC
+  venues:
+  - Scientific Reports
+  - Computers in Biology and Medicine
+  - NEUCOM
   - ESWA
   - EAAI
   - JBHI
-  - NEUCOM
+  - Multimedia Systems
+  - Signal, Image and Video Processing
+  - Computing
+  - Discover Computing
+  - AAAI
+  - ICIC
+  venue_display:
+    AAAI: AAAI Conference on Artificial Intelligence
+    ESWA: Expert Systems with Applications
+    EAAI: Engineering Applications of Artificial Intelligence
+    JBHI: IEEE Journal of Biomedical and Health Informatics
+    NEUCOM: Neurocomputing
+    ICIC: International Conference on Intelligent Computing (ICIC)
 decorations:
   gallery_dir: assets/decorations/gallery_optimized
   hero:

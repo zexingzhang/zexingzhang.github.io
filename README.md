@@ -167,3 +167,19 @@ py scripts/profile_wizard.py --classify-research
 ```
 
 审稿服务可在交互式向导中选择 `1` → `4` 维护（期刊/会议列表 + 服务角色）。
+
+## 论文自动同步
+
+每周一由 GitHub Actions 自动运行 `scripts/sync_publications.py`。同步器组合使用 Crossref ORCID、DBLP、OpenAlex 与 arXiv：
+
+- DOI 已存在的条目会自动补齐作者、卷期、页码、出版社和出版状态，同时保留手工设置的作者身份、会议/期刊等级与摘要。
+- 新论文只有在 ORCID/DBLP 精确命中，或 OpenAlex/arXiv 同时命中可信单位或合作者时才会写入，降低同名作者误收风险。
+- OpenAlex 已知的同名误合并 DOI 和 Zenodo 镜像列在 `data/publication_sync.yaml` 中排除；身份标识、可信单位与合作者也在该文件维护。
+- 数据发生变化时，工作流会自动构建、提交、推送并部署主页；没有新内容时不会产生空提交。
+
+本地手动同步或只预览：
+
+```powershell
+py scripts/sync_publications.py
+py scripts/sync_publications.py --dry-run
+```

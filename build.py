@@ -379,6 +379,35 @@ def process_all_papers(published_raw, preprints_raw, rankings, info):
     return published_papers, preprint_papers, dict(stats)
 
 
+def generated_achievement_summary(stats: dict) -> dict[str, str]:
+    """Build the bilingual summary from live publication statistics."""
+    tier_specs = [
+        ("ccf_a", "CCF A"),
+        ("ccf_b", "CCF B"),
+        ("ccf_c", "CCF C"),
+        ("jcr_q1", "JCR Q1"),
+        ("jcr_q2", "JCR Q2"),
+        ("jcr_q3", "JCR Q3"),
+        ("jcr_q4", "JCR Q4"),
+    ]
+    tier_zh = "、".join(f"{label} {stats[key]}篇" for key, label in tier_specs if stats.get(key))
+    tier_en = ", ".join(f"{stats[key]} {label}" for key, label in tier_specs if stats.get(key))
+    zh = f"发表/录用论文{stats['total']}篇"
+    en = f"Published or accepted {stats['total']} papers"
+    if tier_zh:
+        zh += f"，包括{tier_zh}"
+        en += f", including {tier_en} papers"
+    zh += (
+        f"；第一/共同第一作者{stats['first_total']}篇，"
+        f"通讯/共同通讯作者{stats['corresponding_total']}篇。"
+    )
+    en += (
+        f"; {stats['first_total']} as first/co-first author and "
+        f"{stats['corresponding_total']} as corresponding/co-corresponding author."
+    )
+    return {"zh": zh, "en": en}
+
+
 def linebreaks(value: str | None) -> Markup:
     text = str(value or "")
     text = re.sub(r"<br\s*/?>", "\n", text, flags=re.IGNORECASE)
@@ -422,6 +451,12 @@ def build():
     )[:4]
     decorations = config.get("decorations") or {}
     decoration_gallery = collect_gallery_assets(decorations)
+    achievement_config = config.get("achievement_summary") or {}
+    achievement_summary = (
+        generated_achievement_summary(stats)
+        if achievement_config.get("auto")
+        else achievement_config
+    )
 
     env = Environment(
         loader=FileSystemLoader(str(ROOT)),
@@ -440,7 +475,7 @@ def build():
         education=config.get("education", []),
         activities=config.get("activities", []),
         reviewing=config.get("reviewing", {}),
-        achievement_summary=config.get("achievement_summary", {}),
+        achievement_summary=achievement_summary,
         decorations=decorations,
         decoration_gallery=decoration_gallery,
         papers=papers,

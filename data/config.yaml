@@ -122,7 +122,8 @@ decorations:
   publications:
     image: ''
 achievement_summary:
-  zh: 发表/录用论文17篇，包括CCF A 3篇、B 1篇、C 1篇，JCR Q1 2篇、Q2 2篇；第一/共同第一作者8篇，通信/共同通信作者2篇。
-  en: Published or accepted 17 papers, including 3 CCF A, 1 CCF B, 1 CCF C, 2 JCR
+  auto: true
+  zh: 发表/录用论文20篇，包括CCF A 3篇、CCF B 1篇、CCF C 1篇、JCR Q1 2篇、JCR Q2 2篇；第一/共同第一作者8篇，通讯/共同通讯作者2篇。
+  en: Published or accepted 20 papers, including 3 CCF A, 1 CCF B, 1 CCF C, 2 JCR
     Q1, and 2 JCR Q2 papers; 8 as first/co-first author and 2 as corresponding/co-corresponding
     author.

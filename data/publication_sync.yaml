@@ -1,0 +1,44 @@
+profile:
+  name: Zexing Zhang
+  scholar_user_id: u5F7xvYAAAAJ
+  orcid: 0009-0001-9938-4766
+  openalex_author_id: A5104312286
+  dblp_pid: 362/7090
+  contact_email: zhangzexing1999@163.com
+
+# OpenAlex occasionally merges homonymous authors. A work is accepted from that
+# source only when the target authorship has one of these affiliations or the
+# paper includes a trusted coauthor.
+trusted_affiliations:
+  - National University of Defense Technology
+  - Changchun University of Technology
+  - Inner Mongolia Normal University
+  - Donghua University
+
+trusted_coauthors:
+  - Huimin Lu
+  - Qingxin Zhao
+  - Jinghang Wang
+  - Bin Yang
+  - Songzhe Ma
+  - Chenglin Lin
+  - Bingwang Dong
+  - Yilong Wang
+  - Tianyang Lei
+  - Jichao Li
+  - Kewei Yang
+  - Wenbo Tan
+  - Jianwei Guo
+  - Saheya Barintag
+
+# Known records incorrectly merged into the OpenAlex author cluster.
+excluded_dois:
+  - 10.1016/j.polymer.2025.129549
+  - 10.1016/j.polymer.2025.129425
+  - 10.1016/j.heliyon.2024.e34603
+  - 10.1016/j.eurpolymj.2024.113136
+  - 10.3390/pr11051484
+
+# Zenodo mirrors can duplicate the canonical arXiv record.
+ignored_doi_prefixes:
+  - 10.5281/zenodo

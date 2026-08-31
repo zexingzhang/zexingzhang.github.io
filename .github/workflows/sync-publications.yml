@@ -1,0 +1,64 @@
+name: Sync Publications
+
+on:
+  schedule:
+    - cron: "23 2 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publication-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Discover and enrich publications
+        run: python scripts/sync_publications.py
+
+      - name: Detect publication changes
+        id: changes
+        shell: bash
+        run: |
+          if git diff --quiet -- data/papers.bib data/preprints.bib; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Build updated homepage
+        if: steps.changes.outputs.changed == 'true'
+        run: python build.py
+
+      - name: Commit publication update
+        if: steps.changes.outputs.changed == 'true'
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/papers.bib data/preprints.bib output/index.html
+          git commit -m "Auto-update publications"
+          git push
+
+      - name: Deploy updated homepage
+        if: steps.changes.outputs.changed == 'true'
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./output

@@ -24,6 +24,11 @@ ICASSP:
   - CCF B
   color: red
   impact_factor: '0'
+International Conference on Intelligent Computing:
+  tags:
+  - CCF C
+  color: yellow
+  impact_factor: '0'
 IEEE Sensors Letters:
   tags:
   - JCR Q2

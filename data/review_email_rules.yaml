@@ -1,0 +1,132 @@
+# Public-safe rules for scripts/sync_reviewing.py.
+#
+# Only accepted/completed review messages are publishable. Venue extraction is
+# allow-list based: an unknown journal or conference is counted in the workflow
+# summary but is never guessed or written to the homepage.
+
+imap:
+  host: imap.exmail.qq.com
+  port: 993
+  header_batch_size: 100
+  max_text_part_bytes: 262144
+  max_message_text_chars: 300000
+  max_mime_parts: 20
+
+publish_states:
+  - accepted
+  - completed
+
+candidate:
+  header_patterns:
+    - '\breview(?:er|ing|ed)?\b'
+    - '\breferee\b'
+    - '\bmanuscript\b'
+    - '\beditorial\b'
+    - '\bsubmission\b'
+    - 'scholarone|manuscriptcentral|editorialmanager|openreview'
+    - '(?:editor|journal|conference|proceedings|publication)[a-z0-9_.+-]*@'
+    - '@[^ ]*(?:editor|journal|conference|review|submission|publication)'
+    - '审稿|评审|审阅|稿件'
+
+state_patterns:
+  completed:
+    - '\bthank you for (?:submitting|completing) (?:your |the )?review\b'
+    - '\bwe (?:have )?received your review\b'
+    - '\byour review (?:has been|was) (?:successfully )?submitted\b'
+    - '\breview (?:has been )?successfully submitted\b'
+    - '\breview submission confirmation\b'
+    - '\bconfirmation of (?:your )?review submission\b'
+    - '感谢您(?:提交|完成)(?:了)?审稿'
+    - '审稿意见(?:已)?(?:成功)?提交'
+    - '评审意见(?:已)?(?:成功)?提交'
+    - '审稿(?:工作|任务)?已完成'
+  accepted:
+    - '\bthank you for agreeing to review\b'
+    - '\bthank you for accepting (?:this |the )?(?:invitation|review assignment)\b'
+    - '\byou have (?:agreed|accepted) to review\b'
+    - '\byour acceptance to review (?:has been )?confirmed\b'
+    - '\breview assignment (?:has been )?confirmed\b'
+    - '\byou are now assigned as (?:a )?reviewer\b'
+    - '感谢您接受(?:本次|此次|该)?审稿'
+    - '您已接受(?:本次|此次|该)?审稿'
+    - '审稿任务(?:已)?确认'
+  rejected:
+    - '\breview invitation (?:has been )?(?:declined|withdrawn|cancelled|canceled)\b'
+    - '\byou have declined (?:the )?(?:invitation|request) to review\b'
+    - '\bthank you for letting us know that you (?:are unable|cannot) to review\b'
+    - '已拒绝(?:本次|此次|该)?审稿'
+    - '审稿邀请(?:已)?(?:撤回|取消)'
+  invited:
+    - '\binvitation to review\b'
+    - '\binvited to review\b'
+    - '\brequest to review\b'
+    - '\bwould you be willing to review\b'
+    - '\bplease (?:accept or decline|let us know whether you can review)\b'
+    - '邀请您(?:进行)?审稿'
+    - '审稿邀请'
+    - '请您审阅'
+
+venue_aliases:
+  AAAI:
+    - AAAI Conference on Artificial Intelligence
+    - Association for the Advancement of Artificial Intelligence
+  KDD:
+    - ACM SIGKDD Conference on Knowledge Discovery and Data Mining
+    - ACM SIGKDD
+  ICIC:
+    - International Conference on Intelligent Computing
+  IJCAI:
+    - International Joint Conference on Artificial Intelligence
+  ACM MM:
+    - ACM International Conference on Multimedia
+    - ACM Multimedia
+  ICASSP:
+    - IEEE International Conference on Acoustics, Speech and Signal Processing
+  NeurIPS:
+    - Conference on Neural Information Processing Systems
+    - Neural Information Processing Systems
+  ICML:
+    - International Conference on Machine Learning
+  ICLR:
+    - International Conference on Learning Representations
+  CVPR:
+    - IEEE Conference on Computer Vision and Pattern Recognition
+    - Conference on Computer Vision and Pattern Recognition
+  ICCV:
+    - IEEE International Conference on Computer Vision
+  ECCV:
+    - European Conference on Computer Vision
+  ESWA:
+    - Expert Systems with Applications
+  EAAI:
+    - Engineering Applications of Artificial Intelligence
+  JBHI:
+    - IEEE Journal of Biomedical and Health Informatics
+    - Journal of Biomedical and Health Informatics
+  NEUCOM:
+    - Neurocomputing
+  Pattern Recognition:
+    - Pattern Recognition
+  Pattern Recognition Letters:
+    - Pattern Recognition Letters
+  Information Fusion:
+    - Information Fusion
+  Neural Networks:
+    - Neural Networks
+  KBS:
+    - Knowledge-Based Systems
+    - Knowledge Based Systems
+  Applied Soft Computing:
+    - Applied Soft Computing
+  TNNLS:
+    - IEEE Transactions on Neural Networks and Learning Systems
+    - Transactions on Neural Networks and Learning Systems
+  TMM:
+    - IEEE Transactions on Multimedia
+    - Transactions on Multimedia
+  TIP:
+    - IEEE Transactions on Image Processing
+    - Transactions on Image Processing
+  TCSVT:
+    - IEEE Transactions on Circuits and Systems for Video Technology
+    - Transactions on Circuits and Systems for Video Technology

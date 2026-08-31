@@ -183,3 +183,28 @@ py scripts/profile_wizard.py --classify-research
 py scripts/sync_publications.py
 py scripts/sync_publications.py --dry-run
 ```
+
+## 审稿服务自动同步
+
+GitHub Actions 每天运行 `scripts/sync_reviewing.py`，通过只读 IMAP 扫描全部可选邮件文件夹。首次运行读取全部历史邮件，之后通过 Actions 私有缓存中的 UID 状态增量读取。同步器遵循以下隐私规则：
+
+- 所有邮件只读取日期、发件人、主题等必要头部；只有疑似编辑部或审稿平台邮件才继续读取正文。
+- 只读取 `text/plain` / `text/html` 正文，IMAP 中标记为附件的 MIME 部分不会下载。
+- 仅当邮件能高置信识别为“已接受”或“已完成”，并命中 `data/review_email_rules.yaml` 中的期刊/会议别名时，才把规范简称写入 `data/config.yaml`。
+- 邮件正文、主题、发件人、稿件题目、作者、稿号和文件夹名称均不会写入仓库或 Actions 日志；无法映射的候选只输出数量。
+- 脚本以只读模式选择邮箱文件夹，使用 `BODY.PEEK`，不会标记已读、移动、删除或回复邮件。
+
+腾讯企业邮箱使用 SSL IMAP `imap.exmail.qq.com:993`。在仓库 `Settings → Secrets and variables → Actions` 中创建：
+
+```text
+REVIEW_EMAIL_ADDRESS       完整邮箱地址
+REVIEW_EMAIL_APP_PASSWORD  客户端专用密码或授权码
+```
+
+不要把密码或授权码写入仓库。配置完成后，在 Actions 中手动运行一次 **Sync Reviewing Service**；首轮可勾选 `full_scan` 强制重新扫描全部历史邮件。之后工作流每天自动检查，有新服务记录时会构建、提交、推送并触发主页部署。
+
+本地可用脱敏 `.eml` 验证识别结果，不需要连接邮箱：
+
+```powershell
+py scripts/sync_reviewing.py --classify-eml path/to/redacted.eml
+```

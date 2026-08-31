@@ -1,0 +1,107 @@
+name: Sync Reviewing Service
+
+on:
+  schedule:
+    - cron: "41 2 * * *"
+  workflow_dispatch:
+    inputs:
+      full_scan:
+        description: Ignore cached UIDs and scan all historical mail
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+concurrency:
+  group: reviewing-service-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Check mailbox configuration
+        id: mailbox
+        shell: bash
+        env:
+          REVIEW_EMAIL_ADDRESS: ${{ secrets.REVIEW_EMAIL_ADDRESS }}
+          REVIEW_EMAIL_APP_PASSWORD: ${{ secrets.REVIEW_EMAIL_APP_PASSWORD }}
+        run: |
+          if [[ -n "$REVIEW_EMAIL_ADDRESS" && -n "$REVIEW_EMAIL_APP_PASSWORD" ]]; then
+            echo "configured=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "configured=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::Review mailbox secrets are not configured; synchronization was skipped."
+          fi
+
+      - name: Restore private scan state
+        if: steps.mailbox.outputs.configured == 'true'
+        uses: actions/cache/restore@v4
+        with:
+          path: .cache/review-email-sync
+          key: review-email-state-${{ hashFiles('data/review_email_rules.yaml') }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: |
+            review-email-state-${{ hashFiles('data/review_email_rules.yaml') }}-
+
+      - name: Scan review email
+        if: steps.mailbox.outputs.configured == 'true'
+        shell: bash
+        env:
+          REVIEW_EMAIL_ADDRESS: ${{ secrets.REVIEW_EMAIL_ADDRESS }}
+          REVIEW_EMAIL_APP_PASSWORD: ${{ secrets.REVIEW_EMAIL_APP_PASSWORD }}
+          FULL_SCAN: ${{ github.event.inputs.full_scan }}
+        run: |
+          args=(--state-path .cache/review-email-sync/state.json)
+          if [[ "$FULL_SCAN" == "true" ]]; then
+            args+=(--full-scan)
+          fi
+          python scripts/sync_reviewing.py "${args[@]}"
+
+      - name: Detect homepage changes
+        if: steps.mailbox.outputs.configured == 'true'
+        id: changes
+        shell: bash
+        run: |
+          if git diff --quiet -- data/config.yaml; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Build updated homepage
+        if: steps.changes.outputs.changed == 'true'
+        run: python build.py
+
+      - name: Commit reviewing update
+        if: steps.changes.outputs.changed == 'true'
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/config.yaml output/index.html
+          git commit -m "Auto-update reviewing service"
+          git pull --rebase origin main
+          git push origin main
+
+      - name: Save private scan state
+        if: steps.mailbox.outputs.configured == 'true' && success()
+        uses: actions/cache/save@v4
+        with:
+          path: .cache/review-email-sync
+          key: review-email-state-${{ hashFiles('data/review_email_rules.yaml') }}-${{ github.run_id }}-${{ github.run_attempt }}

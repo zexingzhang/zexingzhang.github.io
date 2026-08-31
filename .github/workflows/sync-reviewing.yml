@@ -42,12 +42,17 @@ jobs:
         env:
           REVIEW_EMAIL_ADDRESS: ${{ secrets.REVIEW_EMAIL_ADDRESS }}
           REVIEW_EMAIL_APP_PASSWORD: ${{ secrets.REVIEW_EMAIL_APP_PASSWORD }}
+          EVENT_NAME: ${{ github.event_name }}
         run: |
           if [[ -n "$REVIEW_EMAIL_ADDRESS" && -n "$REVIEW_EMAIL_APP_PASSWORD" ]]; then
             echo "configured=true" >> "$GITHUB_OUTPUT"
           else
             echo "configured=false" >> "$GITHUB_OUTPUT"
-            echo "::notice::Review mailbox secrets are not configured; synchronization was skipped."
+            if [[ "$EVENT_NAME" == "workflow_dispatch" ]]; then
+              echo "::error::REVIEW_EMAIL_ADDRESS and REVIEW_EMAIL_APP_PASSWORD must both be configured as repository Actions secrets."
+              exit 1
+            fi
+            echo "::notice::Review mailbox repository secrets are not configured; scheduled synchronization was skipped."
           fi
 
       - name: Restore private scan state

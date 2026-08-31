@@ -69,6 +69,13 @@ education:
     en: B.Eng.
   time: 2018 - 2022
 activities:
+- date: '2026.08'
+  title:
+    zh: 参加 ACM SIGKDD 知识发现与数据挖掘大会并开展学术交流。
+    en: Attended the ACM SIGKDD Conference on Knowledge Discovery and Data Mining and engaged in academic exchange.
+  role:
+    zh: 韩国 · 济州
+    en: Jeju, Korea
 - date: '2026.01'
   title:
     zh: 前往 AAAI 人工智能会议进行汇报交流。

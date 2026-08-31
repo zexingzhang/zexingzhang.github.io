@@ -1793,8 +1793,8 @@
                     </p>
 
                     <p class="hero-achievement">
-                        <span data-lang="zh">发表/录用论文20篇，包括CCF A 3篇、CCF B 1篇、CCF C 1篇、JCR Q1 3篇、JCR Q2 4篇；第一/共同第一作者8篇，通讯/共同通讯作者2篇。</span>
-                        <span data-lang="en">Published or accepted 20 papers, including 3 CCF A, 1 CCF B, 1 CCF C, 3 JCR Q1, 4 JCR Q2 papers; 8 as first/co-first author and 2 as corresponding/co-corresponding author.</span>
+                        <span data-lang="zh">发表/录用论文20篇，包括CCF A 3篇、CCF B 1篇、CCF C 3篇、JCR Q1 3篇、JCR Q2 4篇；第一/共同第一作者8篇，通讯/共同通讯作者2篇。</span>
+                        <span data-lang="en">Published or accepted 20 papers, including 3 CCF A, 1 CCF B, 3 CCF C, 3 JCR Q1, 4 JCR Q2 papers; 8 as first/co-first author and 2 as corresponding/co-corresponding author.</span>
                         <span class="auto-note" title="通过 OpenAI / Codex CLI 自动整理 · Auto-organized via OpenAI / Codex CLI">
                             <span data-lang="zh">自动整理</span>
                             <span data-lang="en">Auto-organized</span>
@@ -1858,7 +1858,7 @@
 
 
                         <span class="hero-stat-item">
-                            <strong>1</strong> CCF C
+                            <strong>3</strong> CCF C
                         </span>
 
 
@@ -2726,6 +2726,104 @@
 
                     </article>
 
+                    <article class="paper-card" data-year="2026" data-role="coauthor">
+                        <div class="paper-top">
+                            <div class="paper-text-block">
+                                <div class="paper-headline">
+                                    <h3 class="paper-title">DSHENet: Dual-Stream Hybrid Encoding with Progressive Consistency Co-Training for Semi-Supervised Medical Image Segmentation</h3>
+
+                                </div>
+
+                                <p class="paper-authors">
+                                    Mengran Tang, Yuxin Xie, Qingxin Zhao, Bojun Li, Huimin Lu, Zexing Zhang
+                                </p>
+
+                                <div class="paper-venue">
+                                    <span>22nd International Conference on Intelligent Computing (ICIC)</span>
+                                    <span>2026</span>
+
+                                    <span class="status-chip status-published">
+                                        <span data-lang="zh">已出版</span>
+                                        <span data-lang="en">Published</span>
+                                    </span>
+
+
+                                    <a href="https://doi.org/10.1007/978-981-92-3513-1_35" target="_blank" rel="noreferrer">DOI</a>
+
+                                </div>
+                            </div>
+
+                            <div class="chip-stack">
+
+                                <span class="tier-chip tier-ccf-c">CCF C</span>
+
+
+                                <span class="index-chip">EI</span>
+
+                                <span class="index-chip">SCOPUS</span>
+
+
+                            </div>
+
+                        </div>
+
+                        <details class="paper-abstract">
+                            <summary>
+                                <span data-lang="zh">摘要</span>
+                                <span data-lang="en">Abstract</span>
+                                <span class="auto-note" title="通过 OpenAI / Codex CLI 自动整理 · Auto-organized via OpenAI / Codex CLI">
+                                    <span data-lang="zh">自动补全</span>
+                                    <span data-lang="en">Auto-filled</span>
+                                </span>
+                            </summary>
+                            <p>Semi-supervised approaches for medical image segmentation are frequently hindered by noisy pseudo-labels and ill-defined boundaries. DSHENet combines dual-stream hybrid encoding with progressive consistency co-training. Its Dual-Stream Hybrid Encoder captures global semantic context and high-frequency structural details through delayed global-feature injection and multi-scale context fusion. Bilateral Attention Decoding separates region-consistency and boundary-aware objectives, while Progressive Consistency Co-Training moves from supervised initialization to confidence-aware cross pseudo-supervision. Experiments on ACDC, Kvasir-SEG, and ISIC2018 improve both overlap and boundary metrics under limited annotation; on ACDC with 10% labels, DSHENet reaches 91.04% Dice, 1.80 percentage points above the previous best.</p>
+                        </details>
+
+                    </article>
+
+                    <article class="paper-card" data-year="2026" data-role="coauthor">
+                        <div class="paper-top">
+                            <div class="paper-text-block">
+                                <div class="paper-headline">
+                                    <h3 class="paper-title">Multi-scale State-Space Hemodynamic Encoding for Cuffless Blood Pressure Estimation</h3>
+
+                                </div>
+
+                                <p class="paper-authors">
+                                    Qingxin Zhao, Huimin Lu, Mengran Tang, Zexing Zhang
+                                </p>
+
+                                <div class="paper-venue">
+                                    <span>22nd International Conference on Intelligent Computing (ICIC)</span>
+                                    <span>2026</span>
+
+                                    <span class="status-chip status-published">
+                                        <span data-lang="zh">已出版</span>
+                                        <span data-lang="en">Published</span>
+                                    </span>
+
+
+                                    <a href="https://doi.org/10.1007/978-981-92-3557-5_34" target="_blank" rel="noreferrer">DOI</a>
+
+                                </div>
+                            </div>
+
+                            <div class="chip-stack">
+
+                                <span class="tier-chip tier-ccf-c">CCF C</span>
+
+
+                                <span class="index-chip">EI</span>
+
+                                <span class="index-chip">SCOPUS</span>
+
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
                     <article class="paper-card" data-year="2026" data-role="co-corresponding">
                         <div class="paper-top">
                             <div class="paper-text-block">
@@ -2783,100 +2881,6 @@
                             </summary>
                             <p>The Segment Anything Model (SAM) exhibits strong zero-shot segmentation capability, yet its parameter count and compute cost hinder deployment on edge devices. Post-training quantization (PTQ) is attractive for compressing SAM with only a small unlabeled calibration set, but existing PTQ pipelines typically adopt uniform bit-widths and are semantic-blind: layers serving different semantic roles show markedly different quantization sensitivity, while reconstruction metrics correlate poorly with task degradation. We propose SDA-SAM, a semantic-driven adaptive mixed-precision PTQ framework. It builds a Semantic Function Profile for each quantizable layer by combining a task-oriented Gradient Sensitivity Score with Attention Entropy Analysis, then assigns higher precision to semantically critical layers under a global bit budget. On COCO instance segmentation with SAM-B, SDA-SAM matches uniform W6A6 accuracy while reducing the effective average weight bit-width to 5.1 and improves W4A4 accuracy by up to 8.5% over PTQ4SAM-S without iterative reconstruction.</p>
                         </details>
-
-                    </article>
-
-                    <article class="paper-card" data-year="2026" data-role="coauthor">
-                        <div class="paper-top">
-                            <div class="paper-text-block">
-                                <div class="paper-headline">
-                                    <h3 class="paper-title">DSHENet: Dual-Stream Hybrid Encoding with Progressive Consistency Co-Training for Semi-Supervised Medical Image Segmentation</h3>
-
-                                </div>
-
-                                <p class="paper-authors">
-                                    Mengran Tang, Yuxin Xie, Qingxin Zhao, Bojun Li, Huimin Lu, Zexing Zhang
-                                </p>
-
-                                <div class="paper-venue">
-                                    <span>22nd International Conference on Intelligent Computing (ICIC)</span>
-                                    <span>2026</span>
-
-                                    <span class="status-chip status-published">
-                                        <span data-lang="zh">已出版</span>
-                                        <span data-lang="en">Published</span>
-                                    </span>
-
-
-                                    <a href="https://doi.org/10.1007/978-981-92-3513-1_35" target="_blank" rel="noreferrer">DOI</a>
-
-                                </div>
-                            </div>
-
-                            <div class="chip-stack">
-
-
-                                <span class="index-chip">EI</span>
-
-                                <span class="index-chip">SCOPUS</span>
-
-
-                            </div>
-
-                        </div>
-
-                        <details class="paper-abstract">
-                            <summary>
-                                <span data-lang="zh">摘要</span>
-                                <span data-lang="en">Abstract</span>
-                                <span class="auto-note" title="通过 OpenAI / Codex CLI 自动整理 · Auto-organized via OpenAI / Codex CLI">
-                                    <span data-lang="zh">自动补全</span>
-                                    <span data-lang="en">Auto-filled</span>
-                                </span>
-                            </summary>
-                            <p>Semi-supervised approaches for medical image segmentation are frequently hindered by noisy pseudo-labels and ill-defined boundaries. DSHENet combines dual-stream hybrid encoding with progressive consistency co-training. Its Dual-Stream Hybrid Encoder captures global semantic context and high-frequency structural details through delayed global-feature injection and multi-scale context fusion. Bilateral Attention Decoding separates region-consistency and boundary-aware objectives, while Progressive Consistency Co-Training moves from supervised initialization to confidence-aware cross pseudo-supervision. Experiments on ACDC, Kvasir-SEG, and ISIC2018 improve both overlap and boundary metrics under limited annotation; on ACDC with 10% labels, DSHENet reaches 91.04% Dice, 1.80 percentage points above the previous best.</p>
-                        </details>
-
-                    </article>
-
-                    <article class="paper-card" data-year="2026" data-role="coauthor">
-                        <div class="paper-top">
-                            <div class="paper-text-block">
-                                <div class="paper-headline">
-                                    <h3 class="paper-title">Multi-scale State-Space Hemodynamic Encoding for Cuffless Blood Pressure Estimation</h3>
-
-                                </div>
-
-                                <p class="paper-authors">
-                                    Qingxin Zhao, Huimin Lu, Mengran Tang, Zexing Zhang
-                                </p>
-
-                                <div class="paper-venue">
-                                    <span>22nd International Conference on Intelligent Computing (ICIC)</span>
-                                    <span>2026</span>
-
-                                    <span class="status-chip status-published">
-                                        <span data-lang="zh">已出版</span>
-                                        <span data-lang="en">Published</span>
-                                    </span>
-
-
-                                    <a href="https://doi.org/10.1007/978-981-92-3557-5_34" target="_blank" rel="noreferrer">DOI</a>
-
-                                </div>
-                            </div>
-
-                            <div class="chip-stack">
-
-
-                                <span class="index-chip">EI</span>
-
-                                <span class="index-chip">SCOPUS</span>
-
-
-                            </div>
-
-                        </div>
 
                     </article>
 
